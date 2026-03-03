@@ -4,276 +4,673 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A(DAI) — a digital arts institute</title>
-  <meta name="description" content="Practice-led infrastructure for the art of now. A practice-led infrastructure project built with conversational generative interfaces. Open source. Not-for-profit. Forkable.">
-  <meta property="og:title" content="A(DAI) — a digital arts institute">
-  <meta property="og:description" content="Practice-led infrastructure for the art of now.">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="A(DAI) — a digital arts institute">
-  <meta name="twitter:description" content="Practice-led infrastructure for the art of now.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23C8FF00'%3EA%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Practice-led infrastructure for the art of now.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    ::selection { background: #C8FF00; color: #0A0A0A; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    :root {
+      --bg:#FFFFFF;--ink:#1A1A1A;--mint:#7aff9c;--sage:#c2dbbf;--sky:#85b0e1;
+      --muted:#444444;--faint:#DDDDDD;--rule:rgba(0,0,0,0.06);
     }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    ::selection{background:var(--mint);color:#0C0F0E;}
+    html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;-webkit-font-smoothing:antialiased;}
+    #three-canvas{position:fixed;inset:0;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity:0.045;}
+    .vr,.hr{position:fixed;z-index:2;pointer-events:none;background:var(--rule);}
+    .vr{top:0;bottom:0;width:1px;}.hr{left:0;right:0;height:1px;}
+    .vr-l{left:33.333%;}.vr-r{left:66.666%;}.hr-m{top:50%;}
 
-    body {
-      background: #0A0A0A;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-weight: 300;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+    /* NAV SHELL */
+    .nav-shell{position:fixed;top:0;left:0;right:0;z-index:30;padding:2.8rem 3.2rem 0;
+      display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;}
+    .brand{pointer-events:all;cursor:pointer;}
+    .brand-mark{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3.5rem,7vw,6.5rem);
+      font-weight:400;line-height:0.88;letter-spacing:-0.03em;color:var(--ink);
+      transition:font-size 0.7s cubic-bezier(0.16,1,0.3,1);}
+    .brand-mark .paren{color:var(--mint);font-style:italic;}
+    .brand-sub{font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:500;
+      letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-top:0.7rem;
+      transition:opacity 0.4s;}
+    .nav-shell.compact .brand-mark{font-size:clamp(1.4rem,3vw,2rem);}
+    .nav-shell.compact .brand-sub{opacity:0;pointer-events:none;}
+    .nav-shell.compact .breadcrumb{display:flex;}
+    .breadcrumb{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;
+      color:var(--muted);text-transform:uppercase;display:none;align-items:center;gap:0.5rem;margin-top:0.5rem;}
+    .breadcrumb .sep{color:var(--mint);}
+    nav.nav{display:flex;align-items:flex-start;gap:2rem;opacity:0;
+      animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;pointer-events:all;}
+    nav.nav a{font-family:'Syne',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:0.18em;
+      color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.25s;cursor:pointer;}
+    nav.nav a:hover,nav.nav a.active{color:var(--mint);}
 
-    canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
+    /* VIEW SYSTEM */
+    .view{position:fixed;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity 0.6s ease;overflow-y:auto;}
+    .view.active{opacity:1;pointer-events:all;}
 
-    .content {
-      position: relative;
-      z-index: 1;
-      padding: 2rem;
-      max-width: 720px;
-      width: 100%;
-    }
+    /* HOME */
+    #view-home{padding:2.8rem 3.2rem;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr auto;}
+    .home-brand-spacer{grid-column:1;grid-row:1;height:clamp(5rem,10vw,9rem);}
+    .center{grid-column:1/4;grid-row:2;display:flex;align-items:flex-end;padding-bottom:0.5rem;}
+    .dispatch-block{max-width:480px;opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;}
+    .dispatch-label{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.22em;
+      color:var(--mint);text-transform:uppercase;margin-bottom:0.85rem;display:flex;align-items:center;gap:0.7rem;}
+    .dispatch-label::before{content:'';display:block;width:24px;height:1px;background:var(--mint);}
+    .dispatch{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1rem,2vw,1.3rem);
+      font-style:italic;color:var(--muted);line-height:1.55;min-height:2.8rem;}
+    .cursor{display:inline-block;width:1.5px;height:1em;background:var(--mint);
+      vertical-align:text-bottom;margin-left:1px;animation:blink 1s step-end infinite;}
+    .bottom-left{grid-column:1;grid-row:3;display:flex;flex-direction:column;
+      justify-content:flex-end;gap:1.4rem;opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;}
+    .description{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.9;max-width:300px;}
+    .tags{display:flex;flex-wrap:wrap;gap:0.45rem;}
+    .tag{font-family:'Syne Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;
+      color:var(--muted);border:1px solid var(--faint);padding:0.28rem 0.55rem;text-transform:uppercase;}
+    .bottom-center{grid-column:2;grid-row:3;display:flex;align-items:flex-end;justify-content:center;
+      opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 1.0s forwards;}
+    .tagline{font-family:'Instrument Serif',Georgia,serif;font-size:0.8rem;font-style:italic;color:#AAAAAA;text-align:center;}
+    .bottom-right{grid-column:3;grid-row:3;display:flex;flex-direction:column;
+      justify-content:flex-end;align-items:flex-end;gap:1rem;
+      opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;}
+    .status{display:flex;align-items:center;gap:0.55rem;}
+    .status-dot{width:5px;height:5px;border-radius:50%;background:var(--mint);
+      box-shadow:0 0 6px var(--mint);animation:pulse 2.5s ease-in-out infinite;}
+    .status-text{font-family:'Syne Mono',monospace;font-size:0.56rem;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;}
+    .handles{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;}
+    .handles a{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;
+      color:var(--muted);text-decoration:none;transition:color 0.2s;}
+    .handles a:hover{color:var(--mint);}
 
-    .provocation {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      font-style: italic;
-      color: #666;
-      min-height: 3.5rem;
-      line-height: 1.4;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.1s forwards;
-    }
+    /* ARTEFACTS */
+    #view-artefacts{padding:7rem 3.2rem 3.2rem;display:flex;flex-direction:column;}
+    .artefacts-intro{max-width:520px;margin-bottom:3rem;}
+    .artefacts-intro h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);
+      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.8rem;}
+    .artefacts-intro p{font-family:'Syne',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.9;}
+    .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--faint);}
+    .tool-card{background:var(--bg);padding:2rem;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden;}
+    .tool-card:hover{background:#FAFAFA;}
+    .tool-card:hover .tool-arrow{transform:translate(3px,-3px);}
+    .tool-number{font-family:'Syne Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;color:var(--faint);margin-bottom:1.2rem;}
+    .tool-name{font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;
+      color:var(--ink);margin-bottom:0.6rem;letter-spacing:-0.01em;}
+    .tool-desc{font-family:'Syne',sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.8;}
+    .tool-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-size:0.9rem;color:var(--mint);transition:transform 0.2s;}
+    .tool-flow{margin-top:1rem;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;}
+    .tool-flow span{font-family:'Syne Mono',monospace;font-size:0.52rem;letter-spacing:0.08em;color:#AAAAAA;text-transform:uppercase;}
+    .tool-flow .arr{color:var(--mint);}
 
-    .cursor {
-      opacity: 0.6;
-      animation: blink 1s step-end infinite;
-      color: #C8FF00;
-    }
+    /* TRANSCRIBER */
+    #view-transcriber{padding:7rem 3.2rem 3.2rem;display:flex;flex-direction:column;}
+    .tool-header{max-width:600px;margin-bottom:2.5rem;}
+    .tool-header h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);
+      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.6rem;}
+    .tool-header p{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.9;}
+    .tool-pipeline{display:flex;align-items:center;gap:0.6rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+    .pipeline-step{font-family:'Syne Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;
+      color:var(--muted);text-transform:uppercase;border:1px solid var(--faint);padding:0.3rem 0.7rem;}
+    .pipeline-step.active-step{border-color:var(--mint);color:var(--mint);}
+    .pipeline-arrow{color:var(--mint);font-size:0.7rem;}
+    .config-section{margin-bottom:2rem;max-width:560px;}
+    .config-label{font-family:'Syne Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;
+      color:var(--muted);text-transform:uppercase;margin-bottom:0.8rem;}
+    .config-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.6rem;}
+    .config-row label{font-family:'Syne',sans-serif;font-size:0.65rem;color:var(--muted);width:160px;flex-shrink:0;}
+    .config-row input{flex:1;background:white;border:1px solid var(--faint);color:var(--ink);
+      padding:0.5rem 0.75rem;font-family:'Syne Mono',monospace;font-size:0.65rem;outline:none;transition:border-color 0.2s;}
+    .config-row input:focus{border-color:var(--mint);}
+    .config-row input::placeholder{color:#CCCCCC;}
+    .drop-zone{max-width:560px;height:180px;border:1px dashed var(--faint);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      cursor:pointer;transition:border-color 0.2s,background 0.2s;margin-bottom:2rem;background:white;}
+    .drop-zone:hover,.drop-zone.drag-over{border-color:var(--mint);background:rgba(122,255,156,0.02);}
+    .drop-icon{font-size:1.5rem;color:var(--faint);margin-bottom:0.6rem;}
+    .drop-text{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--muted);}
+    .drop-sub{font-family:'Syne Mono',monospace;font-size:0.58rem;color:#CCCCCC;margin-top:0.3rem;letter-spacing:0.08em;}
+    .progress-track{max-width:560px;display:flex;align-items:flex-start;gap:0;margin-bottom:2rem;}
+    .progress-step{display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .progress-step .dot{width:7px;height:7px;border-radius:50%;background:var(--faint);transition:background 0.4s,box-shadow 0.4s;}
+    .progress-step .dot.done{background:#AADDAA;}
+    .progress-step .dot.now{background:var(--mint);box-shadow:0 0 8px var(--mint);animation:pulse 1.2s ease-in-out infinite;}
+    .step-label{font-family:'Syne Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--faint);text-transform:uppercase;white-space:nowrap;}
+    .step-label.done{color:#AADDAA;}.step-label.now{color:var(--mint);}
+    .progress-line{flex:1;height:1px;background:var(--faint);margin:3px 6px 0;}
+    .progress-line.done{background:#AADDAA;}
+    .log-box{max-width:560px;background:#FAFAFA;border:1px solid var(--faint);
+      padding:1rem 1.2rem;max-height:160px;overflow-y:auto;margin-bottom:2rem;
+      font-family:'Syne Mono',monospace;font-size:0.62rem;line-height:1.8;}
+    .log-line{color:var(--muted);}.log-line.fresh{color:var(--ink);}
+    .log-line::before{content:'›  ';color:var(--mint);}
+    .result-box{max-width:560px;border:1px solid #C8EEC8;background:#F8FFF8;padding:1.5rem 1.8rem;margin-bottom:2rem;}
+    .result-label{font-family:'Syne Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;color:#5A9A5A;text-transform:uppercase;margin-bottom:1rem;}
+    .result-link{font-family:'Syne',sans-serif;font-size:0.72rem;color:#3A8A3A;text-decoration:none;display:block;margin-bottom:0.8rem;}
+    .result-link:hover{text-decoration:underline;}
+    .result-meta{font-family:'Syne Mono',monospace;font-size:0.6rem;color:#8AAA8A;margin-bottom:0.8rem;line-height:1.7;}
+    .result-summary{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:0.85rem;
+      color:var(--muted);line-height:1.7;border-top:1px solid #C8EEC8;padding-top:0.8rem;}
+    .error-box{max-width:560px;border:1px solid #EECCCC;background:#FFF8F8;padding:1rem 1.2rem;margin-bottom:1rem;}
+    .error-box p{font-family:'Syne Mono',monospace;font-size:0.62rem;color:#AA5555;line-height:1.7;}
+    .setup-note{max-width:560px;margin-top:1rem;font-family:'Syne',sans-serif;font-size:0.62rem;color:#CCCCCC;line-height:2;}
 
-    .title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(5rem, 15vw, 10rem);
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      color: #E8E8E8;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.4s forwards;
-    }
+    /* ABOUT / CONTACT */
+    #view-about,#view-contact{padding:7rem 3.2rem 3.2rem;display:flex;flex-direction:column;}
+    .prose-block{max-width:580px;}
+    .prose-block h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);
+      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:1.5rem;}
+    .prose-block p{font-family:'Syne',sans-serif;font-size:0.72rem;color:var(--muted);line-height:2.0;margin-bottom:1.2rem;}
+    .accent-line{width:32px;height:2px;background:var(--mint);margin-bottom:1.5rem;}
+    .contact-handle{font-family:'Syne Mono',monospace;font-size:0.7rem;color:var(--mint);text-decoration:none;}
+    .contact-handle:hover{text-decoration:underline;}
+    .contact-member{font-family:'Syne Mono',monospace;font-size:0.65rem;color:var(--muted);text-decoration:none;}
+    .contact-member:hover{color:var(--ink);}
 
-    .title .paren { color: #444; font-weight: 400; }
+    @keyframes arrive{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
-    .subtitle {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      font-style: italic;
-      color: #555;
-      margin-top: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.6s forwards;
-    }
-
-    .accent-bar {
-      width: 50px;
-      height: 3px;
-      background: #C8FF00;
-      margin: 2rem 0;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.8s forwards;
-    }
-
-    .description {
-      font-size: 0.92rem;
-      color: #555;
-      line-height: 1.8;
-      max-width: 520px;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.9s forwards;
-    }
-
-    .principles {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 1.0s forwards;
-    }
-
-    .principles span {
-      font-size: 0.72rem;
-      color: #444;
-      letter-spacing: 0.06em;
-      padding: 0.4rem 0;
-      border-top: 1px solid #1E1E1E;
-    }
-
-    .tagline {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: #C8FF00;
-      margin-top: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 1.15s forwards;
-    }
-
-    .handles {
-      font-size: 0.78rem;
-      color: #333;
-      margin-top: 2.5rem;
-      letter-spacing: 0.03em;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 1.3s forwards;
-    }
-
-    .handles a {
-      color: #333;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .handles a:hover { color: #C8FF00; }
-
-    @media (max-width: 600px) {
-      .content { padding: 1.5rem; }
-      .principles { gap: 1rem; }
+    @media(max-width:700px){
+      .nav-shell{padding:1.6rem;}
+      #view-home{padding:1.6rem;grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;}
+      .center{grid-column:1;grid-row:3;}
+      .bottom-left{grid-column:1;grid-row:4;}
+      .bottom-right,.bottom-center{display:none;}
+      #view-artefacts,#view-transcriber,#view-about,#view-contact{padding:6rem 1.6rem 2rem;}
+      .tool-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
+<div id="three-canvas"></div>
+<div class="vr vr-l"></div><div class="vr vr-r"></div><div class="hr hr-m"></div>
 
-<canvas id="field"></canvas>
-
-<div class="content">
-  <div class="provocation" id="provocation"><span class="cursor">|</span></div>
-  <h1 class="title">A<span class="paren">(</span>DAI<span class="paren">)</span></h1>
-  <p class="subtitle">a digital arts institute</p>
-  <div class="accent-bar"></div>
-  <p class="description">A practice-led infrastructure project built with conversational generative interfaces. Consolidating collective intelligence from artists to build the narrative infrastructure the emergent digital arts need.</p>
-  <div class="principles">
-    <span>Not 'the' — 'a'</span>
-    <span>System not startup</span>
-    <span>Protocol not institution</span>
-    <span>Forkable. Recomposable. Open.</span>
+<!-- NAV SHELL -->
+<div class="nav-shell" id="navShell">
+  <div class="brand" id="brandBtn">
+    <div class="brand-mark">A<span class="paren">(</span>DAI<span class="paren">)</span></div>
+    <div class="brand-sub">a digital arts institute</div>
+    <div class="breadcrumb" id="breadcrumb"></div>
   </div>
-  <p class="tagline">The digital arts, finding its shared language.</p>
-  <p class="handles">
-    <a href="https://x.com/jamie247" target="_blank">@jamie247</a> · 
-    <a href="https://x.com/Pixel0Symphony" target="_blank">@Pixel0Symphony</a> · 
-    <a href="https://x.com/aiio" target="_blank">@aiio</a>
-  </p>
+  <nav class="nav">
+    <a data-view="about">About</a>
+    <a data-view="artefacts">Artefacts</a>
+    <a data-view="contact">Contact</a>
+  </nav>
+</div>
+
+<!-- HOME -->
+<div class="view active" id="view-home">
+  <div class="home-brand-spacer"></div>
+  <div class="center">
+    <div class="dispatch-block">
+      <div class="dispatch-label">Dispatch</div>
+      <div class="dispatch" id="dispatch"><span class="cursor"></span></div>
+    </div>
+  </div>
+  <div class="bottom-left">
+    <p class="description">Practice-led infrastructure consolidating collective intelligence from artists — building the narrative layer the emergent digital arts need. Not-for-profit. Forkable. Open.</p>
+    <div class="tags">
+      <span class="tag">Not 'the' — 'a'</span>
+      <span class="tag">Protocol not institution</span>
+      <span class="tag">Commons-first</span>
+      <span class="tag">Forkable</span>
+    </div>
+  </div>
+  <div class="bottom-center"><p class="tagline">The digital arts, finding its shared language.</p></div>
+  <div class="bottom-right">
+    <div class="status"><div class="status-dot"></div><span class="status-text">Building</span></div>
+    <div class="handles">
+      <a href="https://x.com/jamie247" target="_blank">@jamie247</a>
+      <a href="https://x.com/Pixel0Symphony" target="_blank">@Pixel0Symphony</a>
+      <a href="https://x.com/aiio" target="_blank">@aiio</a>
+    </div>
+  </div>
+</div>
+
+<!-- ARTEFACTS -->
+<div class="view" id="view-artefacts">
+  <div class="artefacts-intro">
+    <h2>Artefacts</h2>
+    <p>Tools that feed signal into the A(DAI) intelligence layer. Each artefact is a contribution mechanism — your input becomes part of the commons.</p>
+  </div>
+  <div class="tool-grid">
+    <div class="tool-card" data-tool="transcriber">
+      <div class="tool-number">01</div>
+      <div class="tool-name">Transcriber</div>
+      <div class="tool-desc">Upload an audio or video recording. The system transcribes, identifies speakers, extracts key signals via Claude, and posts a structured entry to the Signal Inbox.</div>
+      <div class="tool-flow">
+        <span>Audio / MP4</span><span class="arr">→</span>
+        <span>AssemblyAI</span><span class="arr">→</span>
+        <span>Claude</span><span class="arr">→</span>
+        <span>Notion</span>
+      </div>
+      <div class="tool-arrow">↗</div>
+    </div>
+    <div class="tool-card" style="opacity:0.4;cursor:default;">
+      <div class="tool-number">02</div>
+      <div class="tool-name">Signal Drop</div>
+      <div class="tool-desc">Drop a URL, paste a note, or describe an observation. Tags it against the A(DAI) ontology and routes it to the Signal Inbox.</div>
+      <div class="tool-flow"><span>Text / URL</span><span class="arr">→</span><span>Tagger</span><span class="arr">→</span><span>Notion</span></div>
+      <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'Syne Mono',monospace;font-size:0.5rem;letter-spacing:0.15em;color:#CCCCCC;">SOON</div>
+    </div>
+    <div class="tool-card" style="opacity:0.4;cursor:default;">
+      <div class="tool-number">03</div>
+      <div class="tool-name">Conversation Logger</div>
+      <div class="tool-desc">Structured form for logging field conversations — practitioner, scene, themes. Maps directly to the CLA ontology layers.</div>
+      <div class="tool-flow"><span>Form</span><span class="arr">→</span><span>CLA Tagger</span><span class="arr">→</span><span>Notion</span></div>
+      <div style="position:absolute;top:1.5rem;right:1.5rem;font-family:'Syne Mono',monospace;font-size:0.5rem;letter-spacing:0.15em;color:#CCCCCC;">SOON</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSCRIBER -->
+<div class="view" id="view-transcriber">
+  <div class="tool-header">
+    <h2>Transcriber</h2>
+    <p>Upload a recording. The system transcribes, diarizes speakers, extracts key signals and tags via Claude, then posts a structured entry to the A(DAI) Signal Inbox in Notion.</p>
+  </div>
+  <div class="tool-pipeline">
+    <div class="pipeline-step" data-stage="uploading">Upload</div><div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" data-stage="transcribing">Transcribe</div><div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" data-stage="summarising">Analyse</div><div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" data-stage="posting">Post to Notion</div><div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" data-stage="done">Done</div>
+  </div>
+  <div class="config-section">
+    <div class="config-label">API Configuration</div>
+    <div class="config-row"><label>AssemblyAI Key</label><input type="password" id="key-assemblyai" placeholder="your-assemblyai-api-key"></div>
+    <div class="config-row"><label>Notion Integration Key</label><input type="password" id="key-notion" placeholder="secret_..."></div>
+    <div class="config-row"><label>Notion Database ID</label><input type="text" id="key-notiondb" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+  </div>
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept="video/*,audio/*" style="display:none">
+    <div class="drop-icon">⊕</div>
+    <div class="drop-text" id="dropText">Drop audio or video file here</div>
+    <div class="drop-sub" id="dropSub">or click to browse · MP4, MP3, M4A, WAV</div>
+  </div>
+  <div class="progress-track" id="progressTrack" style="display:none">
+    <div class="progress-step"><div class="dot" id="dot-uploading"></div><div class="step-label" id="lbl-uploading">Upload</div></div>
+    <div class="progress-line" id="line-1"></div>
+    <div class="progress-step"><div class="dot" id="dot-transcribing"></div><div class="step-label" id="lbl-transcribing">Transcribe</div></div>
+    <div class="progress-line" id="line-2"></div>
+    <div class="progress-step"><div class="dot" id="dot-summarising"></div><div class="step-label" id="lbl-summarising">Analyse</div></div>
+    <div class="progress-line" id="line-3"></div>
+    <div class="progress-step"><div class="dot" id="dot-posting"></div><div class="step-label" id="lbl-posting">Post</div></div>
+    <div class="progress-line" id="line-4"></div>
+    <div class="progress-step"><div class="dot" id="dot-done"></div><div class="step-label" id="lbl-done">Done</div></div>
+  </div>
+  <div class="log-box" id="logBox" style="display:none"></div>
+  <div id="resultBox" style="display:none" class="result-box"></div>
+  <div id="errorBox" style="display:none" class="error-box"></div>
+  <p class="setup-note">Get a free AssemblyAI key at assemblyai.com (100hrs/mo) · Create a Notion integration at notion.so/my-integrations and share your Signal Inbox database with it · DB ID is the 32-char string in your Notion database URL</p>
+</div>
+
+<!-- ABOUT -->
+<div class="view" id="view-about">
+  <div class="prose-block">
+    <div class="accent-line"></div>
+    <h2>About A(DAI)</h2>
+    <p>A(DAI) is a practice-led infrastructure project for the digital arts. We consolidate collective intelligence from artists, curators, developers, and researchers — building the narrative and technical layer the emergent digital arts ecosystem needs.</p>
+    <p>The institute is not a single authority. It is a commons. Not 'the' digital arts institute, but 'a' — one that is forkable, recomposable, and open by design.</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="view" id="view-contact">
+  <div class="prose-block">
+    <div class="accent-line"></div>
+    <h2>Contact</h2>
+    <p>For collaboration, advisory, or to contribute to the field intelligence layer:</p>
+    <p>
+      <a href="https://x.com/Pixel0Symphony" target="_blank" class="contact-member">@Pixel0Symphony</a> &nbsp;·&nbsp;
+      <a href="https://x.com/jamie247" target="_blank" class="contact-member">@jamie247</a> &nbsp;·&nbsp;
+      <a href="https://x.com/aiio" target="_blank" class="contact-member">@aiio</a>
+    </p>
+  </div>
 </div>
 
 <script>
-(function() {
-  var canvas = document.getElementById('field');
-  var ctx = canvas.getContext('2d');
-  var mouse = { x: 0, y: 0 };
-  var time = 0;
-  var particles = [];
+// ── THREE.JS SHADER ──────────────────────────────────────────────
+(function(){
+  var W=window.innerWidth,H=window.innerHeight;
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(45,W/H,0.1,100);
+  camera.position.set(-3.6,0,0);camera.lookAt(0,0,0);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio*1.3,2.6));
+  renderer.setSize(W,H);renderer.setClearColor(0xFFFFFF,1);
+  document.getElementById('three-canvas').appendChild(renderer.domElement);
 
-  function resize() {
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
-    ctx.scale(2, 2);
-  }
-
-  function init() {
-    resize();
-    var w = window.innerWidth, h = window.innerHeight;
-    particles = [];
-    for (var i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
-        size: Math.random() * 1.5 + 0.5, phase: Math.random() * Math.PI * 2
-      });
+  var VS=`
+    uniform float uTime,uAmplitude,uFrequency,uStrength,uDensity,uSpeed,uRepel;
+    uniform vec2 uRepelDir,uMouse;
+    varying vec3 vNormal,vPosition;varying float vDisplace;
+    vec3 m3(vec3 x){return x-floor(x*(1./289.))*289.;}
+    vec4 m4(vec4 x){return x-floor(x*(1./289.))*289.;}
+    vec4 perm(vec4 x){return m4(((x*34.)+1.)*x);}
+    vec4 tis(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+    float sn(vec3 v){
+      const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);
+      vec3 i=floor(v+dot(v,C.yyy)),x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
+      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.xxx,x2=x0-i2+C.yyy,x3=x0-D.yyy;
+      i=m3(i);
+      vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+      float n_=.142857142857;vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.*floor(p*ns.z*ns.z),x_=floor(j*ns.z),y_=floor(j-7.*x_);
+      vec4 xx=x_*ns.x+ns.yyyy,yy=y_*ns.x+ns.yyyy,h=1.-abs(xx)-abs(yy);
+      vec4 b0=vec4(xx.xy,yy.xy),b1=vec4(xx.zw,yy.zw);
+      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.,sh=-step(h,vec4(0.));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
+      vec4 norm=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m*=m;
+      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
     }
-  }
+    void main(){
+      vNormal=normal;vPosition=position;
+      float t=uTime*uSpeed;
+      float d=(sn(normal*uFrequency*uDensity*.25+t*.35+13.3)*.50
+              +sn(normal*uFrequency*uDensity*.5+t*.7)*.28
+              +sn(normal*uFrequency*uDensity+t+3.7)*.14
+              +sn(normal*uFrequency*uDensity*2.+t*1.4+7.1)*.08)*uStrength*.09;
+      float mx=uMouse.x,my=uMouse.y,mag=sqrt(mx*mx+my*my);
+      d+=sn(normal*1.8+vec3(mx*2.2,my*2.2,t*.3))*.38*mag*1.1;
+      d+=dot(normal,normalize(vec3(mx,my,.6)))*mag*.22;
+      vec3 np=position+normal*d*uAmplitude*.13;
+      vec3 rv=vec3(uRepelDir.x,uRepelDir.y,.5);
+      np+=normalize(rv)*uRepel*1.8*max(0.,dot(normal,normalize(rv)));
+      vDisplace=d;
+      gl_Position=projectionMatrix*modelViewMatrix*vec4(np,1.);
+    }`;
 
-  function draw() {
-    time += 0.006;
-    var w = window.innerWidth, h = window.innerHeight;
-    ctx.clearRect(0, 0, w, h);
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      p.x += p.vx + Math.sin(time + p.phase) * 0.12;
-      p.y += p.vy + Math.cos(time * 0.7 + p.phase) * 0.08;
-      var dx = mouse.x - p.x, dy = mouse.y - p.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 140 && dist > 0) { p.x -= (dx / dist) * 0.4; p.y -= (dy / dist) * 0.4; }
-      if (p.x < -10) p.x = w + 10; if (p.x > w + 10) p.x = -10;
-      if (p.y < -10) p.y = h + 10; if (p.y > h + 10) p.y = -10;
-      for (var j = i + 1; j < particles.length; j++) {
-        var p2 = particles[j];
-        var d = Math.sqrt((p.x - p2.x) * (p.x - p2.x) + (p.y - p2.y) * (p.y - p2.y));
-        if (d < 130) {
-          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = 'rgba(200,255,0,' + ((1 - d / 130) * 0.12) + ')';
-          ctx.lineWidth = 0.5; ctx.stroke();
-        }
-      }
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(200,255,0,' + (0.25 + Math.sin(time * 2 + p.phase) * 0.12) + ')';
-      ctx.fill();
-    }
-    requestAnimationFrame(draw);
-  }
+  var FS=`
+    uniform float uTime,uBrightness,uRepel;
+    uniform vec3 uColor1,uColor2,uColor3;
+    varying vec3 vNormal,vPosition;varying float vDisplace;
+    float hsh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+    void main(){
+      float w1=smoothstep(-1.,1.,vNormal.y+vDisplace*.4);
+      float w2=smoothstep(-1.,1.,vNormal.x-vDisplace*.3);
+      float w3=clamp(1.-w1*.6-w2*.6,0.,1.);
+      float ws=w1+w2+w3+.001;w1/=ws;w2/=ws;w3/=ws;
+      vec3 col=uColor1*w1+uColor2*w2+uColor3*w3;
+      float d1=max(dot(vNormal,normalize(vec3(1.,2.,1.5))),0.);
+      float d2=max(dot(vNormal,normalize(vec3(-1.,-1.,.5))),0.)*.3;
+      float rim=pow(1.-max(dot(vNormal,vec3(0.,0.,1.)),0.),2.5)*.25;
+      col=col*(.55+vec3(1.)*d1*.5+vec3(.5,.8,1.)*d2+vec3(.6,1.,.7)*rim)*uBrightness;
+      col+=hsh(gl_FragCoord.xy+fract(uTime*.1))*.055-.027;
+      col=mix(vec3(1.),col,clamp(1.-uRepel*.92,0.,1.));
+      gl_FragColor=vec4(clamp(col,0.,1.),1.);
+    }`;
 
-  window.addEventListener('resize', function() { resize(); });
-  document.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
-  init(); draw();
+  var U={
+    uTime:{value:0.},uAmplitude:{value:5.5},uFrequency:{value:4.2},
+    uStrength:{value:8.},uDensity:{value:2.2},uSpeed:{value:0.15},
+    uBrightness:{value:1.2},
+    uColor1:{value:new THREE.Color(0x7aff9c)},
+    uColor2:{value:new THREE.Color(0xc2dbbf)},
+    uColor3:{value:new THREE.Color(0x85b0e1)},
+    uMouse:{value:new THREE.Vector2(0,0)},
+    uRepel:{value:0.},uRepelDir:{value:new THREE.Vector2(0,0)},
+  };
+  var mesh=new THREE.Mesh(new THREE.SphereGeometry(1,128,128),new THREE.ShaderMaterial({vertexShader:VS,fragmentShader:FS,uniforms:U}));
+  mesh.position.set(-1.4,0,0);mesh.rotation.z=0.8726646;mesh.rotation.y=0.1745329;
+  scene.add(mesh);
+
+  var mT={px:-1.4,py:0,sc:1.,sat:1.},mC={px:-1.4,py:0,sc:1.,sat:1.};
+  window.setGradientMode=function(m){
+    if(m==='home'){mT.px=-1.4;mT.py=0;mT.sc=1.;mT.sat=1.;}
+    else{mT.px=1.8;mT.py=1.2;mT.sc=0.42;mT.sat=0.55;}
+  };
+  var rep={tg:0,cur:0,dx:0,dy:0};
+  window.setRepel=function(t,dx,dy){rep.tg=t;if(dx!==undefined){rep.dx=dx;rep.dy=dy;}};
+  var mo={x:0,y:0,tx:0,ty:0,vx:0,vy:0},lt=0;
+  var rip={a:false,t:0,s:0},scM=0;
+  document.addEventListener('mousemove',function(e){
+    mo.tx=(e.clientX/W-.5)*2.6;mo.ty=-(e.clientY/H-.5)*2.6;lt=performance.now();
+  });
+  document.addEventListener('click',function(e){
+    rip.a=true;rip.t=0;rip.s=1.;
+    mo.tx=(e.clientX/W-.5)*2.6;mo.ty=-(e.clientY/H-.5)*2.6;
+  });
+  window.addEventListener('wheel',function(e){scM=Math.max(-1,Math.min(1,scM+e.deltaY*.0008));});
+  function lerp(a,b,t){return a+(b-a)*t;}
+  var clk=new THREE.Clock();
+  (function tick(){
+    requestAnimationFrame(tick);
+    var t=clk.getElapsedTime();
+    mo.vx+=(mo.tx-mo.x)*.08;mo.vy+=(mo.ty-mo.y)*.08;
+    mo.vx*=.72;mo.vy*=.72;mo.x+=mo.vx;mo.y+=mo.vy;
+    if((performance.now()-lt)/1e3>2){mo.tx*=.985;mo.ty*=.985;}
+    if(rip.a){rip.t+=.04;rip.s=Math.max(0,1-rip.t*rip.t);if(!rip.s)rip.a=false;}
+    scM*=.995;
+    var rs=rep.tg>rep.cur?.055:.035;rep.cur+=(rep.tg-rep.cur)*rs;
+    var ls=.04;
+    mC.px=lerp(mC.px,mT.px,ls);mC.py=lerp(mC.py,mT.py,ls);
+    mC.sc=lerp(mC.sc,mT.sc,ls);mC.sat=lerp(mC.sat,mT.sat,ls);
+    var s=mC.sat;
+    U.uColor1.value.setRGB(lerp(.68,.478,s),lerp(.68,1.,s),lerp(.68,.608,s));
+    U.uColor2.value.setRGB(lerp(.72,.761,s),lerp(.72,.859,s),lerp(.72,.749,s));
+    U.uColor3.value.setRGB(lerp(.70,.522,s),lerp(.70,.690,s),lerp(.70,.882,s));
+    U.uTime.value=t;U.uMouse.value.set(mo.x,mo.y);
+    U.uRepel.value=rep.cur;U.uRepelDir.value.set(rep.dx,rep.dy);
+    U.uAmplitude.value=5.5+rip.s*4.;U.uDensity.value=2.2+scM*.8;
+    mesh.rotation.y=0.1745329+t*.018+mo.x*.55;
+    mesh.rotation.x=mo.y*.42;
+    mesh.rotation.z=0.8726646+Math.sin(t*.09)*.06;
+    mesh.position.x=mC.px+mo.x*(mC.sc*.45);
+    mesh.position.y=mC.py+mo.y*(mC.sc*.35);
+    mesh.scale.setScalar(mC.sc*(1+Math.sin(t*.28)*.03+Math.sin(t*.17)*.015));
+    renderer.render(scene,camera);
+  })();
+  window.addEventListener('resize',function(){W=window.innerWidth;H=window.innerHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);});
 })();
 
-(function() {
-  var questions = [
-    "What is digital art?",
-    "What would an institute look like if it worked the way the art itself works?",
-    "Can AI enable cultural plurality rather than collapse it?",
-    "Who gets to define the art of now?",
-    "What if narrative came before market?",
-    "Networked does not mean homogeneous. Digital does not mean placeless.",
-    "What would happen if artists were the authority?",
-    "What would open-source curation look like?",
-    "Can infrastructure be plural?"
-  ];
-  var el = document.getElementById('provocation');
-  var qi = 0, ci = 0, deleting = false, paused = false;
-
-  function tick() {
-    var current = questions[qi];
-    if (paused) { setTimeout(function() { paused = false; deleting = true; tick(); }, 3500); return; }
-    if (!deleting && ci < current.length) {
-      ci++; el.innerHTML = current.slice(0, ci) + '<span class="cursor">|</span>';
-      setTimeout(tick, 45 + Math.random() * 25);
-    } else if (!deleting && ci === current.length) { paused = true; tick(); }
-    else if (deleting && ci > 0) {
-      ci--; el.innerHTML = current.slice(0, ci) + '<span class="cursor">|</span>';
-      setTimeout(tick, 18);
-    } else if (deleting && ci === 0) { deleting = false; qi = (qi + 1) % questions.length; setTimeout(tick, 200); }
+// ── VIEW ROUTER ──────────────────────────────────────────────────
+(function(){
+  var navShell=document.getElementById('navShell');
+  var breadcrumb=document.getElementById('breadcrumb');
+  function showView(name){
+    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+    var el=document.getElementById('view-'+name);
+    if(el) el.classList.add('active');
+    document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('active');});
+    var root=name==='transcriber'?'artefacts':name;
+    var lnk=document.querySelector('.nav a[data-view="'+root+'"]');
+    if(lnk) lnk.classList.add('active');
+    if(name==='home'){
+      navShell.classList.remove('compact');
+      window.setGradientMode&&window.setGradientMode('home');
+    } else {
+      navShell.classList.add('compact');
+      if(name==='transcriber') breadcrumb.innerHTML='<span>Artefacts</span><span class="sep">/</span><span>Transcriber</span>';
+      else breadcrumb.innerHTML='<span>'+name.charAt(0).toUpperCase()+name.slice(1)+'</span>';
+      window.setGradientMode&&window.setGradientMode('sub');
+    }
   }
-  setTimeout(tick, 800);
+  document.querySelectorAll('.nav a').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();showView(a.getAttribute('data-view'));});
+  });
+  document.getElementById('brandBtn').addEventListener('click',function(){showView('home');});
+  document.querySelectorAll('.tool-card[data-tool]').forEach(function(c){
+    c.addEventListener('click',function(){showView(c.getAttribute('data-tool'));});
+  });
+  // Repel listeners — runs after short delay so DOM is settled
+  setTimeout(function(){
+    var W=window.innerWidth,H=window.innerHeight;
+    document.querySelectorAll(
+      '.brand,.brand-mark,.nav a,.dispatch-label,.dispatch,'+
+      '.description,.tags,.tag,.tagline,.handles a,.status-text,'+
+      '.bottom-left,.bottom-right,.bottom-center,'+
+      '.artefacts-intro,.tool-card,.tool-header,.prose-block,'+
+      '.config-label,.config-row label,.drop-text'
+    ).forEach(function(el){
+      el.addEventListener('mouseenter',function(){
+        var r=el.getBoundingClientRect();
+        var cx=(r.left+r.right)*.5,cy=(r.top+r.bottom)*.5;
+        window.setRepel&&window.setRepel(1.,(W*.6-cx)/W*2.,-(H*.5-cy)/H*2.);
+      });
+      el.addEventListener('mouseleave',function(){window.setRepel&&window.setRepel(0.);});
+    });
+  },300);
+})();
+
+// ── TRANSCRIBER ──────────────────────────────────────────────────
+(function(){
+  var stage='idle';
+  var STAGES=['idle','uploading','transcribing','summarising','posting','done','error'];
+  var dropZone=document.getElementById('dropZone');
+  var fileInput=document.getElementById('fileInput');
+  var logBox=document.getElementById('logBox');
+  var progressTrack=document.getElementById('progressTrack');
+  var resultBox=document.getElementById('resultBox');
+  var errorBox=document.getElementById('errorBox');
+
+  function keys(){return{
+    assemblyai:document.getElementById('key-assemblyai').value.trim(),
+    notion:document.getElementById('key-notion').value.trim(),
+    notionDb:document.getElementById('key-notiondb').value.trim()
+  };}
+  function log(msg){
+    logBox.style.display='block';
+    var d=document.createElement('div');d.className='log-line fresh';d.textContent=msg;
+    logBox.appendChild(d);logBox.scrollTop=logBox.scrollHeight;
+    logBox.querySelectorAll('.fresh').forEach(function(l,i,a){if(i<a.length-1)l.classList.remove('fresh');});
+  }
+  function setStage(s){
+    stage=s;progressTrack.style.display='flex';
+    var ord=['uploading','transcribing','summarising','posting','done'];
+    var idx=ord.indexOf(s);
+    ord.forEach(function(st,i){
+      var dot=document.getElementById('dot-'+st),lbl=document.getElementById('lbl-'+st);
+      if(!dot)return;
+      dot.className='dot';lbl.className='step-label';
+      if(i<idx){dot.classList.add('done');lbl.classList.add('done');}
+      else if(i===idx){dot.classList.add('now');lbl.classList.add('now');}
+      var line=document.getElementById('line-'+(i+1));
+      if(line)line.className='progress-line'+(i<idx?' done':'');
+    });
+    document.querySelectorAll('.pipeline-step').forEach(function(el){
+      el.classList.toggle('active-step',el.getAttribute('data-stage')===s);
+    });
+    var labels={uploading:'Uploading…',transcribing:'Transcribing…',summarising:'Analysing via Claude…',posting:'Posting to Notion…',done:'Done ✓',error:'Error'};
+    document.getElementById('dropText').textContent=labels[s]||'Drop file here';
+    document.getElementById('dropSub').textContent=s==='done'?'Drop another to run again':'Processing…';
+  }
+  function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+  async function upload(file,apiKey){
+    log('Uploading file…');
+    var res=await fetch('https://api.assemblyai.com/v2/upload',{method:'POST',headers:{authorization:apiKey,'content-type':'application/octet-stream'},body:file});
+    if(!res.ok)throw new Error('Upload failed: '+res.status);
+    var d=await res.json();log('Uploaded → '+d.upload_url.slice(0,48)+'…');return d.upload_url;
+  }
+  async function transcribe(url,apiKey){
+    log('Submitting transcription job…');
+    var res=await fetch('https://api.assemblyai.com/v2/transcript',{method:'POST',headers:{authorization:apiKey,'content-type':'application/json'},body:JSON.stringify({audio_url:url,speaker_labels:true})});
+    if(!res.ok)throw new Error('Submit failed: '+res.status);
+    var {id}=await res.json();log('Job '+id+' — polling…');
+    for(var i=0;i<120;i++){
+      await sleep(3000);
+      var poll=await fetch('https://api.assemblyai.com/v2/transcript/'+id,{headers:{authorization:apiKey}});
+      var data=await poll.json();
+      if(data.status==='completed'){log('Complete: '+(data.words?.length??'?')+' words, '+(data.utterances?.length??'?')+' speakers');return data;}
+      if(data.status==='error')throw new Error('AssemblyAI: '+data.error);
+      if(i%5===4)log('Still transcribing… ('+(i+1)*3+'s)');
+    }
+    throw new Error('Timed out');
+  }
+  function fmt(utterances){
+    if(!utterances?.length)return'';
+    return utterances.map(function(u){
+      var m=Math.floor(u.start/60000),s=Math.floor((u.start%60000)/1000);
+      return'['+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'] Speaker '+u.speaker+': '+u.text;
+    }).join('\n');
+  }
+  async function analyse(transcript,filename){
+    log('Sending to Claude…');
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',max_tokens:1000,
+      messages:[{role:'user',content:'You are an intelligence analyst for A(DAI) — A Digital Arts Institute. Analyze this transcript and return ONLY a JSON object (no markdown, no preamble) with: "summary" (2-3 paragraph field signal brief), "tags" (4-8 lowercase tags array), "signal_type" (one of: conversation/lecture/interview/meeting/field_recording/panel/other), "key_quotes" (2-3 significant verbatim quotes array).\n\nTranscript from "'+filename+'":\n\n'+transcript.slice(0,8000)}]
+    })});
+    if(!res.ok)throw new Error('Claude error: '+res.status);
+    var data=await res.json();
+    var text=data.content.find(function(b){return b.type==='text';})?.text??'{}';
+    var parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    log('Tags: '+parsed.tags?.join(', '));return parsed;
+  }
+  async function postNotion(nKey,dbId,filename,formatted,analysis){
+    log('Creating Notion page…');
+    var blocks=[
+      {object:'block',type:'heading_2',heading_2:{rich_text:[{type:'text',text:{content:'Summary'}}]}},
+      ...analysis.summary.split('\n\n').filter(Boolean).map(function(p){return{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:p}}]}};}),
+      {object:'block',type:'heading_2',heading_2:{rich_text:[{type:'text',text:{content:'Key Quotes'}}]}},
+      ...(analysis.key_quotes||[]).map(function(q){return{object:'block',type:'quote',quote:{rich_text:[{type:'text',text:{content:q}}]}};}),
+      {object:'block',type:'heading_2',heading_2:{rich_text:[{type:'text',text:{content:'Full Transcript'}}]}},
+      {object:'block',type:'code',code:{rich_text:[{type:'text',text:{content:formatted.slice(0,1900)}}],language:'plain text'}},
+    ];
+    var rem=formatted.slice(1900);
+    for(var i=0;i<rem.length;i+=1900)blocks.push({object:'block',type:'code',code:{rich_text:[{type:'text',text:{content:rem.slice(i,i+1900)}}],language:'plain text'}});
+    var res=await fetch('https://api.notion.com/v1/pages',{method:'POST',
+      headers:{authorization:'Bearer '+nKey,'notion-version':'2022-06-28','content-type':'application/json'},
+      body:JSON.stringify({parent:{database_id:dbId.replace(/-/g,'')},
+        properties:{Name:{title:[{text:{content:filename}}]},Tags:{multi_select:analysis.tags.map(function(t){return{name:t};})},Type:{select:{name:analysis.signal_type}}},
+        children:blocks})
+    });
+    if(!res.ok){var err=await res.text();throw new Error('Notion '+res.status+': '+err.slice(0,200));}
+    var page=await res.json();log('Page created → '+page.url);return page.url;
+  }
+
+  async function run(file){
+    var k=keys();
+    if(!k.assemblyai||!k.notion||!k.notionDb){
+      errorBox.style.display='block';errorBox.innerHTML='<p>Please fill all three API keys first.</p>';return;
+    }
+    errorBox.style.display='none';resultBox.style.display='none';logBox.innerHTML='';
+    try{
+      setStage('uploading');var uploadUrl=await upload(file,k.assemblyai);
+      setStage('transcribing');var transcript=await transcribe(uploadUrl,k.assemblyai);
+      var formatted=fmt(transcript.utterances)||transcript.text;
+      setStage('summarising');var analysis=await analyse(formatted,file.name);
+      setStage('posting');var pageUrl=await postNotion(k.notion,k.notionDb,file.name,formatted,analysis);
+      setStage('done');
+      resultBox.style.display='block';
+      resultBox.innerHTML='<div class="result-label">Signal posted to Notion</div>'
+        +'<a href="'+pageUrl+'" target="_blank" class="result-link">→ Open in Notion</a>'
+        +'<div class="result-meta">Type: '+analysis.signal_type+' &nbsp;·&nbsp; Tags: '+analysis.tags?.join(', ')+'</div>'
+        +'<div class="result-summary">'+analysis.summary?.slice(0,320)+'…</div>';
+    }catch(e){
+      log('ERROR: '+e.message);setStage('error');
+      errorBox.style.display='block';errorBox.innerHTML='<p>'+e.message+'</p>';
+    }
+  }
+
+  dropZone.addEventListener('dragover',function(e){e.preventDefault();dropZone.classList.add('drag-over');});
+  dropZone.addEventListener('dragleave',function(){dropZone.classList.remove('drag-over');});
+  dropZone.addEventListener('drop',function(e){e.preventDefault();dropZone.classList.remove('drag-over');var f=e.dataTransfer.files[0];if(f)run(f);});
+  dropZone.addEventListener('click',function(){if(['idle','done','error'].includes(stage))fileInput.click();});
+  fileInput.addEventListener('change',function(){if(fileInput.files[0])run(fileInput.files[0]);});
+})();
+
+// ── TYPEWRITER ───────────────────────────────────────────────────
+(function(){
+  var qs=['What is digital art?','What would an institute look like if it worked the way the art itself works?','Can AI enable cultural plurality rather than collapse it?','Who gets to define the art of now?','What if narrative came before market?','Networked does not mean homogeneous.','What would happen if artists were the authority?','What would open-source curation look like?','Can infrastructure be plural?','What does the field already know?'];
+  var el=document.getElementById('dispatch'),qi=0,ci=0,del=false,pau=false;
+  function tick(){
+    var c=qs[qi];
+    if(pau){setTimeout(function(){pau=false;del=true;tick();},4000);return;}
+    if(!del&&ci<c.length){ci++;el.innerHTML=c.slice(0,ci)+'<span class="cursor"></span>';setTimeout(tick,38+Math.random()*30);}
+    else if(!del){pau=true;tick();}
+    else if(del&&ci>0){ci--;el.innerHTML=c.slice(0,ci)+'<span class="cursor"></span>';setTimeout(tick,14);}
+    else{del=false;qi=(qi+1)%qs.length;setTimeout(tick,260);}
+  }
+  setTimeout(tick,1000);
 })();
 </script>
 </body>
