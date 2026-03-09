@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>query — A(DAI)</title>
-  <meta name="description" content="Explore the A(DAI) knowledge graph. Search signals, concepts, practitioners, and threads from the digital arts field.">
+  <meta name="description" content="Talk to the A(DAI) collective intelligence engine. Sensemaking for the digital arts field.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
@@ -16,16 +16,15 @@
     *{margin:0;padding:0;box-sizing:border-box;}
     ::selection{background:var(--mint);color:#0C0F0E;}
     html{width:100%;min-height:100%;background:var(--bg);-webkit-font-smoothing:antialiased;}
-    body{width:100%;min-height:100vh;background:var(--bg);}
+    body{width:100%;height:100vh;background:var(--bg);display:flex;flex-direction:column;}
     body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       opacity:0.045;}
-    .hr{position:fixed;left:0;right:0;height:1px;background:var(--rule);z-index:0;pointer-events:none;}
 
     /* NAV */
     .nav-bar{position:sticky;top:0;z-index:40;padding:2rem 3.2rem;display:flex;
       justify-content:space-between;align-items:center;background:rgba(255,255,255,0.92);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);}
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);flex-shrink:0;}
     .brand{text-decoration:none;display:flex;align-items:baseline;gap:1rem;}
     .brand-mark{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.4rem,3vw,2rem);
       font-weight:400;line-height:1;letter-spacing:-0.03em;color:var(--ink);}
@@ -37,221 +36,66 @@
       color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.25s;}
     .nav-back:hover{color:var(--mint);}
 
-    /* MAIN */
-    .main{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:2rem 3.2rem 4rem;}
+    /* LAYOUT */
+    .main{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;
+      max-width:720px;width:100%;margin:0 auto;padding:0 3.2rem;}
 
-    /* SENSE HEADER (terminal style) */
-    .sense-header{margin-bottom:2rem;opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;}
-    .sense-stats-line{font-family:'Syne Mono',monospace;font-size:0.75rem;letter-spacing:0.06em;
-      color:var(--muted);line-height:1.8;margin-bottom:0.35rem;}
-    .sense-stats-line .arr{color:var(--mint);}
-    .sense-stats-line .key{color:#777777;}
-    .sense-endpoint{font-family:'Syne Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;color:#777777;}
-    .sense-endpoint a{color:#777777;text-decoration:none;border-bottom:1px solid var(--faint);transition:color 0.2s;}
-    .sense-endpoint a:hover{color:var(--mint);border-bottom-color:var(--mint);}
-    .sense-endpoint .method{color:var(--mint);}
+    /* HEADER */
+    .header{padding:1.8rem 0 1rem;flex-shrink:0;opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;}
+    .header-title{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.1rem,2.5vw,1.4rem);
+      color:var(--ink);line-height:1.3;margin-bottom:0.4rem;}
+    .header-stats{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.06em;
+      color:#999999;line-height:1.6;}
+    .header-stats .g{color:var(--mint);}
 
-    /* SEARCH — terminal prompt style */
-    .search-section{margin-bottom:1.5rem;opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;}
-    .search-box{display:flex;align-items:center;background:white;border:none;border-bottom:1px solid var(--faint);
-      transition:border-color 0.2s;}
-    .search-box:focus-within{border-bottom-color:var(--mint);}
-    .search-prefix{font-family:'Syne Mono',monospace;font-size:1rem;color:var(--mint);
-      padding:0;line-height:1;user-select:none;flex-shrink:0;}
-    .search-input{flex:1;border:none;outline:none;padding:0.7rem 0 0.7rem 0.6rem;
-      font-family:'Syne Mono',monospace;font-size:0.95rem;color:var(--ink);background:transparent;letter-spacing:0.04em;}
-    .search-input::placeholder{color:#999999;}
-    .filter-row{display:flex;gap:0.3rem;margin-top:0.65rem;flex-wrap:wrap;}
-    .filter-chip{font-family:'Syne Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;
-      color:#777777;text-transform:lowercase;border:1px solid var(--faint);background:transparent;
-      padding:0.3rem 0.65rem;cursor:pointer;transition:all 0.2s;}
-    .filter-chip:hover{border-color:var(--muted);color:var(--muted);}
-    .filter-chip.active{border-color:var(--ink);color:var(--ink);}
+    /* MESSAGES */
+    .messages{flex:1;overflow-y:auto;padding:0.5rem 0 1rem;display:flex;flex-direction:column;gap:1.2rem;
+      opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;}
+    .msg{max-width:88%;line-height:1.75;}
+    .msg-user{align-self:flex-end;font-family:'Syne',sans-serif;font-size:0.85rem;color:var(--ink);
+      background:rgba(122,255,156,0.08);border:1px solid rgba(122,255,156,0.18);
+      padding:0.7rem 1rem;border-radius:2px;}
+    .msg-assistant{align-self:flex-start;font-family:'Syne',sans-serif;font-size:0.85rem;
+      color:var(--muted);padding:0.7rem 0;border-left:1.5px solid var(--sage);padding-left:1rem;}
+    .msg-system{align-self:center;font-family:'Syne Mono',monospace;font-size:0.68rem;
+      color:#999999;letter-spacing:0.08em;text-align:center;padding:0.5rem 0;}
+    .msg-thinking{align-self:flex-start;font-family:'Syne Mono',monospace;font-size:0.72rem;
+      color:#999999;letter-spacing:0.08em;animation:pulse 1.4s ease-in-out infinite;}
 
-    /* SKILLS MANIFEST */
-    .skills-manifest{margin:1.5rem 0 2rem;opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.35s forwards;}
-    .skills-label{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.24em;
-      color:#777777;text-transform:uppercase;margin-bottom:0.7rem;}
-    .skill-row{display:flex;align-items:baseline;gap:0.8rem;padding:0.4rem 0;
-      border-top:1px solid var(--rule);}
-    .skill-row:last-child{border-bottom:1px solid var(--rule);}
-    .skill-path{font-family:'Syne Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;
-      color:var(--ink);text-decoration:none;min-width:110px;display:flex;align-items:center;gap:0.35rem;
-      transition:color 0.2s;}
-    .skill-path:hover{color:var(--mint);}
-    .skill-path .arr{color:var(--mint);}
-    .skill-desc{font-family:'Syne Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;
-      color:#777777;flex:1;}
-    .skill-arrow{font-family:'Syne Mono',monospace;font-size:0.65rem;color:#999999;text-decoration:none;
-      transition:color 0.2s;}
-    .skill-arrow:hover{color:var(--mint);}
-    .skill-soon{font-family:'Syne Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;
-      color:#AAAAAA;text-transform:uppercase;}
-
-    /* RESULTS */
-    .results{opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;}
-    .result-section{margin-bottom:2rem;}
-    .section-label{font-family:'Syne Mono',monospace;font-size:0.72rem;letter-spacing:0.22em;
-      color:var(--mint);text-transform:uppercase;margin-bottom:0.85rem;display:flex;
-      align-items:center;gap:0.7rem;}
-    .section-label::before{content:'';display:block;width:24px;height:1px;background:var(--mint);}
-    .section-count{color:var(--muted);font-size:0.65rem;}
-
-    /* SIGNAL CARDS */
-    .signal-card{padding:1.2rem 1.4rem;border:1px solid var(--rule);margin-bottom:-1px;
-      cursor:pointer;transition:background 0.2s,border-color 0.2s;position:relative;}
-    .signal-card:hover{background:#FAFAFA;}
-    .signal-card.quality-high{border-left:3px solid var(--mint);}
-    .signal-card.quality-low{opacity:0.8;}
-    .signal-date{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;
-      color:#777777;text-transform:uppercase;margin-bottom:0.3rem;}
-    .signal-title{font-family:'Instrument Serif',Georgia,serif;font-size:1.15rem;font-weight:400;
-      color:var(--ink);margin-bottom:0.4rem;letter-spacing:-0.01em;}
-    .signal-excerpt{font-family:'Syne',sans-serif;font-size:0.78rem;color:var(--muted);line-height:1.8;
-      margin-bottom:0.5rem;}
-    .signal-meta{display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center;}
-    .chip{font-family:'Syne Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;
-      padding:0.25rem 0.5rem;text-transform:uppercase;border:1px solid var(--faint);color:var(--muted);}
-    .chip-quality{border-color:var(--mint);color:var(--mint);}
-    .chip-scene{border-color:var(--sage);color:#6a8a66;}
-
-    /* CONCEPT TAGS */
-    .concept-flow{display:flex;flex-wrap:wrap;gap:0.4rem;}
-    .concept-tag{font-family:'Syne Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;
-      color:var(--muted);border:1px solid var(--faint);padding:0.3rem 0.6rem;text-transform:uppercase;
-      cursor:pointer;transition:all 0.2s;}
-    .concept-tag:hover{border-color:var(--mint);color:var(--mint);}
-    .concept-tag .count{color:#777777;margin-left:0.3rem;}
-
-    /* PRACTITIONER LIST */
-    .pract-item{padding:0.5rem 0;border-bottom:1px solid var(--rule);cursor:pointer;
-      display:flex;justify-content:space-between;align-items:center;transition:color 0.2s;}
-    .pract-item:hover{color:var(--mint);}
-    .pract-name{font-family:'Syne',sans-serif;font-size:0.82rem;color:var(--ink);}
-    .pract-count{font-family:'Syne Mono',monospace;font-size:0.68rem;color:#777777;}
-    .pract-item:hover .pract-name{color:var(--mint);}
-
-    /* THREAD LIST */
-    .thread-item{padding:0.7rem 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:color 0.2s;}
-    .thread-item:hover .thread-q{color:var(--mint);}
-    .thread-q{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:0.95rem;
-      color:var(--muted);line-height:1.6;}
-    .thread-meta{font-family:'Syne Mono',monospace;font-size:0.65rem;color:#777777;margin-top:0.25rem;}
-
-    /* DETAIL PANEL */
-    .detail{display:none;border:1px solid var(--rule);padding:2rem;margin-bottom:2rem;
-      background:white;animation:arrive 0.5s cubic-bezier(0.16,1,0.3,1) forwards;}
-    .detail.visible{display:block;}
-    .detail-close{float:right;font-family:'Syne Mono',monospace;font-size:0.7rem;color:var(--muted);
-      cursor:pointer;border:none;background:none;padding:0.3rem;}
-    .detail-close:hover{color:var(--mint);}
-    .detail-type{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;
-      color:var(--mint);text-transform:uppercase;margin-bottom:0.6rem;}
-    .detail-title{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.3rem,3vw,1.8rem);
-      font-weight:400;color:var(--ink);margin-bottom:0.6rem;letter-spacing:-0.01em;}
-    .detail-meta{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
-    .detail-divider{width:100%;height:1px;background:var(--rule);margin:1.2rem 0;}
-    .detail-section-label{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;
-      color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;margin-top:1rem;}
-    .detail-text{font-family:'Syne',sans-serif;font-size:0.85rem;color:var(--muted);line-height:2.0;
-      margin-bottom:0.8rem;}
-    .detail-italic{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:0.88rem;
-      color:var(--muted);line-height:1.7;margin-bottom:0.8rem;}
-    .detail-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.6rem;}
-
-    /* MINI GRAPH */
-    .mini-graph-container{margin-top:1.5rem;position:relative;}
-    .mini-graph-label{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;
-      color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;}
-    #miniGraph{width:100%;height:300px;border:1px solid var(--rule);background:#FAFAFA;cursor:default;}
+    /* INPUT */
+    .input-area{flex-shrink:0;padding:1rem 0 2rem;border-top:1px solid var(--rule);
+      display:flex;gap:0.8rem;align-items:flex-end;
+      opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;}
+    .input-prefix{font-family:'Syne Mono',monospace;font-size:1rem;color:var(--mint);
+      line-height:2.2;user-select:none;flex-shrink:0;}
+    .input-field{flex:1;font-family:'Syne',sans-serif;font-size:0.88rem;color:var(--ink);
+      background:transparent;border:none;border-bottom:1px solid var(--faint);outline:none;
+      padding:0.5rem 0;line-height:1.6;resize:none;transition:border-color 0.2s;}
+    .input-field:focus{border-bottom-color:var(--mint);}
+    .input-field::placeholder{color:#BBBBBB;}
+    .input-btn{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.14em;
+      color:var(--muted);background:none;border:1px solid var(--faint);padding:0.5rem 1rem;
+      cursor:pointer;text-transform:uppercase;transition:all 0.2s;white-space:nowrap;}
+    .input-btn:hover{border-color:var(--mint);color:var(--mint);}
+    .input-btn:disabled{opacity:0.3;cursor:default;}
 
     /* FOOTER */
-    .footer{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule);
-      display:flex;justify-content:space-between;align-items:center;}
-    .footer-brand{font-family:'Instrument Serif',Georgia,serif;font-size:1rem;color:#777777;}
-    .footer-brand .paren{color:var(--mint);font-style:italic;}
-    .footer-link{font-family:'Syne Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;
-      color:var(--muted);text-decoration:none;text-transform:uppercase;}
+    .footer{flex-shrink:0;padding:0 0 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+    .footer-link{font-family:'Syne Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;
+      color:#AAAAAA;text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
     .footer-link:hover{color:var(--mint);}
-    .footer-ts{font-family:'Syne Mono',monospace;font-size:0.65rem;color:#999999;margin-top:0.5rem;}
-
-    /* LOADING */
-    .loading{text-align:center;padding:4rem 0;}
-    .loading-text{font-family:'Syne Mono',monospace;font-size:0.75rem;letter-spacing:0.14em;
-      color:var(--muted);text-transform:uppercase;}
-    .loading-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--mint);
-      margin-left:0.4rem;animation:pulse 1.2s ease-in-out infinite;}
-
-    /* PROMPT ENGINE */
-    .pm-section{margin-bottom:2rem;opacity:0;animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.15s forwards;}
-    .pm-label{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.24em;
-      color:#777777;text-transform:uppercase;margin-bottom:0.6rem;}
-    .pm-canvas-wrap{position:relative;width:100%;height:140px;margin:0.6rem 0 0.8rem;overflow:hidden;background:rgba(0,0,0,.008);}
-    .pm-canvas-wrap canvas{display:block;}
-    .pm-setup-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;}
-    .pm-setup-toggle{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;
-      color:#999999;background:none;border:1px solid var(--faint);padding:0.3rem 0.65rem;
-      cursor:pointer;text-transform:uppercase;transition:all 0.2s;}
-    .pm-setup-toggle:hover{border-color:var(--muted);color:var(--muted);}
-    .pm-setup-toggle.active{border-color:var(--mint);color:var(--mint);}
-    .pm-setup-panel{background:#FAFAFA;border:1px solid var(--faint);padding:0.8rem 1rem;
-      margin-bottom:0.8rem;display:flex;flex-direction:column;gap:0.5rem;}
-    .pm-field-label{font-family:'Syne Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;
-      color:var(--muted);text-transform:uppercase;}
-    .pm-field-input{font-family:'Syne Mono',monospace;font-size:0.75rem;color:var(--ink);
-      border:none;border-bottom:1px solid var(--faint);outline:none;padding:0.3rem 0;
-      background:transparent;width:100%;transition:border-color 0.2s;}
-    .pm-field-input:focus{border-bottom-color:var(--mint);}
-    .pm-keys-status{font-family:'Syne Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;margin-top:0.2rem;}
-    .pm-status-text{font-family:'Syne Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;
-      color:var(--muted);text-transform:uppercase;animation:pulse 1.4s ease-in-out infinite;}
-    .pm-conversation{width:100%;}
-    .pm-history{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:1.2rem;}
-    .pm-hist-pair{display:flex;flex-direction:column;gap:0.35rem;opacity:0.6;transition:opacity 0.4s;}
-    .pm-hist-pair:hover{opacity:0.85;}
-    .pm-hist-q{font-family:'Instrument Serif',Georgia,serif;font-size:0.88rem;font-style:italic;
-      color:var(--ink);line-height:1.5;}
-    .pm-hist-refl{font-family:'Syne',sans-serif;font-size:0.78rem;color:var(--sky);line-height:1.85;
-      padding-left:1rem;border-left:1.5px solid var(--sky);font-style:italic;}
-    .pm-hist-a{font-family:'Syne',sans-serif;font-size:0.78rem;color:var(--muted);line-height:1.9;
-      padding-left:1rem;border-left:1.5px solid var(--sage);}
-    .pm-question-wrap{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.6rem;}
-    .pm-q-dash{font-family:'Syne Mono',monospace;font-size:0.65rem;color:var(--mint);margin-top:0.18em;flex-shrink:0;}
-    .pm-question{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(0.95rem,2vw,1.2rem);
-      font-style:italic;color:var(--ink);line-height:1.55;margin:0;min-height:1.6em;}
-    .pm-answer-area{display:flex;flex-direction:column;gap:0.5rem;padding-left:1.4rem;}
-    .pm-input{width:100%;font-family:'Syne',sans-serif;font-size:0.85rem;color:var(--ink);
-      background:transparent;border:none;border-bottom:1px solid var(--faint);outline:none;
-      resize:none;padding:0.35rem 0;line-height:1.9;transition:border-color 0.3s;}
-    .pm-input:focus{border-bottom-color:var(--mint);}
-    .pm-input::placeholder{color:var(--faint);}
-    .pm-btn{font-family:'Syne Mono',monospace;font-size:0.68rem;letter-spacing:0.14em;
-      color:var(--muted);background:none;border:1px solid var(--faint);padding:0.4rem 0.9rem;
-      cursor:pointer;text-transform:uppercase;transition:all 0.2s;align-self:flex-end;}
-    .pm-btn:hover{border-color:var(--mint);color:var(--mint);}
-    .pm-btn:disabled{opacity:0.3;cursor:default;}
-    .pm-idle{display:flex;flex-direction:column;gap:0.5rem;padding:0.5rem 0;}
-    .pm-idle-note{font-family:'Syne Mono',monospace;font-size:0.68rem;color:#999999;letter-spacing:0.08em;}
-    .pm-error{font-family:'Syne Mono',monospace;font-size:0.72rem;color:#bb4444;line-height:1.8;
-      padding:0.6rem 0.8rem;background:rgba(200,0,0,.03);border:1px solid rgba(200,0,0,.08);}
-    .pm-rule{width:100%;height:1px;background:var(--rule);margin:1.5rem 0;}
 
     @keyframes arrive{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
     @media(max-width:700px){
       .nav-bar{padding:1.2rem 1.6rem;}
-      .main{padding:1.5rem 1.6rem 3rem;}
-      .stats-row{flex-direction:column;}
-      .stat{min-width:auto;}
-      #miniGraph{height:200px;}
-      .footer{flex-direction:column;gap:1rem;align-items:flex-start;}
+      .main{padding:0 1.6rem;}
+      .msg{max-width:95%;}
     }
   </style>
 </head>
 <body>
-
-<div class="hr" style="top:50%;"></div>
 
 <!-- NAV -->
 <div class="nav-bar">
@@ -259,1080 +103,166 @@
     <div class="brand-mark">A<span class="paren">(</span>DAI<span class="paren">)</span></div>
     <div class="breadcrumb"><span class="sep">/</span><span>query</span></div>
   </a>
-  <a href="graph.html" class="nav-back">/graph ↗</a>
+  <a href="graph.html" class="nav-back">/graph &#8599;</a>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- HEADER (terminal style) -->
-  <div class="sense-header">
-    <div class="sense-stats-line">
-      <span class="arr">→</span>
-      <span class="key">{</span>
-      signals: <span id="stat-signals">—</span>,
-      concepts: <span id="stat-concepts">—</span>,
-      practitioners: <span id="stat-practitioners">—</span>,
-      scenes: <span id="stat-scenes">—</span>,
-      threads: <span id="stat-threads">—</span>
-      <span class="key">}</span>
-    </div>
-    <div class="sense-endpoint">
-      <span class="method">GET</span>
-      <a href="graph-data.json" target="_blank">/graph-data.json</a>
-      <span style="margin-left:1rem;color:#DDDDDD;">174.8 KB</span>
-      <span style="margin-left:1rem;">updated 2026-03-04</span>
-    </div>
+  <div class="header">
+    <div class="header-title">Query the field</div>
+    <div class="header-stats" id="graphStats">loading graph&hellip;</div>
   </div>
 
-  <!-- QUERY ENGINE -->
-  <div class="pm-section">
-    <div class="pm-label">query engine</div>
-    <div class="pm-setup-row">
-      <button class="pm-setup-toggle" id="pm-setup-toggle">setup</button>
-    </div>
-    <div class="pm-setup-panel" id="pm-setup-panel" style="display:none">
-      <div>
-        <div class="pm-field-label">Anthropic Key</div>
-        <input type="password" class="pm-field-input" id="pm-key-anthropic" placeholder="sk-ant-api03-…">
-      </div>
-      <div class="pm-keys-status" id="pm-keys-status"></div>
-    </div>
-    <div class="pm-canvas-wrap" id="pm-canvas-wrap">
-      <canvas id="pm-canvas"></canvas>
-    </div>
-    <div id="pm-status" style="display:none">
-      <span class="pm-status-text" id="pm-status-text">loading threads…</span>
-    </div>
-    <div class="pm-conversation" id="pm-conversation" style="display:none">
-      <div class="pm-history" id="pm-history"></div>
-      <div>
-        <div class="pm-question-wrap">
-          <span class="pm-q-dash">—</span>
-          <p class="pm-question" id="pm-question"></p>
-        </div>
-        <div class="pm-answer-area">
-          <textarea class="pm-input" id="pm-input" placeholder="what do you think?" rows="2" disabled></textarea>
-          <button class="pm-btn" id="pm-submit" disabled>send →</button>
-        </div>
-      </div>
-    </div>
-    <div class="pm-idle" id="pm-idle">
-      <button class="pm-btn" id="pm-start">begin session →</button>
-      <p class="pm-idle-note" id="pm-idle-note"></p>
-    </div>
-    <div class="pm-error" id="pm-error" style="display:none"></div>
-    <div class="pm-rule"></div>
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <span class="input-prefix">&gt;</span>
+    <textarea class="input-field" id="input" rows="1" placeholder="ask the graph something&hellip;" disabled></textarea>
+    <button class="input-btn" id="sendBtn" disabled>send</button>
   </div>
 
-  <!-- SEARCH -->
-  <div class="search-section">
-    <div class="search-box">
-      <div class="search-prefix">&gt;</div>
-      <input type="text" class="search-input" id="searchInput" placeholder="query the field..." autocomplete="off">
-    </div>
-    <div class="filter-row" id="filterRow">
-      <button class="filter-chip active" data-type="all">[all]</button>
-      <button class="filter-chip" data-type="signal">[signals]</button>
-      <button class="filter-chip" data-type="concept">[concepts]</button>
-      <button class="filter-chip" data-type="practitioner">[practitioners]</button>
-      <button class="filter-chip" data-type="thread">[threads]</button>
-    </div>
-  </div>
-
-  <!-- DETAIL (shown when item selected) -->
-  <div class="detail" id="detailPanel"></div>
-
-  <!-- RESULTS -->
-  <div class="results" id="resultsArea">
-    <div class="loading" id="loadingMsg">
-      <span class="loading-text">querying field</span><span class="loading-dot"></span>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
   <div class="footer">
-    <div>
-      <div class="footer-brand">A<span class="paren">(</span>DAI<span class="paren">)</span></div>
-      <div class="footer-ts" id="footerTs"></div>
-    </div>
-    <div style="display:flex;gap:1.5rem;">
-      <a href="graph.html" class="footer-link">/graph</a>
-      <a href="/" class="footer-link">↗ home</a>
-    </div>
+    <a href="drop-link.html" class="footer-link">drop a signal</a>
+    <a href="/" class="footer-link">home</a>
   </div>
 
 </div>
 
 <script>
-// ── DATA LAYER ──────────────────────────────────────────────
-(function(){
-  var DATA=null, CORPUS=[], INDEX={signals:{},concepts:{},practitioners:{},scenes:{},threads:{}};
+(function() {
+  var messagesEl = document.getElementById('messages');
+  var inputEl = document.getElementById('input');
+  var sendBtn = document.getElementById('sendBtn');
+  var statsEl = document.getElementById('graphStats');
 
-  window.FI={data:null,index:null,corpus:null,ready:false,onReady:[]};
+  var graphSummary = '';
+  var history = [];
+  var working = false;
 
-  fetch('graph-data.json').then(function(r){return r.json();}).then(function(raw){
-    // Adapt spec format (nodes/edges/meta) to page format (typed arrays)
-    var data={signals:[],concepts:[],practitioners:[],scenes:[],threads:[],co_occurrences:[],meta:raw.meta||{}};
-    var typeMap={'Concept':'concept','Practitioner':'practitioner','Scene':'scene','Thread':'thread','Signal':'signal'};
-    (raw.nodes||[]).forEach(function(n){
-      var type=typeMap[n.type]||(n.type||'').toLowerCase();
-      var entry={name:n.label||n.id,id:n.id,signal_count:n.signal_count||0,mention_count:n.signal_count||0,signals:n.signals||[]};
-      if(type==='concept') data.concepts.push(entry);
-      else if(type==='practitioner') data.practitioners.push(entry);
-      else if(type==='scene') data.scenes.push(entry);
-      else if(type==='thread'){entry.title=n.label||n.id;data.threads.push(entry);}
-    });
-    // Build ID→name map for edge resolution
-    var idToName={};
-    (raw.nodes||[]).forEach(function(n){idToName[n.id]=(n.label||n.id).toLowerCase();});
-    // Convert edges to co_occurrences format (using names, not IDs)
-    (raw.edges||[]).forEach(function(e){
-      data.co_occurrences.push({source:idToName[e.source]||e.source,target:idToName[e.target]||e.target,weight:e.weight||1});
-    });
-    // Build meta counts from adapted data
-    data.meta.signal_count=data.meta.total_signals||0;
-    data.meta.concept_count=data.concepts.length;
-    data.meta.practitioner_count=data.practitioners.length;
-    data.meta.scene_count=data.scenes.length;
-    data.meta.thread_count=data.threads.length;
-    data.meta.exported_at=data.meta.generated_at||new Date().toISOString();
+  // ── Load graph data ──────────────────────────────────────────
+  fetch('graph-data.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var nodes = data.nodes || [];
+      var edges = data.edges || [];
+      var meta = data.meta || {};
 
-    DATA=data;
-    window.FI.data=data;
+      var concepts = nodes.filter(function(n) { return n.type === 'concept'; });
+      var practitioners = nodes.filter(function(n) { return n.type === 'practitioner'; });
+      var signals = nodes.filter(function(n) { return n.type === 'signal'; });
+      var scenes = nodes.filter(function(n) { return n.type === 'scene'; });
 
-    // Build indexes
-    data.concepts.forEach(function(c){INDEX.concepts[c.name.toLowerCase()]=c;});
-    data.practitioners.forEach(function(p){INDEX.practitioners[p.name.toLowerCase()]=p;});
-    data.scenes.forEach(function(s){INDEX.scenes[s.name.toLowerCase()]=s;});
-    data.threads.forEach(function(t){INDEX.threads[t.title.toLowerCase()]=t;});
-    window.FI.index=INDEX;
+      // Stats line
+      statsEl.innerHTML = '<span class="g">&rarr;</span> ' +
+        signals.length + ' signals, ' +
+        concepts.length + ' concepts, ' +
+        practitioners.length + ' practitioners, ' +
+        scenes.length + ' scenes, ' +
+        edges.length + ' connections';
 
-    // Build search corpus
-    data.concepts.forEach(function(c){
-      CORPUS.push({type:'concept',id:c.name,primary:c.name,
-        text:c.name.toLowerCase(),obj:c});
+      // Build compact summary for Claude
+      var topConcepts = concepts
+        .sort(function(a, b) { return (b.signal_count || 0) - (a.signal_count || 0); })
+        .slice(0, 15)
+        .map(function(n) { return n.label + ' (' + (n.signal_count || 0) + ')'; });
+
+      var topPractitioners = practitioners
+        .sort(function(a, b) { return (b.signal_count || 0) - (a.signal_count || 0); })
+        .slice(0, 10)
+        .map(function(n) { return n.label; });
+
+      var recentSignals = signals.slice(-5).map(function(n) { return n.label; });
+
+      graphSummary = 'Graph: ' + nodes.length + ' nodes, ' + edges.length + ' edges.\n' +
+        'Signals: ' + signals.length + '. Concepts: ' + concepts.length +
+        '. Practitioners: ' + practitioners.length + '. Scenes: ' + scenes.length + '.\n' +
+        'Top concepts: ' + topConcepts.join(', ') + '.\n' +
+        'Top practitioners: ' + topPractitioners.join(', ') + '.\n' +
+        'Recent signals: ' + recentSignals.join('; ') + '.';
+
+      inputEl.disabled = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+
+      addMessage('system', signals.length + ' signals in the graph. ask anything.');
+    })
+    .catch(function() {
+      statsEl.textContent = 'graph not available';
+      graphSummary = 'No graph data available yet.';
+      inputEl.disabled = false;
+      sendBtn.disabled = false;
+      addMessage('system', 'graph not loaded \u2014 responses will be general.');
     });
-    data.practitioners.forEach(function(p){
-      CORPUS.push({type:'practitioner',id:p.name,primary:p.name,
-        text:p.name.toLowerCase(),obj:p});
+
+  // ── Messages ─────────────────────────────────────────────────
+  function addMessage(role, text) {
+    var div = document.createElement('div');
+    div.className = 'msg msg-' + role;
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  // ── Send ─────────────────────────────────────────────────────
+  function send() {
+    if (working) return;
+    var text = inputEl.value.trim();
+    if (!text) return;
+
+    addMessage('user', text);
+    inputEl.value = '';
+    autoResize();
+
+    working = true;
+    inputEl.disabled = true;
+    sendBtn.disabled = true;
+    var thinkingEl = addMessage('thinking', 'thinking\u2026');
+
+    fetch('/api/query/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        graphSummary: graphSummary,
+        history: history.slice(-12)
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      thinkingEl.remove();
+      if (data.ok && data.reply) {
+        addMessage('assistant', data.reply);
+        history.push({ role: 'user', content: text });
+        history.push({ role: 'assistant', content: data.reply });
+      } else {
+        addMessage('system', 'error: ' + (data.error || 'no response'));
+      }
+    })
+    .catch(function() {
+      thinkingEl.remove();
+      addMessage('system', 'connection error \u2014 try again.');
+    })
+    .finally(function() {
+      working = false;
+      inputEl.disabled = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
     });
-    data.threads.forEach(function(t){
-      CORPUS.push({type:'thread',id:t.title,primary:t.title,
-        text:t.title.toLowerCase(),obj:t});
-    });
-    data.scenes.forEach(function(s){
-      CORPUS.push({type:'scene',id:s.name,primary:s.name,
-        text:s.name.toLowerCase(),obj:s});
-    });
-    window.FI.corpus=CORPUS;
-    window.FI.ready=true;
-    window.FI.onReady.forEach(function(fn){fn();});
-  }).catch(function(e){
-    document.getElementById('loadingMsg').innerHTML='<span class="loading-text" style="color:#AA5555;">Error loading data: '+e.message+'</span>';
+  }
+
+  // ── Auto-resize textarea ─────────────────────────────────────
+  function autoResize() {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+  }
+
+  inputEl.addEventListener('input', autoResize);
+  inputEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   });
-})();
-
-
-// ── STATS ───────────────────────────────────────────────────
-(function(){
-  function animateCount(el,target){
-    var start=0,dur=800,t0=performance.now();
-    (function step(now){
-      var p=Math.min((now-t0)/dur,1);
-      p=1-Math.pow(1-p,3); // ease-out cubic
-      el.textContent=Math.round(start+(target-start)*p);
-      if(p<1)requestAnimationFrame(step);
-    })(t0);
-  }
-  window.FI.onReady.push(function(){
-    var m=window.FI.data.meta;
-    animateCount(document.getElementById('stat-signals'),m.signal_count);
-    animateCount(document.getElementById('stat-concepts'),m.concept_count);
-    animateCount(document.getElementById('stat-practitioners'),m.practitioner_count);
-    animateCount(document.getElementById('stat-scenes'),m.scene_count);
-    animateCount(document.getElementById('stat-threads'),m.thread_count);
-    var d=m.exported_at.slice(0,10);
-    document.getElementById('footerTs').textContent='Last updated: '+d;
-  });
-})();
-
-
-// ── SEMANTIC SEARCH ─────────────────────────────────────────
-(function(){
-  var currentFilter='all';
-  var searchInput=document.getElementById('searchInput');
-  var resultsArea=document.getElementById('resultsArea');
-  var filterRow=document.getElementById('filterRow');
-  var debounceTimer=null;
-
-  // ── Semantic helpers ──
-
-  // Simple English stemmer — strip common suffixes to find root
-  function stem(word){
-    if(word.length<4)return word;
-    // ordered from longest suffix to shortest
-    var suffixes=['ational','isation','ization','iveness','fulness','ousness',
-      'ating','ation','ising','izing','ement','ness','ment','ence','ance','able','ible','ling',
-      'ally','edly','ious','eous','ical','ised','ized','ting','ling','ful','ist','ism','ity',
-      'ous','ive','ing','ion','ent','ant','ers','ies','ate','ise','ize','ure',
-      'al','er','ed','ly','es','en','ty','ry'];
-    for(var i=0;i<suffixes.length;i++){
-      var s=suffixes[i];
-      if(word.length>s.length+2 && word.slice(-s.length)===s){
-        return word.slice(0,-s.length);
-      }
-    }
-    return word;
-  }
-
-  // Semantic synonym / concept mapping — common natural language → field terms
-  var SEMANTIC_MAP={
-    'institution':['institutional capture','institutional gatekeeping','institutional legitimacy','institutional critique','museum','gallery','arts council'],
-    'institutions':['institutional capture','institutional gatekeeping','institutional legitimacy','institutional critique','museum','gallery','arts council'],
-    'taking over':['capture','gatekeeping','co-optation','appropriation','enclosure','commodification'],
-    'money':['funding','market','financialisation','value','commodification','patronage','speculation','tokenomics'],
-    'ownership':['provenance','intellectual property','commons','enclosure','digital ownership','tokenomics','nft'],
-    'ai':['artificial intelligence','machine learning','generative ai','llm','neural','algorithmic','automation','creative ai'],
-    'community':['commons','collective','dao','scene','network','grassroots','peer-to-peer','mutual aid'],
-    'power':['governance','authority','institutional capture','hegemony','autonomy','agency','decentralisation'],
-    'digital':['digital arts','digital infrastructure','web3','blockchain','nft','computational','algorithmic','online'],
-    'art market':['market formation','speculation','commodification','value','auction','gallery','collector'],
-    'blockchain':['web3','smart contract','nft','token','decentralised','dao','ethereum','tezos'],
-    'politics':['governance','policy','institutional','regulation','censorship','activism','autonomy'],
-    'curation':['curatorial','selection','exhibition','commissioning','editorial','gatekeeping'],
-    'collaboration':['collective','commons','co-creation','peer-to-peer','mutual aid','network'],
-    'future':['speculation','emerging','post-digital','imaginary','utopia','prototype'],
-    'value':['valuation','market','commodification','worth','cultural value','funding'],
-    'access':['accessibility','inclusion','open source','commons','barrier','exclusion','equity'],
-    'education':['pedagogy','learning','knowledge','training','workshop','mentorship','academy'],
-    'fair':['equity','justice','fairness','access','inclusion','redistribution'],
-    'tools':['infrastructure','platform','software','protocol','instrument','medium'],
-    'old':['legacy','tradition','canonical','established','historical','heritage'],
-    'new':['emerging','experimental','avant-garde','nascent','novel','innovative'],
-    'independent':['autonomy','self-organised','grassroots','diy','alternative','off-grid'],
-    'technology':['technical','digital','computational','algorithmic','infrastructure','protocol'],
-    'nature':['ecology','environment','climate','sustainability','anthropocene','post-natural'],
-    'body':['embodiment','somatic','physical','material','corporeal','haptic','presence'],
-    'space':['territory','geography','site-specific','virtual','spatial','architecture','place'],
-    'time':['temporality','duration','ephemerality','archive','memory','real-time'],
-    'identity':['selfhood','subjectivity','representation','gender','race','post-human','persona'],
-    'data':['dataset','surveillance','privacy','extraction','quantification','metadata'],
-    'free':['open source','commons','libre','freedom','autonomy','decentralised'],
-    'control':['governance','authority','regulation','censorship','surveillance','autonomy'],
-    'network':['decentralised','distributed','p2p','mesh','federation','protocol'],
-    'copyright':['intellectual property','creative commons','copyleft','fair use','licensing'],
-    'profit':['commodification','financialisation','extraction','speculation','market','value capture']
-  };
-
-  // Build co-occurrence expansion map from graph data (called once on data load)
-  var CO_EXPAND={};
-  function buildCoExpand(){
-    if(!window.FI.data)return;
-    window.FI.data.co_occurrences.forEach(function(e){
-      var s=e.source.toLowerCase(), t=e.target.toLowerCase();
-      if(!CO_EXPAND[s])CO_EXPAND[s]=[];
-      if(!CO_EXPAND[t])CO_EXPAND[t]=[];
-      if(e.weight>=2){
-        CO_EXPAND[s].push({term:t,weight:e.weight});
-        CO_EXPAND[t].push({term:s,weight:e.weight});
-      }
-    });
-    // Sort each by weight descending
-    Object.keys(CO_EXPAND).forEach(function(k){
-      CO_EXPAND[k].sort(function(a,b){return b.weight-a.weight;});
-    });
-  }
-
-  // Tokenize query: split on spaces, remove stopwords
-  var STOPS={'the':1,'a':1,'an':1,'is':1,'are':1,'was':1,'were':1,'be':1,'been':1,
-    'being':1,'have':1,'has':1,'had':1,'do':1,'does':1,'did':1,'will':1,'would':1,
-    'could':1,'should':1,'may':1,'might':1,'shall':1,'can':1,'to':1,'of':1,'in':1,
-    'for':1,'on':1,'with':1,'at':1,'by':1,'from':1,'up':1,'about':1,'into':1,
-    'through':1,'during':1,'before':1,'after':1,'above':1,'below':1,'between':1,
-    'out':1,'off':1,'over':1,'under':1,'again':1,'further':1,'then':1,'once':1,
-    'and':1,'but':1,'or':1,'nor':1,'not':1,'so':1,'yet':1,'both':1,'either':1,
-    'neither':1,'each':1,'every':1,'all':1,'any':1,'few':1,'more':1,'most':1,
-    'other':1,'some':1,'such':1,'no':1,'only':1,'own':1,'same':1,'than':1,
-    'too':1,'very':1,'just':1,'because':1,'as':1,'until':1,'while':1,'that':1,
-    'which':1,'who':1,'whom':1,'this':1,'these':1,'those':1,'it':1,'its':1,
-    'they':1,'them':1,'their':1,'what':1,'when':1,'where':1,'how':1,'why':1,
-    'i':1,'me':1,'my':1,'we':1,'our':1,'you':1,'your':1,'he':1,'him':1,'his':1,
-    'she':1,'her':1,'there':1,'here':1};
-
-  function tokenize(text){
-    return text.toLowerCase().replace(/[^a-z0-9\s\-]/g,' ').split(/\s+/).filter(function(w){
-      return w.length>1 && !STOPS[w];
-    });
-  }
-
-  // Levenshtein distance for fuzzy matching
-  function editDist(a,b){
-    if(a===b)return 0;
-    if(!a.length)return b.length;
-    if(!b.length)return a.length;
-    var m=a.length,n=b.length;
-    // Optimise: if length diff > 3, skip
-    if(Math.abs(m-n)>3)return 99;
-    var prev=[];var curr=[];
-    for(var j=0;j<=n;j++)prev[j]=j;
-    for(var i=1;i<=m;i++){
-      curr[0]=i;
-      for(var j=1;j<=n;j++){
-        curr[j]=a[i-1]===b[j-1]?prev[j-1]:Math.min(prev[j-1],prev[j],curr[j-1])+1;
-      }
-      var tmp=prev;prev=curr;curr=tmp;
-    }
-    return prev[n];
-  }
-
-  // Score a single query token against an item
-  function scoreToken(token,tokenStem,item){
-    var score=0;
-    var prim=item.primary.toLowerCase();
-    var primTokens=tokenize(prim);
-    var primStems=primTokens.map(stem);
-    var text=item.text;
-
-    // Exact match in primary name
-    if(prim===token)return 100;
-
-    // Token appears at word boundary in primary
-    for(var i=0;i<primTokens.length;i++){
-      if(primTokens[i]===token){score=Math.max(score,50);break;}
-      if(primStems[i]===tokenStem && tokenStem.length>=3){score=Math.max(score,45);break;}
-      // Fuzzy: edit distance ≤ 1 for words ≥ 5 chars
-      if(token.length>=5 && primTokens[i].length>=5 && editDist(token,primTokens[i])<=1){
-        score=Math.max(score,40);break;
-      }
-    }
-
-    // Token substring in primary
-    if(score<30 && prim.indexOf(token)>=0)score=Math.max(score,30);
-
-    // Stem match in primary
-    if(score<25 && tokenStem.length>=3){
-      for(var i=0;i<primStems.length;i++){
-        if(primStems[i].indexOf(tokenStem)===0 || tokenStem.indexOf(primStems[i])===0){
-          score=Math.max(score,25);break;
-        }
-      }
-    }
-
-    // Match in full text (summary, concepts, etc)
-    if(score<10 && text.indexOf(token)>=0)score=Math.max(score,10);
-
-    // Stem match in full text
-    if(score<8 && tokenStem.length>=3){
-      var textTokens=tokenize(text);
-      for(var i=0;i<textTokens.length;i++){
-        if(stem(textTokens[i])===tokenStem){score=Math.max(score,8);break;}
-      }
-    }
-
-    return score;
-  }
-
-  function search(q,typeFilter){
-    var corpus=window.FI.corpus;
-    if(!corpus)return[];
-    q=q.toLowerCase().trim();
-    if(!q)return defaultResults(typeFilter);
-
-    var queryTokens=tokenize(q);
-    if(!queryTokens.length){
-      // Only stopwords — try the full query as substring
-      queryTokens=[q.replace(/[^a-z0-9\s\-]/g,'').trim()];
-    }
-    var queryStems=queryTokens.map(stem);
-
-    // ── Semantic expansion ──
-    // Check if full query or query bigrams match semantic map
-    var expandedTerms=[];
-    // Full query
-    if(SEMANTIC_MAP[q])expandedTerms=expandedTerms.concat(SEMANTIC_MAP[q]);
-    // Check multi-word combos
-    var words=q.split(/\s+/);
-    for(var i=0;i<words.length;i++){
-      if(SEMANTIC_MAP[words[i]]){
-        expandedTerms=expandedTerms.concat(SEMANTIC_MAP[words[i]]);
-      }
-      // Bigrams
-      if(i<words.length-1){
-        var bigram=words[i]+' '+words[i+1];
-        if(SEMANTIC_MAP[bigram])expandedTerms=expandedTerms.concat(SEMANTIC_MAP[bigram]);
-      }
-    }
-
-    // Co-occurrence expansion: if any query token exactly matches a concept name,
-    // boost items that contain co-occurring concepts
-    var coExpanded={};
-    queryTokens.forEach(function(t){
-      // Check if this token (or the whole query) matches a concept
-      var conceptKey=null;
-      if(window.FI.index.concepts[q])conceptKey=q;
-      if(!conceptKey && window.FI.index.concepts[t])conceptKey=t;
-      // Also try partial match on concept names
-      if(!conceptKey){
-        Object.keys(window.FI.index.concepts).forEach(function(ck){
-          if(ck.indexOf(t)>=0 && t.length>=4)conceptKey=conceptKey||ck;
-        });
-      }
-      if(conceptKey && CO_EXPAND[conceptKey]){
-        CO_EXPAND[conceptKey].slice(0,10).forEach(function(e){
-          coExpanded[e.term]=Math.max(coExpanded[e.term]||0, Math.min(e.weight*3,15));
-        });
-      }
-    });
-
-    // ── Score each corpus item ──
-    var results=[];
-    corpus.forEach(function(item){
-      if(typeFilter!=='all'&&item.type!==typeFilter)return;
-      var totalScore=0;
-
-      // Direct token scoring
-      for(var i=0;i<queryTokens.length;i++){
-        totalScore+=scoreToken(queryTokens[i],queryStems[i],item);
-      }
-
-      // Semantic expansion scoring — check if item matches expanded terms
-      for(var i=0;i<expandedTerms.length;i++){
-        var et=expandedTerms[i].toLowerCase();
-        var prim=item.primary.toLowerCase();
-        if(prim.indexOf(et)>=0)totalScore+=20;
-        else if(item.text.indexOf(et)>=0)totalScore+=8;
-      }
-
-      // Co-occurrence boost
-      var itemPrimLower=item.primary.toLowerCase();
-      if(coExpanded[itemPrimLower]){
-        totalScore+=coExpanded[itemPrimLower];
-      }
-
-      // Multi-word bonus: if full query appears as phrase in text
-      if(queryTokens.length>1){
-        var phrase=queryTokens.join(' ');
-        if(item.primary.toLowerCase().indexOf(phrase)>=0)totalScore+=35;
-        else if(item.text.indexOf(phrase)>=0)totalScore+=15;
-      }
-
-      if(totalScore>0)results.push({item:item,score:totalScore});
-    });
-
-    results.sort(function(a,b){return b.score-a.score;});
-    return results.slice(0,60);
-  }
-
-  // Build co-occurrence expansion on data ready
-  window.FI.onReady.push(buildCoExpand);
-
-  function defaultResults(typeFilter){
-    var d=window.FI.data;if(!d)return[];
-    var results=[];
-    if(typeFilter==='all'||typeFilter==='signal'){
-      d.signals.slice(0,5).forEach(function(s){results.push({item:{type:'signal',id:s.id,primary:s.title,obj:s},score:0});});
-    }
-    if(typeFilter==='all'||typeFilter==='concept'){
-      d.concepts.slice(0,12).forEach(function(c){results.push({item:{type:'concept',id:c.name,primary:c.name,obj:c},score:0});});
-    }
-    if(typeFilter==='all'||typeFilter==='practitioner'){
-      d.practitioners.slice(0,8).forEach(function(p){results.push({item:{type:'practitioner',id:p.name,primary:p.name,obj:p},score:0});});
-    }
-    if(typeFilter==='all'||typeFilter==='thread'){
-      d.threads.slice(0,5).forEach(function(t){results.push({item:{type:'thread',id:t.title,primary:t.title,obj:t},score:0});});
-    }
-    return results;
-  }
-
-  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-  function renderResults(results){
-    if(!results.length){
-      resultsArea.innerHTML='<p style="font-family:Syne Mono,monospace;font-size:0.65rem;color:var(--muted);padding:2rem 0;">No results found.</p>';
-      return;
-    }
-    var groups={signal:[],concept:[],practitioner:[],thread:[],scene:[]};
-    results.forEach(function(r){groups[r.item.type].push(r.item);});
-    var html='';
-    if(groups.signal.length){
-      html+='<div class="result-section"><div class="section-label">Signals <span class="section-count">('+groups.signal.length+')</span></div>';
-      groups.signal.forEach(function(item){
-        var s=item.obj;
-        var qClass=s.quality==='high'?' quality-high':s.quality==='low'?' quality-low':'';
-        html+='<div class="signal-card'+qClass+'" onclick="showDetail(\'signal\',\''+esc(s.id)+'\')">';
-        html+='<div class="signal-date">'+(s.date||'')+'</div>';
-        html+='<div class="signal-title">'+esc(s.title)+'</div>';
-        if(s.summary)html+='<div class="signal-excerpt">'+esc(s.summary.slice(0,140))+(s.summary.length>140?'...':'')+'</div>';
-        html+='<div class="signal-meta">';
-        if(s.quality)html+='<span class="chip chip-quality">'+esc(s.quality)+'</span>';
-        (s.scenes||[]).forEach(function(sc){html+='<span class="chip chip-scene">'+esc(sc)+'</span>';});
-        html+='</div></div>';
-      });
-      html+='</div>';
-    }
-    if(groups.concept.length){
-      html+='<div class="result-section"><div class="section-label">Concepts <span class="section-count">('+groups.concept.length+')</span></div>';
-      html+='<div class="concept-flow">';
-      groups.concept.forEach(function(item){
-        var c=item.obj;
-        html+='<span class="concept-tag" onclick="showDetail(\'concept\',\''+esc(c.name)+'\')">'+esc(c.name)+'<span class="count">'+c.mention_count+'</span></span>';
-      });
-      html+='</div></div>';
-    }
-    if(groups.practitioner.length){
-      html+='<div class="result-section"><div class="section-label">Practitioners <span class="section-count">('+groups.practitioner.length+')</span></div>';
-      groups.practitioner.forEach(function(item){
-        var p=item.obj;
-        html+='<div class="pract-item" onclick="showDetail(\'practitioner\',\''+esc(p.name)+'\')"><span class="pract-name">'+esc(p.name)+'</span><span class="pract-count">'+p.mention_count+' signal'+(p.mention_count!==1?'s':'')+'</span></div>';
-      });
-      html+='</div>';
-    }
-    if(groups.thread.length){
-      html+='<div class="result-section"><div class="section-label">Threads <span class="section-count">('+groups.thread.length+')</span></div>';
-      groups.thread.forEach(function(item){
-        var t=item.obj;
-        html+='<div class="thread-item" onclick="showDetail(\'thread\',\''+esc(t.title)+'\')"><div class="thread-q">'+esc(t.title)+'</div><div class="thread-meta">'+t.signal_count+' signal'+(t.signal_count!==1?'s':'')+'</div></div>';
-      });
-      html+='</div>';
-    }
-    resultsArea.innerHTML=html;
-  }
-
-  function doSearch(){
-    var q=searchInput.value;
-    var results=search(q,currentFilter);
-    renderResults(results);
-  }
-
-  searchInput.addEventListener('input',function(){
-    clearTimeout(debounceTimer);
-    debounceTimer=setTimeout(doSearch,150);
-  });
-
-  filterRow.addEventListener('click',function(e){
-    var chip=e.target.closest('.filter-chip');
-    if(!chip)return;
-    filterRow.querySelectorAll('.filter-chip').forEach(function(c){c.classList.remove('active');});
-    chip.classList.add('active');
-    currentFilter=chip.getAttribute('data-type');
-    doSearch();
-  });
-
-  window.FI.onReady.push(function(){
-    document.getElementById('loadingMsg').style.display='none';
-    doSearch();
-    // Deep link: open detail from hash (e.g. #concept::institutional%20capture)
-    if(window.location.hash){
-      try{
-        var h=decodeURIComponent(window.location.hash.slice(1));
-        var parts=h.split('::');
-        if(parts.length===2){setTimeout(function(){showDetail(parts[0],parts[1]);},100);}
-      }catch(e){}
-    }
-  });
-})();
-
-
-// ── DETAIL PANEL ────────────────────────────────────────────
-(function(){
-  var panel=document.getElementById('detailPanel');
-
-  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-  function renderTagList(items,type,label){
-    if(!items||!items.length)return'';
-    var html='<div class="detail-section-label">'+label+'</div><div class="detail-tags">';
-    items.forEach(function(name){
-      html+='<span class="concept-tag" onclick="showDetail(\''+type+'\',\''+esc(name)+'\')">'+esc(name)+'</span>';
-    });
-    return html+'</div>';
-  }
-
-  function signalsByIds(ids){
-    if(!ids)return[];
-    var idx=window.FI.index.signals;
-    return ids.map(function(id){return idx[id];}).filter(Boolean);
-  }
-
-  function renderSignalList(signals,label){
-    if(!signals.length)return'';
-    var html='<div class="detail-section-label">'+label+' ('+signals.length+')</div>';
-    signals.forEach(function(s){
-      var qClass=s.quality==='high'?' quality-high':s.quality==='low'?' quality-low':'';
-      html+='<div class="signal-card'+qClass+'" onclick="showDetail(\'signal\',\''+esc(s.id)+'\')"><div class="signal-date">'+(s.date||'')+'</div><div class="signal-title">'+esc(s.title)+'</div></div>';
-    });
-    return html;
-  }
-
-  window.showDetail=function(type,id){
-    var html='<button class="detail-close" onclick="closeDetail()">Close</button>';
-    html+='<div class="detail-type">'+type+'</div>';
-
-    if(type==='signal'){
-      var s=window.FI.index.signals[id];
-      if(!s){panel.className='detail';return;}
-      html+='<div class="detail-title">'+esc(s.title)+'</div>';
-      html+='<div class="detail-meta">';
-      if(s.date)html+='<span class="chip">'+esc(s.date)+'</span>';
-      if(s.quality)html+='<span class="chip chip-quality">'+esc(s.quality)+'</span>';
-      if(s.source_type)html+='<span class="chip">'+esc(s.source_type)+'</span>';
-      html+='</div>';
-      if(s.summary){html+='<div class="detail-divider"></div><div class="detail-section-label">Summary</div><div class="detail-text">'+esc(s.summary)+'</div>';}
-      if(s.provocation){html+='<div class="detail-section-label">Provocation</div><div class="detail-italic">'+esc(s.provocation)+'</div>';}
-      if(s.curatorial_summary){html+='<div class="detail-section-label">Curatorial Summary</div><div class="detail-text">'+esc(s.curatorial_summary)+'</div>';}
-      if(s.collector_brief){html+='<div class="detail-section-label">Collector Brief</div><div class="detail-text">'+esc(s.collector_brief)+'</div>';}
-      html+='<div class="detail-divider"></div>';
-      html+=renderTagList(s.concepts,'concept','Concepts');
-      html+=renderTagList(s.practitioners,'practitioner','Practitioners');
-      html+=renderTagList(s.scenes,'scene','Scenes');
-      if(s.thread){html+='<div class="detail-section-label">Thread</div><div class="thread-item" onclick="showDetail(\'thread\',\''+esc(s.thread)+'\')"><div class="thread-q">'+esc(s.thread)+'</div></div>';}
-      html+='<div class="mini-graph-container"><div class="mini-graph-label">Connections</div><canvas id="miniGraph"></canvas></div>';
-    }
-    else if(type==='concept'){
-      var c=window.FI.index.concepts[id.toLowerCase()];
-      if(!c){panel.className='detail';return;}
-      html+='<div class="detail-title">'+esc(c.name)+'</div>';
-      html+='<div class="detail-meta"><span class="chip chip-quality">'+c.mention_count+' signal'+(c.mention_count!==1?'s':'')+'</span></div>';
-      // Co-occurring concepts
-      var coocs=window.FI.data.co_occurrences.filter(function(e){return e.source.toLowerCase()===id.toLowerCase()||e.target.toLowerCase()===id.toLowerCase();});
-      coocs.sort(function(a,b){return b.weight-a.weight;});
-      if(coocs.length){
-        html+='<div class="detail-section-label">Co-occurring Concepts</div><div class="detail-tags">';
-        coocs.slice(0,15).forEach(function(e){
-          var other=e.source.toLowerCase()===id.toLowerCase()?e.target:e.source;
-          html+='<span class="concept-tag" onclick="showDetail(\'concept\',\''+esc(other)+'\')">'+esc(other)+'<span class="count">'+e.weight+'</span></span>';
-        });
-        html+='</div>';
-      }
-      html+='<div class="detail-divider"></div>';
-      html+=renderSignalList(signalsByIds(c.signals),'Signals mentioning this concept');
-      html+='<div class="mini-graph-container"><div class="mini-graph-label">Connections</div><canvas id="miniGraph"></canvas></div>';
-    }
-    else if(type==='practitioner'){
-      var p=window.FI.index.practitioners[id.toLowerCase()];
-      if(!p){panel.className='detail';return;}
-      html+='<div class="detail-title">'+esc(p.name)+'</div>';
-      html+='<div class="detail-meta"><span class="chip chip-quality">'+p.mention_count+' signal'+(p.mention_count!==1?'s':'')+'</span></div>';
-      html+='<div class="detail-divider"></div>';
-      html+=renderSignalList(signalsByIds(p.signals),'Signals mentioning this practitioner');
-      html+='<div class="mini-graph-container"><div class="mini-graph-label">Connections</div><canvas id="miniGraph"></canvas></div>';
-    }
-    else if(type==='thread'){
-      var t=window.FI.index.threads[id.toLowerCase()];
-      if(!t){panel.className='detail';return;}
-      html+='<div class="detail-title" style="font-style:italic;">'+esc(t.title)+'</div>';
-      html+='<div class="detail-meta"><span class="chip chip-quality">'+t.signal_count+' signal'+(t.signal_count!==1?'s':'')+'</span></div>';
-      html+='<div class="detail-divider"></div>';
-      html+=renderSignalList(signalsByIds(t.signals),'Signals feeding this thread');
-    }
-    else if(type==='scene'){
-      var sc=window.FI.index.scenes[id.toLowerCase()];
-      if(!sc){panel.className='detail';return;}
-      html+='<div class="detail-title">'+esc(sc.name)+'</div>';
-      html+='<div class="detail-meta"><span class="chip chip-quality">'+sc.signal_count+' signal'+(sc.signal_count!==1?'s':'')+'</span></div>';
-      html+='<div class="detail-divider"></div>';
-      html+=renderSignalList(signalsByIds(sc.signals),'Signals in this scene');
-    }
-
-    panel.innerHTML=html;
-    panel.className='detail visible';
-    panel.scrollIntoView({behavior:'smooth',block:'start'});
-
-    // Render mini graph after DOM update
-    setTimeout(function(){renderMiniGraph(type,id);},50);
-  };
-
-  window.closeDetail=function(){
-    panel.className='detail';
-    panel.innerHTML='';
-  };
-})();
-
-
-// ── MINI GRAPH (clickable) ──────────────────────────────────
-(function(){
-  var COLORS={signal:'#1A1A1A',concept:'#7aff9c',practitioner:'#85b0e1',scene:'#c2dbbf',thread:'#444444'};
-  var HOVER_RING={signal:'rgba(26,26,26,0.2)',concept:'rgba(122,255,156,0.35)',practitioner:'rgba(133,176,225,0.35)',scene:'rgba(194,219,191,0.35)',thread:'rgba(68,68,68,0.2)'};
-  var activeNodes=[];  // persisted for hit-testing
-
-  window.renderMiniGraph=function(type,id){
-    var canvas=document.getElementById('miniGraph');
-    if(!canvas)return;
-    var ctx=canvas.getContext('2d');
-    var rect=canvas.parentElement.getBoundingClientRect();
-    canvas.width=rect.width;canvas.height=300;
-    var W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
-
-    // Build nodes and links
-    var nodes=[],links=[],nodeMap={};
-    var centerKey=type+'::'+id;
-    nodes.push({key:centerKey,label:id.length>30?id.slice(0,30)+'...':id,type:type,detailId:id,x:cx,y:cy,r:12,isCenter:true});
-    nodeMap[centerKey]=nodes[0];
-
-    function addNode(nType,name,detailId){
-      var did=detailId||name;
-      var key=nType+'::'+did;
-      if(nodeMap[key])return;
-      if(nodes.length>=22)return;
-      nodes.push({key:key,label:name.length>25?name.slice(0,25)+'...':name,type:nType,detailId:did,x:0,y:0,r:6,isCenter:false});
-      nodeMap[key]=nodes[nodes.length-1];
-      links.push({source:nodes[0],target:nodes[nodes.length-1]});
-    }
-
-    function signalsByIds(ids){
-      if(!ids)return[];
-      return ids.map(function(i){return window.FI.index.signals[i];}).filter(Boolean);
-    }
-
-    if(type==='signal'){
-      var s=window.FI.index.signals[id];
-      if(s){
-        (s.concepts||[]).slice(0,8).forEach(function(c){addNode('concept',c);});
-        (s.practitioners||[]).slice(0,6).forEach(function(p){addNode('practitioner',p);});
-        (s.scenes||[]).forEach(function(sc){addNode('scene',sc);});
-        if(s.thread)addNode('thread',s.thread);
-      }
-    } else if(type==='concept'){
-      var c=window.FI.index.concepts[id.toLowerCase()];
-      if(c){
-        signalsByIds(c.signals).slice(0,6).forEach(function(s){addNode('signal',s.title,s.id);});
-        var coocs=window.FI.data.co_occurrences.filter(function(e){return e.source.toLowerCase()===id.toLowerCase()||e.target.toLowerCase()===id.toLowerCase();});
-        coocs.sort(function(a,b){return b.weight-a.weight;});
-        coocs.slice(0,8).forEach(function(e){
-          var other=e.source.toLowerCase()===id.toLowerCase()?e.target:e.source;
-          addNode('concept',other);
-        });
-      }
-    } else if(type==='practitioner'){
-      var p=window.FI.index.practitioners[id.toLowerCase()];
-      if(p){signalsByIds(p.signals).slice(0,10).forEach(function(s){addNode('signal',s.title,s.id);});}
-    } else if(type==='thread'){
-      var t=window.FI.index.threads[id.toLowerCase()];
-      if(t){signalsByIds(t.signals).slice(0,10).forEach(function(s){addNode('signal',s.title,s.id);});}
-    }
-
-    if(nodes.length<2){canvas.style.display='none';activeNodes=[];return;}
-
-    // Position nodes in a circle around center
-    var ring=nodes.length-1;
-    for(var i=1;i<nodes.length;i++){
-      var angle=(i-1)/ring*Math.PI*2-Math.PI/2;
-      var radius=Math.min(W,H)*0.35;
-      nodes[i].x=cx+Math.cos(angle)*radius;
-      nodes[i].y=cy+Math.sin(angle)*radius;
-    }
-
-    // Simple force relaxation (20 iterations)
-    for(var iter=0;iter<20;iter++){
-      for(var i=1;i<nodes.length;i++){
-        for(var j=i+1;j<nodes.length;j++){
-          var dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y;
-          var d=Math.sqrt(dx*dx+dy*dy)||1;
-          if(d<60){var f=(60-d)*0.1;nodes[i].x-=dx/d*f;nodes[i].y-=dy/d*f;nodes[j].x+=dx/d*f;nodes[j].y+=dy/d*f;}
-        }
-      }
-    }
-
-    // Store for hit-testing
-    activeNodes=nodes;
-
-    // Draw function (reusable for hover redraws)
-    function draw(hoveredIdx){
-      ctx.clearRect(0,0,W,H);
-      // Links
-      links.forEach(function(l){
-        ctx.beginPath();ctx.moveTo(l.source.x,l.source.y);ctx.lineTo(l.target.x,l.target.y);
-        ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;ctx.stroke();
-      });
-      // Nodes
-      nodes.forEach(function(n,i){
-        // Glow for center
-        if(i===0){
-          var g=ctx.createRadialGradient(n.x,n.y,2,n.x,n.y,24);
-          g.addColorStop(0,'rgba(122,255,156,0.25)');g.addColorStop(1,'rgba(122,255,156,0)');
-          ctx.beginPath();ctx.arc(n.x,n.y,24,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-        }
-        // Hover ring
-        if(i===hoveredIdx && !n.isCenter){
-          ctx.beginPath();ctx.arc(n.x,n.y,n.r+5,0,Math.PI*2);
-          ctx.fillStyle=HOVER_RING[n.type]||'rgba(0,0,0,0.1)';ctx.fill();
-        }
-        ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-        ctx.fillStyle=COLORS[n.type]||'#AAAAAA';ctx.fill();
-        // Label
-        ctx.font=(i===0?'600 ':'')+'9px Syne,sans-serif';
-        ctx.textAlign='center';
-        ctx.fillStyle=i===hoveredIdx?COLORS[n.type]:(i===0?'#1A1A1A':'#777777');
-        ctx.fillText(n.label,n.x,n.y+n.r+14);
-      });
-    }
-    draw(-1);
-
-    // ── Hit-testing helpers ──
-    function hitTest(ex,ey){
-      var crect=canvas.getBoundingClientRect();
-      var mx=ex-crect.left,my=ey-crect.top;
-      for(var i=nodes.length-1;i>=0;i--){
-        var dx=mx-nodes[i].x,dy=my-nodes[i].y;
-        var hitR=nodes[i].r+8; // generous hit area
-        if(dx*dx+dy*dy<=hitR*hitR)return i;
-      }
-      return -1;
-    }
-
-    var lastHover=-1;
-
-    // Mousemove: cursor + hover highlight
-    canvas.onmousemove=function(e){
-      var idx=hitTest(e.clientX,e.clientY);
-      if(idx!==lastHover){
-        lastHover=idx;
-        canvas.style.cursor=(idx>=0 && !nodes[idx].isCenter)?'pointer':'default';
-        draw(idx);
-      }
-    };
-
-    // Click: navigate to detail
-    canvas.onclick=function(e){
-      var idx=hitTest(e.clientX,e.clientY);
-      if(idx>=0 && !nodes[idx].isCenter){
-        var n=nodes[idx];
-        showDetail(n.type,n.detailId);
-      }
-    };
-
-    canvas.onmouseleave=function(){
-      lastHover=-1;
-      canvas.style.cursor='default';
-      draw(-1);
-    };
-  };
-})();
-</script>
-
-<!-- PROMPT ENGINE -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// ── PROMPT ENGINE ────────────────────────────────────────────────
-(function(){
-  var pmWorking = false, pmCurrentQ = '', pmThreadCtx = '', pmConvHistory = [];
-
-  function $p(id){ return document.getElementById(id); }
-
-  // ── Keys ──────────────────────────────────────────────────────
-  function pmLoadKeys(){
-    try{
-      var tc=JSON.parse(localStorage.getItem('adai_tc_keys')||'{}');
-      var pm=JSON.parse(localStorage.getItem('adai_pm_keys')||'{}');
-      return{anthropic:pm.anthropic||tc.anthropic||''};
-    }catch(e){return{anthropic:''};}
-  }
-  function pmSaveKeys(){
-    var k={anthropic:($p('pm-key-anthropic')||{}).value||''};
-    k.anthropic=k.anthropic.trim();
-    try{localStorage.setItem('adai_pm_keys',JSON.stringify(k));}catch(e){}
-    try{
-      var tc=JSON.parse(localStorage.getItem('adai_tc_keys')||'{}');
-      if(k.anthropic)tc.anthropic=k.anthropic;
-      localStorage.setItem('adai_tc_keys',JSON.stringify(tc));
-    }catch(e){}
-    pmUpdateKeyStatus(k);return k;
-  }
-  function pmUpdateKeyStatus(k){
-    var s=$p('pm-keys-status');if(!s)return;
-    if(k.anthropic){s.textContent='key saved — stored in localStorage';s.style.color='var(--mint)';}
-    else{s.textContent='enter anthropic key to begin';s.style.color='var(--muted)';}
-    var note=$p('pm-idle-note');
-    if(note)note.textContent=k.anthropic?'key ready. press begin to surface a thread.':'add anthropic key in setup to begin.';
-  }
-
-  // ── Three.js Particle Canvas ──────────────────────────────────
-  var pmRenderer=null,pmScene,pmCamera,pmPts,pmLines,pmClock;
-  var pmPulseState={active:false,t:0};
-  var PM_N=120;
-  var pmBasePos=new Float32Array(PM_N*3),pmPosArr=new Float32Array(PM_N*3),pmPhase=new Float32Array(PM_N*3);
-
-  function initPmCanvas(){
-    var canvas=$p('pm-canvas');if(!canvas||pmRenderer)return;
-    var wrap=$p('pm-canvas-wrap');
-    var W=wrap.clientWidth||580,H=140;
-    canvas.width=W;canvas.height=H;
-
-    pmScene=new THREE.Scene();
-    pmCamera=new THREE.OrthographicCamera(-W/2,W/2,H/2,-H/2,-100,100);
-    pmCamera.position.z=10;
-    pmRenderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-    pmRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    pmRenderer.setSize(W,H,false);pmRenderer.setClearColor(0x000000,0);
-
-    for(var i=0;i<PM_N;i++){
-      var x=(Math.random()-.5)*W*.88,y=(Math.random()-.5)*H*.8,z=(Math.random()-.5)*20;
-      pmBasePos[i*3]=x;pmBasePos[i*3+1]=y;pmBasePos[i*3+2]=z;
-      pmPosArr[i*3]=x;pmPosArr[i*3+1]=y;pmPosArr[i*3+2]=z;
-      pmPhase[i*3]=Math.random()*Math.PI*2;pmPhase[i*3+1]=Math.random()*Math.PI*2;pmPhase[i*3+2]=Math.random()*Math.PI*2;
-    }
-
-    var ptGeo=new THREE.BufferGeometry();
-    ptGeo.setAttribute('position',new THREE.BufferAttribute(pmPosArr.slice(),3));
-    var colors=new Float32Array(PM_N*3);
-    for(var i=0;i<PM_N;i++){
-      var tt=i/PM_N;
-      colors[i*3]=.478+(.761-.478)*tt;colors[i*3+1]=1.0+(.859-1.0)*tt;colors[i*3+2]=.608+(.749-.608)*tt;
-    }
-    ptGeo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-    pmPts=new THREE.Points(ptGeo,new THREE.PointsMaterial({size:2,vertexColors:true,transparent:true,opacity:.6,sizeAttenuation:false}));
-    pmScene.add(pmPts);
-
-    var MAX_LINES=250;var lineArr=new Float32Array(MAX_LINES*6);
-    var lineGeo=new THREE.BufferGeometry();lineGeo.setAttribute('position',new THREE.BufferAttribute(lineArr,3));lineGeo.setDrawRange(0,0);
-    pmLines=new THREE.LineSegments(lineGeo,new THREE.LineBasicMaterial({color:0x7aff9c,transparent:true,opacity:.12}));
-    pmScene.add(pmLines);
-
-    pmClock=new THREE.Clock();
-    (function anim(){requestAnimationFrame(anim);pmUpdateParticles(pmClock.getElapsedTime());pmRenderer.render(pmScene,pmCamera);})();
-
-    window.addEventListener('resize',function(){
-      var nW=wrap.clientWidth;
-      if(Math.abs(nW-W)>4){W=nW;canvas.width=W;canvas.height=H;pmCamera.left=-W/2;pmCamera.right=W/2;pmCamera.updateProjectionMatrix();pmRenderer.setSize(W,H,false);}
-    });
-  }
-
-  function pmUpdateParticles(t){
-    var pos=pmPts.geometry.attributes.position.array;
-    var lpos=pmLines.geometry.attributes.position.array;
-    var lc=0,MAX_LP=250,THRESH=75;
-    if(pmPulseState.active){pmPulseState.t+=.045;if(pmPulseState.t>1)pmPulseState.active=false;}
-    var pulse=pmPulseState.active?Math.pow(Math.max(0,1-pmPulseState.t),1.5)*24:0;
-    for(var i=0;i<PM_N;i++){
-      var bx=pmBasePos[i*3],by=pmBasePos[i*3+1],bz=pmBasePos[i*3+2];
-      var ox=Math.sin(t*.16+pmPhase[i*3])*12+Math.cos(t*.11+pmPhase[i*3+1])*7;
-      var oy=Math.cos(t*.19+pmPhase[i*3+1])*9+Math.sin(t*.13+pmPhase[i*3+2])*6;
-      var ang=(i/PM_N)*Math.PI*2;
-      pos[i*3]=bx+ox+Math.cos(ang)*pulse;pos[i*3+1]=by+oy+Math.sin(ang)*pulse;pos[i*3+2]=bz;
-    }
-    for(var i=0;i<PM_N&&lc<MAX_LP;i++){
-      for(var j=i+1;j<PM_N&&lc<MAX_LP;j++){
-        var dx=pos[i*3]-pos[j*3],dy=pos[i*3+1]-pos[j*3+1];
-        if(dx*dx+dy*dy<THRESH*THRESH){var li=lc*6;lpos[li]=pos[i*3];lpos[li+1]=pos[i*3+1];lpos[li+2]=pos[i*3+2];lpos[li+3]=pos[j*3];lpos[li+4]=pos[j*3+1];lpos[li+5]=pos[j*3+2];lc++;}
-      }
-    }
-    pmPts.geometry.attributes.position.needsUpdate=true;
-    pmLines.geometry.attributes.position.needsUpdate=true;
-    pmLines.geometry.setDrawRange(0,lc*2);
-  }
-
-  function pmTriggerPulse(){pmPulseState.active=true;pmPulseState.t=0;}
-
-  // ── Field context from graph-data.json ───────────────────────
-  function pmGetFieldContext(){
-    var d=window.FI&&window.FI.data;if(!d)return'No field data loaded yet.';
-    var threads=d.threads||[];var concepts=d.concepts||[];
-    var thLines=threads.slice(0,8).map(function(t,i){return(i+1)+'. '+(t.title||t.name);}).join('\n');
-    var topConcepts=concepts.slice().sort(function(a,b){return(b.signal_count||0)-(a.signal_count||0);}).slice(0,12);
-    var cLines=topConcepts.map(function(c){return'— '+c.name+' ('+c.signal_count+' signals)';}).join('\n');
-    var ctx='';
-    if(thLines)ctx+='Active threads:\n'+thLines+'\n\n';
-    if(cLines)ctx+='Top concepts:\n'+cLines;
-    if(!ctx)ctx='Field contains '+d.meta.total_signals+' signals, '+d.meta.total_nodes+' nodes.';
-    return ctx;
-  }
-
-  // ── Claude API (direct browser access) ─────────────────────
-  async function pmAskClaude(aKey,system,user){
-    var res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'content-type':'application/json','x-api-key':aKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:380,system:system,messages:[{role:'user',content:user}]})
-    });
-    if(!res.ok)throw new Error('Claude error '+res.status);
-    var d=await res.json();return(d.content.find(function(b){return b.type==='text';})||{}).text||'';
-  }
-
-  // ── UI helpers ────────────────────────────────────────────────
-  function pmSetStatus(txt,show){
-    var el=$p('pm-status'),t=$p('pm-status-text');if(!el)return;
-    el.style.display=show?'block':'none';if(t)t.textContent=txt;
-  }
-  function pmShowError(msg){var el=$p('pm-error');if(!el)return;el.style.display=msg?'block':'none';el.textContent=msg||'';}
-  function pmTypeQuestion(q){
-    pmCurrentQ=q;var el=$p('pm-question');if(!el)return;
-    var i=0;el.textContent='';
-    (function type(){if(i<q.length){el.textContent=q.slice(0,++i);setTimeout(type,20+Math.random()*16);}})();
-    pmTriggerPulse();
-  }
-  function pmAppendHistory(q,a,refl){
-    pmConvHistory.push({q:q,a:a,refl:refl});
-    var hist=$p('pm-history');if(!hist)return;
-    var pair=document.createElement('div');pair.className='pm-hist-pair';
-    pair.innerHTML='<div class="pm-hist-q">'+q+'</div>'+(refl?'<div class="pm-hist-refl">'+refl+'</div>':'')+'<div class="pm-hist-a">'+a+'</div>';
-    hist.appendChild(pair);
-  }
-
-  // ── Session logic ─────────────────────────────────────────────
-  async function pmBeginSession(){
-    if(pmWorking)return;
-    var k=pmLoadKeys();
-    if(!k.anthropic){pmShowError('Add Anthropic key in setup first.');return;}
-    $p('pm-idle').style.display='none';pmShowError('');
-    pmSetStatus('reading field intelligence…',true);pmWorking=true;
-    try{
-      pmThreadCtx=pmGetFieldContext();
-      if(!pmThreadCtx||pmThreadCtx==='No field data loaded yet.'){pmSetStatus('',false);pmShowError('Field data not loaded yet. Wait for graph-data.json to load.');$p('pm-idle').style.display='flex';pmWorking=false;return;}
-      var openQ=await pmAskClaude(k.anthropic,
-        'You are part of A(DAI), a collective intelligence system for the digital arts field. Your role is to open conversations — not close them. Surface what isn\'t being said. Generate a single evocative, open question (1-2 sentences) that invites honest reflection on a tension or blind spot. The question should feel alive, not academic. Return only the question — no preamble, no quotation marks.',
-        'Field intelligence context:\n'+pmThreadCtx.slice(0,700)+'\n\nCraft a question that gets at what the field hasn\'t resolved yet.'
-      );
-      pmSetStatus('',false);$p('pm-conversation').style.display='block';
-      pmTypeQuestion(openQ.trim());
-      var inp=$p('pm-input'),sub=$p('pm-submit');
-      if(inp)inp.disabled=false;if(sub)sub.disabled=false;if(inp)inp.focus();
-    }catch(e){pmSetStatus('',false);pmShowError(e.message);$p('pm-idle').style.display='flex';}
-    pmWorking=false;
-  }
-
-  async function pmSend(){
-    if(pmWorking)return;
-    var inp=$p('pm-input');var answer=(inp&&inp.value||'').trim();if(!answer)return;
-    var k=pmLoadKeys();if(!k.anthropic){pmShowError('Anthropic key missing.');return;}
-    pmWorking=true;inp.disabled=true;$p('pm-submit').disabled=true;
-    pmSetStatus('thinking…',true);pmShowError('');
-    try{
-      var histStr=pmConvHistory.map(function(h){return'Q: '+h.q+'\nA: '+h.a;}).join('\n\n');
-      var raw=await pmAskClaude(k.anthropic,
-        'You are embedded in A(DAI), a collective intelligence system for the digital arts field. Surface tensions, contradictions, and blind spots — never resolve them prematurely. Respond with exactly two parts separated by a blank line:\n1. One or two sentences of honest reflection on what the answer reveals, misses, or complicates.\n2. A single evocative follow-up question that opens new territory.\nNothing else — no labels, no preamble.',
-        'Field context:\n'+pmThreadCtx.slice(0,500)+'\n\n'+(histStr?'Prior exchange:\n'+histStr+'\n\n':'')+'Current question: '+pmCurrentQ+'\nAnswer: '+answer
-      );
-      var parts=raw.trim().split(/\n{2,}/);var nextQ=parts[parts.length-1].trim();var refl=parts.length>1?parts.slice(0,-1).join(' ').trim():'';
-      pmAppendHistory(pmCurrentQ,answer,refl);
-      inp.value='';inp.disabled=false;$p('pm-submit').disabled=false;
-      pmSetStatus('',false);pmTypeQuestion(nextQ);inp.focus();
-    }catch(e){pmSetStatus('',false);pmShowError(e.message);inp.disabled=false;$p('pm-submit').disabled=false;}
-    pmWorking=false;
-  }
-
-  // ── Bootstrap ─────────────────────────────────────────────────
-  var k=pmLoadKeys();
-  var ka=$p('pm-key-anthropic');
-  if(ka)ka.value=k.anthropic;
-  pmUpdateKeyStatus(k);
-
-  var setupBtn=$p('pm-setup-toggle'),setupPanel=$p('pm-setup-panel');
-  if(setupBtn)setupBtn.addEventListener('click',function(){
-    var open=setupPanel.style.display!=='none';
-    setupPanel.style.display=open?'none':'block';
-    setupBtn.classList.toggle('active',!open);
-    setupBtn.textContent=open?'setup':'hide setup';
-  });
-  if(ka)ka.addEventListener('input',pmSaveKeys);
-  if(!k.anthropic&&setupPanel){setupPanel.style.display='block';if(setupBtn){setupBtn.classList.add('active');setupBtn.textContent='hide setup';}}
-
-  var startBtn=$p('pm-start');if(startBtn)startBtn.addEventListener('click',pmBeginSession);
-  var subBtn=$p('pm-submit');if(subBtn)subBtn.addEventListener('click',pmSend);
-  var inp=$p('pm-input');
-  if(inp)inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();pmSend();}});
-
-  initPmCanvas();
+  sendBtn.addEventListener('click', send);
 })();
 </script>
 </body>
