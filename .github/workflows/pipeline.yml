@@ -7,21 +7,22 @@ on:
   workflow_dispatch:
     # Allow manual trigger from GitHub Actions UI
     inputs:
-      single_signal:
-        description: 'Process a single signal file (path relative to repo root)'
-        required: false
-        type: string
       dry_run:
         description: 'Dry run (no writes)'
         required: false
         type: boolean
         default: false
+      rss_only:
+        description: 'Run RSS reader only (skip signal processing)'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  process-signals:
+  pipeline:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # needed to commit processed signals + dashboard
+      contents: write   # needed to commit inbox files, signals, graph-data.json
 
     steps:
       - name: Checkout repo
@@ -37,28 +38,49 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run signal processor
+      # ── Step 1: RSS reader → /inbox/ ───────────────────────────────────────
+      - name: Fetch RSS feeds → inbox
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python scripts/rss_reader.py --dry-run
+          else
+            python scripts/rss_reader.py
+          fi
+
+      # ── Step 2: Process signals (skip if rss_only) ─────────────────────────
+      - name: Process signals → /signals/
+        if: ${{ !inputs.rss_only }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          if [ -n "${{ inputs.single_signal }}" ]; then
-            python pipeline/signal_processor.py --signal "${{ inputs.single_signal }}" ${{ inputs.dry_run && '--dry-run' || '' }}
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python pipeline/signal_processor.py --dry-run
           else
-            python pipeline/signal_processor.py ${{ inputs.dry_run && '--dry-run' || '' }}
+            python pipeline/signal_processor.py
           fi
 
-      - name: Run concept linker
+      # ── Step 3: Link concepts ───────────────────────────────────────────────
+      - name: Link concepts
+        if: ${{ !inputs.rss_only }}
         run: |
-          python pipeline/concept_linker.py ${{ inputs.dry_run && '--dry-run' || '' }}
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python pipeline/concept_linker.py --dry-run
+          else
+            python pipeline/concept_linker.py
+          fi
 
-      - name: Update dashboard
+      # ── Step 4: Export graph ────────────────────────────────────────────────
+      - name: Update dashboard / export graph
+        if: ${{ !inputs.rss_only }}
         run: python pipeline/update_dashboard.py
 
-      - name: Commit changes
+      # ── Step 5: Commit all changes ──────────────────────────────────────────
+      - name: Commit pipeline output
         if: ${{ !inputs.dry_run }}
         run: |
           git config user.name "adai-pipeline[bot]"
           git config user.email "pipeline@digitalartsinstitute.io"
-          git add signals/ graph-data.json dashboard.md inbox/
-          git diff --cached --quiet || git commit -m "pipeline: nightly signal processing $(date -u +%Y-%m-%d)"
+          git add inbox/ signals/ graph-data.json config/.rss-processed
+          git add concepts/ practitioners/ scenes/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "auto: nightly pipeline $(date -u +%Y-%m-%d)"
           git push
