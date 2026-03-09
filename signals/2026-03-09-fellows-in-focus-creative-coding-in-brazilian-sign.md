@@ -3,7 +3,7 @@ id: 2026-03-09-fellows-in-focus-creative-coding-in-brazilian-sign
 status: processed
 source_url: https://medium.com/processing-foundation/fellows-in-focus-creative-coding-in-brazilian-sign-language-with-lu%C3%ADs-dos-santos-miguel-a45bf9f3d404?source=rss
 title: 2026-03-09-fellows-in-focus-creative-coding-in-brazilian-sign
-processed_at: 2026-03-09T22:23:48.468473+00:00
+processed_at: 2026-03-09T23:03:57.332640+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,20 +12,19 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:23:48.468473+00:00
+  processed_at: 2026-03-09T23:03:57.332640+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
   - creative coding
   - accessibility
-  - inclusivity
-  - sign language computing interfaces
   - Brazilian Sign Language (Libras)
+  - inclusive design
   - p5.js
-  - holography
-  - localisation of creative tools
-  - disability justice in technology
-  - fellowship models
+  - holography as metaphor
+  - language localisation in code environments
+  - deaf culture and technology
+  - fellowship models for arts-tech
 practitioners:
   - Luís dos Santos Miguel
   - Processing Foundation
@@ -34,31 +33,31 @@ practitioners:
   - Xin Xin
 scenes:
   - São Paulo creative coding community
-  - Brazilian digital arts
-  - Processing/p5.js ecosystem
-  - Deaf creative technology community
-  - Global South creative coding
+  - Brazilian deaf community
+  - Processing Foundation fellowship network
+  - open-source creative tools ecosystem
+  - Global South digital arts
 tendencies:
-  - Linguistic decolonisation of creative tools
-  - Accessibility as generative infrastructure
-  - Community-driven tool localisation
-  - Fellowship as distributed R&D model
-  - Expansion of who creative coding is for
+  - accessibility as generative design constraint
+  - decolonisation of creative coding tools
+  - linguistic diversity in technical infrastructure
+  - community-driven tool localisation
+  - fellowship as distributed patronage model
 ---
 
 # 2026-03-09-fellows-in-focus-creative-coding-in-brazilian-sign
 
-> This signal documents the Processing Foundation's fellowship support for Holografia, a project by Luís dos Santos Miguel that renders p5.js creative coding education in Brazilian Sign Language. Its significance for the digital arts field lies at the intersection of several critical tendencies: the linguistic and sensory decolonisation of creative tools, the use of fellowship models as distributed R&D for underserved communities, and the reframing of accessibility not as a compliance afterthought but as a site of genuine creative and pedagogical innovation. The project surfaces how deeply embedded hearing and anglophone assumptions remain in creative coding infrastructure, while demonstrating that practitioner-led localisation — particularly from the Global South and Deaf communities — can expand the conceptual vocabulary of the field itself.
+> This signal documents the Processing Foundation's fellowship support for Luís dos Santos Miguel's 'Holografia' project, which brings p5.js creative coding into Brazilian Sign Language. Its significance for the digital arts field operates on multiple levels: practically, it extends one of the most widely used creative coding environments to deaf communities in Brazil; structurally, it demonstrates how fellowship models can direct resources toward accessibility infrastructure that market forces consistently neglect; and discursively, it challenges the assumption that creative coding's language problem is primarily about translating English keywords into other spoken languages, revealing a deeper blindspot around modality itself. The project sits at the intersection of several important tendencies — the push toward linguistic decolonisation of tools, the treatment of accessibility as a generative design space rather than compliance burden, and the role of Global South practitioners in reshaping what counts as core infrastructure in the open-source creative tools ecosystem.
 
 ## CLA Analysis
 
-**L1 — Surface**: The Processing Foundation's 2024 Fellowship supported Luís dos Santos Miguel's project Holografia, which translates p5.js creative coding education into Brazilian Sign Language (Libras). The fellowship season has concluded and the project is being publicly documented.
+**L1 — Surface**: The Processing Foundation's 2024 Fellowship included Luís dos Santos Miguel's project 'Holografia,' which translates p5.js creative coding education into Brazilian Sign Language (Libras). The fellowship season has concluded with this among its highlighted projects.
 
-**L2 — Systemic**: Creative coding tools and their educational ecosystems remain overwhelmingly designed for hearing, English-speaking users. Fellowship programmes function as redistribution mechanisms, channelling institutional resources toward practitioners who build infrastructure for underserved communities. This project reveals how language itself is a gatekeeping layer in technical education.
+**L2 — Systemic**: Creative coding tools and their educational ecosystems have been built overwhelmingly for hearing, English-speaking users. Fellowship programmes like the Processing Foundation's function as redistribution mechanisms, channelling institutional resources toward practitioners who can bridge underserved communities and dominant tool ecosystems. This signals a structural recognition that accessibility is not a peripheral concern but a core infrastructure question.
 
-**L3 — Worldview**: The framing of this work as 'redefining boundaries' reflects a discourse where accessibility is positioned not as remediation but as creative expansion — the assumption being that inclusion produces new aesthetic and pedagogical possibilities rather than merely accommodating existing ones. The Processing Foundation's editorial voice treats community-facing work as equivalent in significance to technical innovation.
+**L3 — Worldview**: The framing positions accessibility and inclusivity not as charitable add-ons but as acts that 'redefine the boundaries of art, technology, and community' — suggesting a worldview where the edges of a field are defined by who can participate. Creative coding is implicitly understood as a cultural practice with linguistic and embodied dimensions, not merely a technical skill. The discourse values transformation and community over novelty.
 
-**L4 — Narrative**: The deep story here is translation as creation — the myth that a tool truly exists only when it can be spoken in every language, including embodied ones. Holografia invokes the hologram: a complete image visible from any angle, suggesting that knowledge is not diminished by being rendered in a different modality but becomes more fully dimensional. This echoes an older counter-myth to the Tower of Babel — that multiplying languages multiplies worlds rather than fragmenting them.
+**L4 — Narrative**: The project name 'Holografia' evokes a deep metaphor: the hologram as something that appears immaterial but contains full dimensional information — much like sign language itself, which carries complete linguistic complexity in a visual-spatial medium often rendered invisible by hearing-dominant culture. The underlying myth is one of translation as liberation: that making a tool speakable in a new language doesn't just extend the tool but transforms what the tool can mean.
 
 ## Original Signal
 

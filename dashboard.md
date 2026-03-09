@@ -1,5 +1,5 @@
 # A(DAI) — Field Intelligence Dashboard
-*Last updated: 2026-03-09 22:26 UTC*
+*Last updated: 2026-03-09 23:10 UTC*
 
 ---
 
@@ -10,15 +10,15 @@
 | Processed signals | 14 |
 | Awaiting processing | 0 |
 | Total in inbox | 14 |
-| Graph nodes | 166 |
-| Graph edges | 1592 |
+| Graph nodes | 167 |
+| Graph edges | 1580 |
 
-*Graph last generated: 2026-03-09T22:26:30.497699+00:00*
+*Graph last generated: 2026-03-09T23:09:51.472154+00:00*
 
 ## Confidence Distribution
 
-- **high**: ███ 3
-- **medium**: █████████ 9
+- **high**: ████ 4
+- **medium**: ████████ 8
 - **low**: ██ 2
 - **speculative**:  0
 
@@ -30,15 +30,15 @@
 | live coding | 4 |
 | p5.js | 4 |
 | generative art | 3 |
+| on-chain generative art | 3 |
 | networked performance | 2 |
-| open call | 2 |
 | accessibility | 2 |
-| fellowship models | 2 |
-| algorithmic performance | 2 |
+| algorithmic art | 2 |
 | solstice stream | 1 |
-| distributed event | 1 |
 | collective performance | 1 |
-| real-time audiovisual practice | 1 |
+| open call | 1 |
+| real-time music/art creation | 1 |
+| distributed collaboration | 1 |
 | process transparency | 1 |
 | creative documentation | 1 |
 
@@ -54,7 +54,7 @@
 | fxhash | 3 |
 | p5.js | 1 |
 | Mari Katayama | 1 |
-| V&A | 1 |
+| V&A (Victoria and Albert Museum) | 1 |
 | Parasol Foundation | 1 |
 
 ## Scenes
@@ -62,27 +62,27 @@
 | Scene | Signals |
 |---|---|
 | live coding community | 4 |
-| algorave | 3 |
 | fxhash generative art community | 3 |
-| Tezos art ecosystem | 3 |
-| creative coding community | 3 |
+| algorave | 2 |
+| generative/algorithmic art | 2 |
 | open-source creative tools ecosystem | 2 |
+| creative coding | 2 |
 | Processing/p5.js ecosystem | 2 |
-| Processing/p5.js community | 2 |
-| global online/distributed performance networks | 1 |
-| generative art / creative coding | 1 |
+| Tezos art ecosystem | 2 |
+| creative coding education | 2 |
+| global networked performance | 1 |
 
 ## Tendencies
 
 - decentralisation pressure (3)
-- community self-organisation (2)
-- Decentralisation pressure — distributed, non-hierarchical participation model (1)
-- Collective scale as aesthetic statement — 100+ performers as structural form (1)
-- Community self-organisation — practitioner-run infrastructure outside institutional gatekeeping (1)
-- Liveness as value — real-time, ephemeral, process-visible performance (1)
-- Process legibility — artists increasingly documenting and sharing the thinking and technique behind generative works, not just outputs (1)
-- Platform-supported artist pedagogy — marketplace infrastructure facilitating behind-the-scenes disclosure as cultural norm (1)
-- Demystification of generative practice — movement from fetishising output toward valuing craft and iteration (1)
+- community self-organisation (3)
+- collective over individual authorship (1)
+- temporal ritual as structuring device (1)
+- radical accessibility (1)
+- abundance logic (1)
+- process legibility — artists increasingly narrating their generative methods as part of the work's value proposition (1)
+- platform-enabled artist pedagogy — marketplaces becoming sites of knowledge sharing, not just commerce (1)
+- demystification of generative practice — pulling back the curtain on code-based art to build audience literacy (1)
 - institutionalisation of open-source creative tools (1)
 
 ## Recently Processed Signals
@@ -90,13 +90,13 @@
 | Signal | Processed | Confidence | Concepts |
 |---|---|---|---|
 | 2026-03-09-solstice-stream-2024-call-for-live-coders | 2026-03-09 | medium | 7 |
-| 2026-03-09-sketch-book-behind-the-scenes | 2026-03-09 | low | 7 |
+| 2026-03-09-sketch-book-behind-the-scenes | 2026-03-09 | low | 6 |
 | 2026-03-09-processing-foundation-is-hiring-a-program-manager | 2026-03-09 | high | 8 |
 | 2026-03-09-p5-js-2-0-you-are-here | 2026-03-09 | high | 7 |
-| 2026-03-09-mari-katayama-v-a-parasol-foundation-women-in-phot | 2026-03-09 | medium | 9 |
+| 2026-03-09-mari-katayama-v-a-parasol-foundation-women-in-phot | 2026-03-09 | medium | 8 |
 | 2026-03-09-fifteen-years-of-from-scratch | 2026-03-09 | medium | 7 |
 | 2026-03-09-fellows-in-focus-disability-justice-digital-archiv | 2026-03-09 | medium | 11 |
-| 2026-03-09-fellows-in-focus-creative-coding-in-brazilian-sign | 2026-03-09 | medium | 10 |
+| 2026-03-09-fellows-in-focus-creative-coding-in-brazilian-sign | 2026-03-09 | medium | 9 |
 | 2026-03-09-fellows-in-focus-capturing-the-ephemeral-in-live-c | 2026-03-09 | medium | 8 |
 | 2026-03-09-coming-soon | 2026-03-09 | low | 7 |
 

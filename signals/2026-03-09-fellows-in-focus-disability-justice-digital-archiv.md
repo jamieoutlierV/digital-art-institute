@@ -3,7 +3,7 @@ id: 2026-03-09-fellows-in-focus-disability-justice-digital-archiv
 status: processed
 source_url: https://medium.com/processing-foundation/fellows-in-focus-disability-justice-digital-archives-with-anh-autumn-pham-3bc4ae0eb967?source=rss
 title: 2026-03-09-fellows-in-focus-disability-justice-digital-archiv
-processed_at: 2026-03-09T22:24:07.375512+00:00
+processed_at: 2026-03-09T23:04:15.276277+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,7 +12,7 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:24:07.375512+00:00
+  processed_at: 2026-03-09T23:04:15.276277+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -22,11 +22,11 @@ concepts:
   - Deaf culture
   - queer identity
   - care ethics
-  - storytelling as advocacy
-  - community empowerment
   - intersectionality
+  - community storytelling
   - creative coding
-  - fellowship models
+  - diaspora
+  - marginalized community empowerment
 practitioners:
   - Anh (Autumn) Pham
   - Processing Foundation
@@ -34,34 +34,34 @@ practitioners:
   - Suhyun (Sonia) Choi
   - Xin Xin
 scenes:
+  - Processing Foundation fellowship program
+  - Vancouver creative tech community
   - Vietnamese diaspora
-  - Vancouver creative tech
-  - Processing Foundation fellowship ecosystem
-  - Deaf creative community
+  - Deaf community
   - queer tech workers
   - accessibility-centered digital arts
 tendencies:
-  - Care infrastructure as creative practice
-  - Marginalised communities building their own digital archives
-  - Disability justice reframing tech development
-  - Decentralisation of whose stories get preserved
-  - Fellowship models as alternative funding for underrepresented practitioners
-  - Intersection of identity politics and computational arts
+  - care-centered design
+  - decentralisation of whose stories get archived
+  - accessibility as creative practice rather than compliance
+  - intersectional identity as generative framework
+  - community-led infrastructure
+  - non-Western epistemologies entering digital arts discourse
 ---
 
 # 2026-03-09-fellows-in-focus-disability-justice-digital-archiv
 
-> This signal documents a Processing Foundation fellowship project that sits at the convergence of disability justice, Deaf culture, queer identity, and Vietnamese diasporic experience within the digital arts. Its significance lies not in the event itself — a fellowship retrospective — but in what it indexes: a growing tendency toward care-centred, identity-grounded approaches to creative technology, where accessibility and archival practice are understood as political acts rather than technical features. The project exemplifies how practitioners from marginalised positions are building alternative digital infrastructure outside mainstream platforms, using fellowship models as sustaining structures. For A(DAI), this signal strengthens the evidence base for tendencies around community-led archiving, disability justice as a generative force in computational arts, and the reframing of technology through non-Western, collectivist ethics of care.
+> This signal documents a Processing Foundation fellowship project by Anh (Autumn) Pham that sits at the intersection of disability justice, Deaf culture, queer identity, and Vietnamese diaspora experience, materialised as a digital archive framed through care ethics. Its significance for the digital arts field lies in how it exemplifies a growing tendency to treat accessibility, identity, and community care not as peripheral concerns but as generative creative frameworks — and in how fellowship infrastructure is being used to support practitioners whose work challenges the field's default assumptions about who makes digital art, for whom, and on whose terms. The bilingual, care-centred framing suggests a maturing discourse where non-Western relational epistemologies are actively reshaping how digital archives and creative coding projects are conceived.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — The Processing Foundation's 2024 Fellowship produced 'How do We Care for Each Other (Vì Mình Thương Nhau)' by Anh (Autumn) Pham, a project at the intersection of disability justice and digital archives. The fellowship season has concluded and the Foundation is publishing retrospective features on fellows' work.
+**L1 — Surface**: The Processing Foundation's 2024 Fellowship produced 'How do We Care for Each Other (Vì Mình Thương Nhau)' by Anh (Autumn) Pham, a project at the intersection of disability justice and digital archives. The fellowship season has concluded and the Foundation is profiling its fellows' work.
 
-**L2 — Systemic**: L2 — Fellowship programmes like the Processing Foundation's function as alternative support structures for practitioners excluded from mainstream tech funding and institutional art pipelines. The project reveals how digital archiving infrastructure remains inaccessible to Deaf, queer, and diasporic communities, requiring dedicated interventions to bridge gaps that commercial platforms ignore.
+**L2 — Systemic**: Fellowship programmes like Processing Foundation's function as redistribution mechanisms, channelling resources and visibility toward practitioners whose identities — Deaf, Queer, diasporic — are structurally underrepresented in creative technology. The project's bilingual Vietnamese-English framing signals how diaspora practitioners are building parallel knowledge systems within Western institutional structures.
 
-**L3 — Worldview**: L3 — The framing centres care — 'Vì Mình Thương Nhau' (Because We Care for Each Other) — as the organising principle for technology, displacing efficiency or innovation as primary values. Disability justice here is not accommodation within existing systems but a fundamental reorientation of who technology serves and how. The discourse assumes that accessibility, queerness, and diasporic identity are not edge cases but generative positions from which to build.
+**L3 — Worldview**: The project's title centres care and mutual obligation ('Vì Mình Thương Nhau') as the foundational question, reframing digital archives not as preservation technology but as acts of relational care. Accessibility is positioned not as accommodation but as a justice framework, and storytelling is understood as advocacy — a worldview in which technical practice and political commitment are inseparable.
 
-**L4 — Narrative**: L4 — The deep myth here is care as infrastructure — the idea that mutual care is not soft supplement to hard technology but the actual foundation on which durable systems are built. The Vietnamese-language title carries a collectivist ethic rooted in kinship and interdependence, counterposing the Western myth of the autonomous creative technologist. Archiving becomes an act of survival: if we do not preserve our own stories, they disappear.
+**L4 — Narrative**: The deep story here is one of care as resistance — the idea that marginalised communities survive and create meaning by caring for each other, and that digital tools can encode and extend those practices of mutual care. The archive becomes not a monument but a living network of attention. The Vietnamese-language title invokes kinship and love as the engine of collective survival, echoing deep cultural narratives about community bonds sustaining people through displacement and erasure.
 
 ## Original Signal
 

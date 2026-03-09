@@ -3,7 +3,7 @@ id: 2026-03-09-p5-js-2-0-you-are-here
 status: processed
 source_url: https://medium.com/processing-foundation/p5-js-2-0-you-are-here-f827f40519a7?source=rss
 title: 2026-03-09-p5-js-2-0-you-are-here
-processed_at: 2026-03-09T22:24:58.605569+00:00
+processed_at: 2026-03-09T23:05:08.729528+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,47 +12,47 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:24:58.605569+00:00
+  processed_at: 2026-03-09T23:05:08.729528+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
-  - open-source creative tools
-  - community-driven development
-  - creative coding
-  - participatory design
-  - software versioning and migration
-  - accessibility in digital arts education
+  - open-source creative coding
+  - community-driven software development
+  - p5.js 2.0
+  - creative coding accessibility
   - community survey methodology
+  - iterative release cycles
+  - web-based creative tools
 practitioners:
   - Processing Foundation
   - p5.js
 scenes:
-  - creative coding community
-  - digital arts education
+  - creative coding
   - generative/algorithmic art
-  - browser-based creative practice
-  - open-source software communities
+  - educational creative technology
+  - open-source arts tooling
+  - web-based art practice
 tendencies:
   - community governance of creative tools
-  - decentralisation of tool development through participatory input
-  - slow and deliberate release cycles prioritising community readiness
-  - democratisation of creative technology
-  - institutional stewardship of commons-based infrastructure
+  - decentralisation of software design authority
+  - accessibility as design principle
+  - slow institutional release cadence
+  - practitioner-led infrastructure development
 ---
 
 # 2026-03-09-p5-js-2-0-you-are-here
 
-> This signal documents the Processing Foundation's community-informed approach to releasing p5.js 2.0, one of the most widely used open-source creative coding libraries. Its significance lies less in the technical update itself and more in what the process reveals: a model of commons-based tool stewardship where a non-profit coordinates multi-year participatory design, prioritises community readiness over speed-to-market, and maintains infrastructure that millions of artists, educators, and students depend on. In a field increasingly shaped by proprietary AI tools and platform capture, p5.js 2.0 represents a counter-tendency — creative technology governed by and for its community, operating on institutional timelines that resist both hype cycles and abandonment risk.
+> The impending release of p5.js 2.0 represents a significant milestone for one of the digital arts field's most widely adopted creative coding frameworks. More than a technical upgrade, the signal reveals how the Processing Foundation operationalises community governance — using multi-year survey cycles to let practitioners shape the tool's evolution. The deliberately slow adoption timeline (default switch not until August 2026) stands in notable contrast to commercial software release culture, embodying values of care, accessibility, and collective stewardship that have defined the Processing ecosystem since its origins. For the broader digital arts field, this signal reinforces the viability and persistence of open-source, community-governed creative infrastructure as an alternative to platform-dependent toolchains.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — The Processing Foundation is preparing to release p5.js 2.0, informed by community survey data collected since late 2023. The p5.js Editor will default to version 2.0 in August 2026, with a community testing phase beginning in the coming weeks.
+**L1 — Surface**: The Processing Foundation is preparing the release of p5.js 2.0, informed by a community check-in survey conducted since late 2023. The p5.js Editor will default to version 2.0 in August 2026, with community testing beginning imminently.
 
-**L2 — Systemic**: L2 — The extended timeline (survey in 2023, release in 2025, editor default in 2026) reveals a deliberate infrastructure governance model where a non-profit foundation manages a critical creative tool through participatory feedback loops rather than market-driven release cycles. This positions p5.js as commons-maintained infrastructure rather than a product.
+**L2 — Systemic**: The multi-year survey-to-release pipeline reflects an institutional commitment to participatory development of creative coding infrastructure, where user feedback structurally shapes technical direction. The slow, deliberate timeline — over two years from survey to default adoption — signals prioritisation of community readiness over rapid iteration, a pattern distinct from commercial software cycles.
 
-**L3 — Worldview**: L3 — The framing 'You Are Here' and the emphasis on community check-ins reflect a worldview in which users are co-authors of their tools, not consumers. The discourse assumes that creative technology should be shaped by its practitioners — beginners and contributors alike — and that accessibility and inclusion are design values, not afterthoughts.
+**L3 — Worldview**: The framing assumes creative tools should be shaped by their communities rather than imposed by developer teams, embedding a value system where accessibility, inclusivity, and collective ownership are primary design drivers. The language ('community check-in', 'we continue to invite') positions users not as consumers but as co-stewards.
 
-**L4 — Narrative**: L4 — The deep story is one of collective tending: the tool as a garden maintained by its community rather than a product shipped by a company. p5.js carries the Processing lineage — the myth that code can be a democratic medium for visual thinking, and that the most important software is the software that lowers barriers to creative expression.
+**L4 — Narrative**: p5.js carries the deep myth of democratised creativity — the idea that code can be a universal artistic medium if the tools are gentle enough. The 'You Are Here' title invokes a wayfinding metaphor, positioning the community within a shared journey rather than a product upgrade, reinforcing the Processing lineage's founding story that programming belongs to artists, educators, and beginners as much as engineers.
 
 ## Original Signal
 

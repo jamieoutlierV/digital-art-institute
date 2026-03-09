@@ -3,7 +3,7 @@ id: 2026-03-09-beginner-s-guide-to-fxhash-using-p5-js
 status: processed
 source_url: https://fxhash.substack.com/p/beginners-guide-to-fxhash-using-p5js
 title: 2026-03-09-beginner-s-guide-to-fxhash-using-p5-js
-processed_at: 2026-03-09T22:22:25.854458+00:00
+processed_at: 2026-03-09T23:02:24.991402+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,7 +12,7 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:22:25.854458+00:00
+  processed_at: 2026-03-09T23:02:24.991402+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -20,36 +20,36 @@ concepts:
   - fxhash
   - p5.js
   - long-form generative art
-  - onchain art
-  - creative coding education
-  - art platform onboarding
-  - blockchain-based art minting
+  - creative coding
+  - on-chain generative art
+  - beginner onboarding
+  - art platform tooling
 practitioners:
   - fxhash
 scenes:
   - fxhash generative art community
   - Tezos art ecosystem
-  - creative coding community
+  - creative coding education
 tendencies:
-  - knowledge commoning
-  - platform onboarding friction reduction
-  - practitioner-led education
-  - decentralisation pressure
+  - knowledge commons building
+  - democratisation of generative art tooling
+  - practitioner-to-practitioner pedagogy
+  - platform onboarding as community practice
 ---
 
 # 2026-03-09-beginner-s-guide-to-fxhash-using-p5-js
 
-> A practitioner-authored beginner's guide to fxhash using p5.js is a modest but telling signal about the state of onboarding infrastructure in decentralised generative art platforms. It reveals that community-produced knowledge is filling gaps left by platform tooling, reinforcing a pattern where peer education becomes essential infrastructure. For the digital arts field, this points to both the generative capacity of practitioner communities to self-organise around knowledge production, and the persistent tension between platform growth ambitions and the unglamorous work of making creative tools genuinely accessible to newcomers.
+> A practitioner-authored beginner's guide to creating generative art on fxhash using p5.js represents a small but structurally significant signal about the state of on-chain generative art infrastructure. That such guides are needed — and produced by practitioners rather than platforms — reveals ongoing gaps in onboarding tooling while simultaneously demonstrating the health of peer knowledge-sharing norms within the generative art community. The signal points to a field where entry barriers remain non-trivial, but where a culture of mutual aid and open pedagogy actively works to lower them, sustaining the generative art ecosystem from below.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — A practitioner published a beginner's guide to creating generative art on fxhash using p5.js, motivated by the lack of accessible onboarding resources when they first joined the platform.
+**L1 — Surface**: L1 — A practitioner published a beginner's guide to creating generative art on fxhash using p5.js, based on their own recent experience onboarding to the platform.
 
-**L2 — Systemic**: L2 — The existence of this guide signals that fxhash's onboarding infrastructure has gaps that the community itself is filling through peer-produced documentation. This is a common pattern in decentralised platforms where official resources lag behind practitioner need, and knowledge production becomes a form of community labour.
+**L2 — Systemic**: L2 — The existence of practitioner-authored guides signals that official platform documentation may be insufficient or that the learning curve for on-chain generative art remains steep. Peer-produced knowledge fills infrastructure gaps that platforms themselves have not addressed, creating informal support systems that lower barriers to entry.
 
-**L3 — Worldview**: L3 — The guide assumes that generative art platforms should be accessible to newcomers and that knowledge-sharing is a communal responsibility rather than a gatekept commodity. It reflects a creative coding ethos where technical barriers are treated as solvable through mutual aid rather than as natural filters for quality.
+**L3 — Worldview**: L3 — The framing — 'a guide I wish I had' — centres lived experience and mutual aid over institutional instruction. It assumes that the most useful knowledge comes from recent practitioners rather than experts, and that sharing craft knowledge openly is a norm within generative art communities.
 
-**L4 — Narrative**: L4 — The 'guide I wish I had' framing enacts a deep pattern of gift-giving and path-clearing — the initiated practitioner turning back to light the way for those who follow. This is the craft-guild myth: mastery earns the obligation to teach, and the community reproduces itself through transmitted knowledge rather than institutional credentialing.
+**L4 — Narrative**: L4 — The guide enacts the gift economy mythology that runs deep in creative coding culture: the practitioner who has just crossed the threshold turns back to light the way for others. This mirrors older open-source and arts education traditions where knowledge is a commons, not a competitive advantage.
 
 ## Original Signal
 

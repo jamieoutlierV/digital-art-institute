@@ -3,7 +3,7 @@ id: 2026-03-09-fifteen-years-of-from-scratch
 status: processed
 source_url: https://blog.toplap.org/2025/12/05/fifteen-years-of-from-scratch/
 title: 2026-03-09-fifteen-years-of-from-scratch
-processed_at: 2026-03-09T22:24:24.415844+00:00
+processed_at: 2026-03-09T23:04:31.676164+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,7 +12,7 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:24:24.415844+00:00
+  processed_at: 2026-03-09T23:04:31.676164+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -21,37 +21,37 @@ concepts:
   - networked performance
   - from scratch
   - algorithmic music
-  - distributed arts events
-  - longevity in digital arts communities
+  - distributed cultural events
+  - anniversary/longevity in digital arts
 practitioners:
   - TOPLAP
   - From Scratch
 scenes:
   - live coding community
-  - TOPLAP global network
-  - algorave
-  - international live coding
+  - TOPLAP network
+  - global/distributed live coding scene
 tendencies:
   - decentralisation pressure
   - community self-organisation
   - practitioner-run infrastructure
   - durational commitment
-  - distributed performance networks
+  - streaming as performance venue
+  - global distributed collaboration
 ---
 
 # 2026-03-09-fifteen-years-of-from-scratch
 
-> The 15th anniversary of From Scratch marks a significant milestone in the live coding community's durability as a self-organised, practitioner-run global network. Operating outside conventional arts infrastructure, this streaming event demonstrates that artist-led, decentralised digital performance formats can sustain themselves over remarkably long timescales. The event's longevity — predating many current platforms and funding cycles — is evidence that community-driven digital arts infrastructure, when rooted in genuine practice and shared values of transparency and liveness, can achieve a resilience that institutionally dependent projects often cannot. For A(DAI), this signal is notable as a case study in how scenes maintain coherence and energy through distributed, low-overhead formats rather than centralised organisation.
+> From Scratch's 15th anniversary marks a significant milestone for the live coding community, demonstrating that practitioner-organised, non-commercial digital arts infrastructure can sustain itself over substantial timescales. Streamed globally and anchored by TOPLAP's distributed network, the event exemplifies a model of cultural production that is transparent, collectively governed, and resistant to platform capture. Its longevity is evidence that community-run events operating on principles of openness and process visibility can achieve durability typically associated with institutional programmes — suggesting that the live coding scene has matured from experimental novelty into an established, self-reproducing cultural practice with its own rituals, infrastructure, and intergenerational knowledge transfer.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — From Scratch, a live coding performance streaming event, celebrated its 15th anniversary with a global streaming programme running December 6-8, 2025. The event was promoted through TOPLAP, the international live coding community hub.
+**L1 — Surface**: L1 — From Scratch, a live coding performance event streamed globally, celebrated its 15th anniversary with a three-day programme running December 6–8, 2025. The event was announced and documented via TOPLAP, the primary community hub for live coding practice.
 
-**L2 — Systemic**: L2 — Fifteen years of continuous operation signals a mature, self-sustaining community infrastructure built outside institutional frameworks. The streaming format distributes performance globally without requiring centralised venue infrastructure, lowering barriers to participation while maintaining communal liveness. This is practitioner-organised infrastructure that has outlasted many funded digital arts initiatives.
+**L2 — Systemic**: L2 — Fifteen years of continuous operation signals a resilient, community-sustained infrastructure operating outside commercial platforms and institutional funding cycles. The streaming format distributes both performance and audience globally, lowering barriers to participation while maintaining a coherent scene identity through TOPLAP's organisational backbone.
 
-**L3 — Worldview**: L3 — The 'from scratch' ethos — performing code written live, with nothing pre-prepared — encodes values of transparency, vulnerability, and process-over-product. The community assumes that showing the means of production is itself an aesthetic and political act. Longevity here is framed not as institutional achievement but as sustained collective practice.
+**L3 — Worldview**: L3 — The live coding community valorises transparency, process-as-performance, and collective knowledge-sharing over proprietary tools or star-system hierarchies. 'From scratch' as a concept embodies an ethos of beginning with nothing, making the creative act fully visible — a counter-discourse to black-boxed commercial software and polished production values.
 
-**L4 — Narrative**: L4 — The name 'From Scratch' carries a creation myth: beginning from nothing, making something from the void in real time. Fifteen years of this ritual performance enacts a counter-myth to the tech industry's narrative of finished products and hidden labour — here, the labour is the art, and the blank screen is the stage. It echoes older traditions of improvisation as spiritual practice, where starting from zero is both discipline and liberation.
+**L4 — Narrative**: L4 — The 'from scratch' metaphor carries deep resonance: creation ex nihilo as performance, the blank screen as stage, code as living material. Fifteen years of repetition transforms an experimental gesture into ritual — the annual return to zero becomes a myth of perpetual renewal, positioning the live coder as both craftsperson and conjurer making something from nothing before witnesses.
 
 ## Original Signal
 

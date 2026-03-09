@@ -3,7 +3,7 @@ id: 2026-03-09-solstice-stream-2024-call-for-live-coders
 status: processed
 source_url: https://blog.toplap.org/2024/12/09/solstice-stream-2024/
 title: 2026-03-09-solstice-stream-2024-call-for-live-coders
-processed_at: 2026-03-09T22:25:49.040406+00:00
+processed_at: 2026-03-09T23:05:57.937764+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,43 +12,46 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:25:49.040406+00:00
+  processed_at: 2026-03-09T23:05:57.937764+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
   - live coding
   - networked performance
-  - open call
   - solstice stream
-  - distributed event
   - collective performance
-  - real-time audiovisual practice
+  - open call
+  - real-time music/art creation
+  - distributed collaboration
 practitioners:
   - TOPLAP
 scenes:
   - live coding community
   - algorave
-  - global online/distributed performance networks
+  - global networked performance
+  - open source music/art
 tendencies:
-  - Decentralisation pressure — distributed, non-hierarchical participation model
-  - Collective scale as aesthetic statement — 100+ performers as structural form
-  - Community self-organisation — practitioner-run infrastructure outside institutional gatekeeping
-  - Liveness as value — real-time, ephemeral, process-visible performance
+  - decentralisation pressure
+  - collective over individual authorship
+  - community self-organisation
+  - temporal ritual as structuring device
+  - radical accessibility
+  - abundance logic
 ---
 
 # 2026-03-09-solstice-stream-2024-call-for-live-coders
 
-> TOPLAP's 2024 solstice stream call is a recurring community ritual that exemplifies the live coding scene's commitment to radical openness, distributed participation, and practitioner-led infrastructure. By inviting 100+ performers for a continuous online broadcast, the event operates simultaneously as artistic programme, community census, and networked ritual — demonstrating how digital arts communities can self-organise at scale without institutional mediation. The signal is significant for its model of collective authorship and its embedding of digital practice within cyclical, ceremonial time, countering both the isolation of screen-based work and the gatekeeping of traditional festival structures.
+> TOPLAP's 2024 solstice stream call is a recurring signal of the live coding community's mature, self-organising infrastructure. By openly inviting 100+ performers for a distributed online marathon, it demonstrates a model of cultural production rooted in abundance, radical access, and collective authorship — operating outside conventional curatorial or institutional frameworks. The solstice framing anchors code performance in seasonal ritual, positioning live coding not merely as technical practice but as communal ceremony. For the digital arts field, this signal illustrates how artist-run, decentralised communities can sustain large-scale cultural events through voluntary participation, offering an alternative to platform-dependent or institution-mediated models of artistic presentation.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — TOPLAP issued an open call for 100+ live coders to each perform 15-minute sets in a continuous online solstice stream in 2024. The event is a large-scale, distributed, participatory live coding marathon.
+**L1 — Surface**: L1 — TOPLAP issued an open call for 100+ live coders to each contribute a 15-minute performance to their annual online solstice stream in 2024. The event is a large-scale, distributed, community-organised live performance marathon.
 
-**L2 — Systemic**: L2 — The format leverages networked infrastructure to bypass venue limitations and geographic gatekeeping, enabling a global community to self-organise a major event without institutional funding or curatorial intermediaries. The 15-minute slot structure creates low barriers to entry while maintaining collective coherence at scale.
+**L2 — Systemic**: L2 — The solstice stream model demonstrates a self-sustaining community infrastructure that operates without gatekeeping or traditional curatorial hierarchy, relying instead on mass participation and temporal structure. The 100+ performer target suggests a community large enough to sustain marathon-scale events through voluntary contribution alone, pointing to a mature organisational layer beneath the live coding scene.
 
-**L3 — Worldview**: L3 — The call assumes that code is performance, that process transparency is a virtue, and that artistic authority is distributed rather than concentrated. It embodies TOPLAP's long-standing discourse that liveness and improvisation in code constitute a legitimate and radical artistic practice, valuing participation and community over spectatorship and hierarchy.
+**L3 — Worldview**: L3 — The call assumes that creative value emerges from collective abundance rather than scarcity-based curation. It frames live coding as an inherently social and shareable practice — performance as commons rather than commodity. The open-call format embodies TOPLAP's foundational commitment to transparency, access, and showing one's screens.
 
-**L4 — Narrative**: L4 — The solstice framing anchors digital practice in deep seasonal ritual — marking time's turning through continuous, collective, machinic expression. The hundred-voice stream echoes myths of communal fire-tending: each performer briefly holds the signal before passing it on, a relay that makes the community visible to itself as a living, planetary body.
+**L4 — Narrative**: L4 — The solstice framing ties code performance to deep seasonal ritual — marking time collectively through making, as humans have always gathered at turning points of the year. The stream becomes a digital fire around which the global community gathers, each performer adding their voice to a continuous signal. There is an implicit myth of inexhaustibility: that the community can always generate more, that creation is renewable.
 
 ## Original Signal
 

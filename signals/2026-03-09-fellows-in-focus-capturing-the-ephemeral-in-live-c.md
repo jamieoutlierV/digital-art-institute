@@ -3,7 +3,7 @@ id: 2026-03-09-fellows-in-focus-capturing-the-ephemeral-in-live-c
 status: processed
 source_url: https://medium.com/processing-foundation/fellows-in-focus-capturing-the-ephemeral-in-live-coding-with-roxanne-harris-317930f48f2e?source=rss
 title: 2026-03-09-fellows-in-focus-capturing-the-ephemeral-in-live-c
-processed_at: 2026-03-09T22:23:30.741825+00:00
+processed_at: 2026-03-09T23:03:37.504016+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,18 +12,18 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:23:30.741825+00:00
+  processed_at: 2026-03-09T23:03:37.504016+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
   - live coding
-  - ephemeral art
-  - liveness
-  - hybrid postdigital practice
+  - ephemerality in performance
+  - algorithmic art
   - creative coding
-  - community fellowship
-  - documentation of ephemeral processes
-  - algorithmic performance
+  - hybrid postdigital practice
+  - documentation of transient processes
+  - fellowship-supported research
+  - art-technology intersection
 practitioners:
   - Roxanne Harris (alsoknownasro)
   - Processing Foundation
@@ -34,27 +34,27 @@ scenes:
   - live coding community
   - Processing/p5.js ecosystem
   - creative coding fellowship culture
-  - algorave/algorithmic performance
+  - algorave/live performance
 tendencies:
-  - Formalising the ephemeral — attempts to decode, document, and transmit knowledge from inherently transient live coding practices
-  - Fellowship as infrastructure — institutional support structures that validate and sustain practitioner-led experimental work outside market logics
-  - Practitioner-as-researcher — artists generating critical frameworks from within their own practice rather than having theory imposed externally
-  - Decentralisation pressure — community-driven foundations funding work that commercial platforms would not resource
+  - Ephemerality as aesthetic value — live coding foregrounds process over product, resisting the archive-everything impulse of digital culture
+  - Institutional support for liminal practices — fellowship structures giving resources to inherently transient, hard-to-commodify art forms
+  - Decoding and self-reflexivity — practitioners turning analytical attention onto the tendencies and patterns within their own practice
+  - Community knowledge production — editorial and documentation labour distributed across multiple contributors, not siloed in academia
 ---
 
 # 2026-03-09-fellows-in-focus-capturing-the-ephemeral-in-live-c
 
-> This signal documents the Processing Foundation's fellowship support for Roxanne Harris's research into live coding as ephemeral practice. Its significance lies not merely in the project itself but in what it represents structurally and discursively: a community-governed foundation resourcing practitioner-led research that seeks to formalise knowledge from an inherently transient art form. The project sits at a productive tension point in the digital arts — the desire to decode and transmit the tendencies within live coding performance without collapsing the liveness that gives the practice its meaning. For the broader field, it signals the maturation of live coding from subcultural performance practice to a site of serious artistic research, supported by fellowship infrastructure that operates outside both market and traditional academic logics.
+> This signal documents the Processing Foundation's fellowship support for Roxanne Harris's 'Ephemeral Experiments,' a project investigating tendencies within live coding practice. Its significance lies at the intersection of several currents in the digital arts field: the maturation of live coding from niche subculture to fellowship-supported research area; the growing self-reflexivity of creative coding communities turning analytical tools on their own processes; and the persistent tension between ephemerality as core aesthetic value and the institutional need to document, archive, and narrate. The Processing Foundation's role here highlights how community-governed organisations are building alternative infrastructure for practices that resist conventional art-market logics, while the project's explicit focus on 'decoding tendencies' signals a field moving beyond making-and-showing toward critical self-examination of its own patterns and assumptions.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — The Processing Foundation's 2024 Fellowship included Roxanne Harris's project 'Ephemeral Experiments: Decoding Tendencies in Live Coding,' which was highlighted as a standout project at the intersection of art, technology, and community.
+**L1 — Surface**: L1 — The Processing Foundation's 2024 Fellowship season concluded, spotlighting Roxanne Harris's project 'Ephemeral Experiments: Decoding Tendencies in Live Coding.' The fellowship supported research-creation at the intersection of live coding performance and documentation practice.
 
-**L2 — Systemic**: L2 — The fellowship model represents an alternative funding and validation structure for experimental digital art practice, where a community foundation resources practitioner-led research that commercial or academic institutions often overlook. Live coding occupies a structural gap between performance, software development, and composition, requiring new institutional forms to sustain it.
+**L2 — Systemic**: L2 — Fellowship programmes like Processing Foundation's function as alternative funding infrastructure for practices that sit outside conventional art market or academic tenure structures. They subsidise work that is processual and resistant to commodification, creating a parallel support system for experimental digital arts. The editorial chain (writer, editors, platform) reveals a deliberate knowledge-production pipeline around practitioner work.
 
-**L3 — Worldview**: L3 — The framing of live coding as containing decodable 'tendencies' reflects a discourse that treats ephemeral performance as a site of knowledge production, not merely entertainment. The language of 'capturing the ephemeral' reveals a tension between the liveness that gives the form its power and the institutional desire to document, preserve, and transmit practice.
+**L3 — Worldview**: L3 — The framing centres 'ephemerality' not as a problem to solve but as a quality to engage with — a stance that values liveness, impermanence, and embodied process over fixed outputs. The language of 'decoding tendencies' suggests a belief that creative coding practices contain legible patterns worth surfacing, positioning the practitioner as both performer and analyst of their own medium.
 
-**L4 — Narrative**: L4 — The deep metaphor here is the paradox of capturing what is essentially uncapturable — the ephemeral made legible without being killed. This echoes an ancient tension between lived experience and its codification, between the oral and the written, the performed and the archived. Live coding becomes a contemporary ritual where creation and disappearance are simultaneous.
+**L4 — Narrative**: L4 — The deep metaphor is capture-of-the-uncapturable: the paradox of documenting what is defined by its disappearance. This echoes older myths of trying to hold water or pin down breath — live coding as a practice that insists on presence against digital culture's drive toward permanent storage. The fellowship structure itself enacts a myth of the temporary gift: support that arrives, enables, and then releases.
 
 ## Original Signal
 

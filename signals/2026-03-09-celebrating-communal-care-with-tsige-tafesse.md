@@ -3,16 +3,16 @@ id: 2026-03-09-celebrating-communal-care-with-tsige-tafesse
 status: processed
 source_url: https://medium.com/processing-foundation/celebrating-communal-care-with-tsige-tafesse-f4225a86f731?source=rss
 title: 2026-03-09-celebrating-communal-care-with-tsige-tafesse
-processed_at: 2026-03-09T22:22:57.435465+00:00
+processed_at: 2026-03-09T23:02:59.398439+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
   contribution_method: bookmark
-  confidence: medium
+  confidence: high
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:22:57.435465+00:00
+  processed_at: 2026-03-09T23:02:59.398439+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -21,7 +21,7 @@ concepts:
   - empathetic leadership
   - compassionate criticality
   - community nurturing
-  - program management in arts
+  - program management in arts/tech
   - care infrastructure
 practitioners:
   - Processing Foundation
@@ -31,27 +31,29 @@ practitioners:
 scenes:
   - Processing/p5.js community
   - creative coding
-  - open-source arts education
+  - open-source arts-technology
+  - fellowship culture in digital arts
 tendencies:
-  - care as organisational infrastructure
-  - scaling fellowship programs while maintaining relational depth
-  - values-led program design
-  - community stewardship over managerial efficiency
+  - care as organisational practice
+  - scaling community without losing intimacy
+  - feminised labour made visible
+  - values-led programme design
+  - widening access through fellowship models
 ---
 
 # 2026-03-09-celebrating-communal-care-with-tsige-tafesse
 
-> This signal from the Processing Foundation foregrounds care labour as central to the health of a major open-source creative coding community. By publicly celebrating a program manager's empathetic, relational approach — and connecting it to record fellowship engagement — the Foundation models an alternative value system for arts-technology organisations, one where communal care is not ancillary to the work but constitutive of it. The signal is significant for the digital arts field because it makes visible the organisational infrastructure that sustains practitioner communities, and implicitly argues that scaling participation requires deepening relational capacity rather than simply expanding administrative bandwidth.
+> The Processing Foundation's public celebration of Tsige Tafesse's programme management work makes visible a significant but often invisible layer of digital arts infrastructure: the relational labour that sustains creative communities at scale. With fellowship applications nearly doubling over two years, the signal points to both growing demand for supported, values-aligned creative coding communities and the organisational maturity required to hold that demand with care. For the digital arts field, this is evidence that care-centred leadership models are not only viable but generative — producing measurable engagement growth while maintaining the qualitative texture of compassion and criticality that distinguishes community-driven arts organisations from platform-driven ones.
 
 ## CLA Analysis
 
-**L1 — Surface**: The Processing Foundation celebrates Program Manager Tsige Tafesse's three-year contribution to their fellowship program, which saw record-breaking application numbers of 346 in 2024 and 241 in 2023. The piece highlights her role in shaping a program defined by kindness and compassionate criticality.
+**L1 — Surface**: L1 — The Processing Foundation celebrates Tsige Tafesse's three-year tenure as Program Manager of its fellowship program, noting record-breaking application numbers (346 in 2024, 241 in 2023) and her role in shaping the program's culture of care and criticality.
 
-**L2 — Systemic**: The growth in fellowship applications signals increasing demand for structured support within creative coding and digital arts communities. The Foundation's investment in a dedicated program manager reflects a maturation of organisational infrastructure — moving from volunteer-driven to professionally sustained care labour. The emphasis on a single individual's role also reveals how much institutional culture depends on specific people rather than reproducible systems.
+**L2 — Systemic**: L2 — The signal reflects how arts-technology organisations are investing in dedicated care infrastructure — paid programme management roles that hold relational and emotional labour as core organisational functions rather than afterthoughts. Rising application numbers suggest growing demand for fellowship models that offer both material support and community belonging in the creative coding space.
 
-**L3 — Worldview**: The framing centres care, empathy, and communal wellbeing as primary measures of programmatic success — not output metrics, technical achievement, or career advancement. This positions the fellowship as a relational practice rather than a talent pipeline, and implicitly challenges efficiency-driven models of arts funding and programme design. 'Compassionate criticality' suggests a discourse where rigour and tenderness are not opposed.
+**L3 — Worldview**: L3 — The framing centres 'kindness', 'compassionate criticality', and 'empathetic leadership' as primary values — positioning care work not as soft supplement but as the defining quality of successful programme design. This discourse challenges techno-meritocratic assumptions about what makes open-source communities thrive, foregrounding relational capacity over technical output.
 
-**L4 — Narrative**: The deep story here is the garden-tender — the one who makes the conditions for others to grow. This is an archetype often rendered invisible in technology communities that valorise the builder and the maker. By naming and celebrating the care worker, the Foundation enacts a counter-myth: that the most important labour in a creative community is not production but cultivation.
+**L4 — Narrative**: L4 — The deep story here is stewardship as communal act: the programme manager as gardener rather than gatekeeper, tending conditions for growth. This draws on a myth of the commons — that shared creative-technological spaces flourish through sustained, embodied care rather than through systems alone. It quietly counters the Silicon Valley myth of the lone builder with a story of the one who holds the room.
 
 ## Original Signal
 

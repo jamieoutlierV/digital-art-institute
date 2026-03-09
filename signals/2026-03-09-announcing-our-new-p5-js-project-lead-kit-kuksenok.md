@@ -3,7 +3,7 @@ id: 2026-03-09-announcing-our-new-p5-js-project-lead-kit-kuksenok
 status: processed
 source_url: https://medium.com/processing-foundation/announcing-our-new-p5-js-project-lead-kit-kuksenok-5846043180d4?source=rss
 title: 2026-03-09-announcing-our-new-p5-js-project-lead-kit-kuksenok
-processed_at: 2026-03-09T22:22:11.679855+00:00
+processed_at: 2026-03-09T23:02:11.133733+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,7 +12,7 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:22:11.679855+00:00
+  processed_at: 2026-03-09T23:02:11.133733+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -25,39 +25,38 @@ concepts:
   - uncertainty in data visualization
   - open-source tooling
   - p5.js
-  - community governance
-  - project leadership transition
+  - creative coding education
 practitioners:
   - Kit Kuksenok
   - Processing Foundation
   - Suhyun (Sonia) Choi
   - Cora EF Hamilton
 scenes:
-  - Berlin creative coding scene
-  - Processing/p5.js community
-  - open-source creative tools ecosystem
-  - educational creative coding
+  - Berlin creative coding community
+  - Processing/p5.js ecosystem
+  - open-source creative tools community
+  - creative coding education
 tendencies:
-  - community stewardship of open-source creative tools
-  - critical technical practice
+  - community-led stewardship of open-source creative tools
+  - criticality within technical practice
   - decentralisation of creative coding leadership
-  - embodied data critique
-  - pedagogical infrastructure maintenance
+  - body data as artistic and political material
+  - practitioner-to-governance pipeline
 ---
 
 # 2026-03-09-announcing-our-new-p5-js-project-lead-kit-kuksenok
 
-> The appointment of Kit Kuksenok as p5.js Project Lead is a governance signal from one of the most significant open-source creative coding ecosystems. Beyond the personnel announcement, it reveals the Processing Foundation's evolving values: selecting a leader whose practice centres critical inquiry into data, embodiment, and algorithmic legibility. This matters for the digital arts field because p5.js is foundational infrastructure for creative coding education and practice globally, and the values embedded in its leadership shape what millions of practitioners understand creative coding to be. The emphasis on tech criticism and body data politics within a tool-governance role suggests a maturing discourse where maintaining creative tools is understood as cultural and political work, not merely technical upkeep.
+> The Processing Foundation's appointment of Kit Kuksenok as p5.js Project Lead is a signal of how mature open-source creative coding communities reproduce their values through leadership succession. Kuksenok's practice — spanning algorithmic art, body data research, tech criticism, and education — represents a holistic profile that the Foundation considers essential for stewarding one of the most widely used creative coding libraries. The appointment reinforces a tendency toward critically-informed, community-rooted governance of shared digital arts infrastructure, and positions p5.js as a space where questions of legibility, consent, and embodiment in data are not peripheral concerns but central to the tool's identity and direction.
 
 ## CLA Analysis
 
-**L1 — Surface**: The Processing Foundation announced Kit Kuksenok as the new p5.js Project Lead. Kuksenok brings a background in algorithmic art, data visualization, tech criticism, and teaching with p5.js, and is based in Berlin.
+**L1 — Surface**: L1 — The Processing Foundation announced Kit Kuksenok as the new p5.js Project Lead. Kuksenok is a Berlin-based practitioner with a background in algorithmic art, data visualization, tech criticism, and body data research.
 
-**L2 — Systemic**: Leadership transitions in open-source creative coding tools reflect the ongoing challenge of sustaining community-governed infrastructure. The selection of a lead with both artistic practice and critical perspective signals the Foundation's attempt to balance technical maintenance with cultural stewardship. The role embeds pedagogical and critical values into the governance of a tool used by millions.
+**L2 — Systemic**: L2 — This leadership appointment reflects the Processing Foundation's model of drawing project leads from active practitioner-educator communities rather than corporate or purely technical pipelines. It signals an institutional commitment to sustaining p5.js as community infrastructure, and the selection of someone with a critical tech practice suggests the ecosystem values reflexivity alongside technical development.
 
-**L3 — Worldview**: The framing foregrounds criticality — tech criticism, (il)legibility, (un)certainty, body data 'both voluntary and otherwise' — positioning p5.js not as a neutral technical tool but as a site for interrogating power, surveillance, and representation. This reflects a worldview where creative coding tools carry ethical obligations and where leadership should embody critical practice, not just technical competence.
+**L3 — Worldview**: L3 — The framing foregrounds criticality, embodiment, and uncertainty as virtues within creative coding — not bugs to be resolved but generative orientations. Kuksenok's interest in '(il)legibility and (un)certainty' positions p5.js not just as a tool for making but as a site for interrogating how data represents and misrepresents bodies. This reflects a worldview where open-source creative tools carry ethical and epistemological weight.
 
-**L4 — Narrative**: The open-source creative tool as commons: tended by practitioners who are simultaneously makers, critics, and teachers. The myth here is that the right steward — someone who lives inside both the code and the questions the code raises — can hold a tool's soul intact as it scales. There is an implicit counter-narrative to Silicon Valley's model of tool-building: care over growth, criticality over optimization.
+**L4 — Narrative**: L4 — The narrative arc here is the craftsperson becoming steward: someone who used the tool, taught with it, questioned what it makes visible and invisible, and now guides its future. It echoes a deep myth of commons governance — that those who tend the garden should shape its boundaries. There is also an implicit counter-myth to Silicon Valley's 'move fast and break things': here, care, slowness, and criticality are the qualifying virtues for leadership.
 
 ## Original Signal
 

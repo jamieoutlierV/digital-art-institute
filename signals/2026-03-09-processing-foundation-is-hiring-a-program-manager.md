@@ -3,7 +3,7 @@ id: 2026-03-09-processing-foundation-is-hiring-a-program-manager
 status: processed
 source_url: https://medium.com/processing-foundation/processing-foundation-is-hiring-a-program-manager-d79c72d8a37b?source=rss
 title: 2026-03-09-processing-foundation-is-hiring-a-program-manager
-processed_at: 2026-03-09T22:25:15.369246+00:00
+processed_at: 2026-03-09T23:05:25.089538+00:00
 provenance:
   contributor: unknown
   contribution_date: unknown
@@ -12,7 +12,7 @@ provenance:
   lived_experience: False
   consent: public
   license: CC-BY-SA
-  processed_at: 2026-03-09T22:25:15.369246+00:00
+  processed_at: 2026-03-09T23:05:25.089538+00:00
   processor_version: 1.0.0
   model: claude-opus-4-6
 concepts:
@@ -23,33 +23,34 @@ concepts:
   - p5.js
   - Processing
   - remote work in arts organisations
-  - community program management
+  - community-driven development
 practitioners:
   - Processing Foundation
 scenes:
   - creative coding community
+  - generative/algorithmic art
   - open-source creative tools ecosystem
   - coding education / access movement
 tendencies:
   - institutionalisation of open-source creative tools
-  - accessibility and inclusion pressure in coding education
-  - nonprofit infrastructure sustaining artist-facing technology
-  - decentralisation of arts labour (remote-first hiring)
+  - access and equity framing in technical education
+  - nonprofit infrastructure sustaining artist-facing platforms
+  - professionalisation of community-run projects
 ---
 
 # 2026-03-09-processing-foundation-is-hiring-a-program-manager
 
-> The Processing Foundation's open call for a Program Manager is a routine but structurally revealing signal about how foundational open-source creative coding tools are sustained. Rather than a technical hire, this is an investment in community programming, event infrastructure, and educational access — reflecting the Foundation's continued commitment to treating p5.js and Processing as public goods. The role's remote-first nature and emphasis on access over technical mastery suggest a broadening of who is invited to steward creative coding infrastructure. For the digital arts field, this is a quiet indicator of the ongoing labour required to maintain the commons that much generative and algorithmic art depends on.
+> The Processing Foundation's hiring of a Program Manager is a surface-level staffing event that reveals deeper patterns in how open-source creative coding tools are sustained over time. Processing and p5.js remain foundational infrastructure for the generative and algorithmic art field, and this hire indicates the organisation is in a phase of professionalising its community operations — investing in programme delivery, event coordination, and educational access rather than solely tool development. For the digital arts field, it is a signal that the nonprofit stewardship model for artist-facing open-source tools continues to function, though it raises ongoing questions about the sustainability and scalability of this model compared to commercially backed alternatives.
 
 ## CLA Analysis
 
-**L1 — Surface**: L1 — The Processing Foundation is hiring a fully remote Program Manager starting May 2025, seeking candidates with p5.js/Processing knowledge, event planning experience, and commitment to expanding access to coding education.
+**L1 — Surface**: L1 — The Processing Foundation, a 501(c)(3) nonprofit, is hiring a remote Program Manager starting May 2025, seeking candidates knowledgeable about p5.js or Processing with event planning experience and a commitment to expanding access to coding education.
 
-**L2 — Systemic**: L2 — This hire signals the Processing Foundation's ongoing need to professionalise and sustain operational capacity around tools (p5.js, Processing) that serve millions of creative coders. The choice of a program management role — not a developer role — suggests the organisation is investing in community infrastructure, event coordination, and educational access rather than purely technical development. Remote-first hiring widens the labour pool beyond traditional tech/art hubs.
+**L2 — Systemic**: L2 — This hire signals ongoing organisational maturation of what began as artist-built tools into sustained nonprofit infrastructure. The role's focus on event planning and access suggests the Foundation is investing in community cultivation and outreach rather than purely technical development, reflecting a stage where governance and programme delivery become as important as the codebase itself.
 
-**L3 — Worldview**: L3 — The framing centres 'increasing access to coding education' as a core value, positioning creative coding not as a niche artistic practice but as something that should be universally available. The language of passion, resourcefulness, and proactive learning reflects nonprofit sector norms where mission alignment compensates for structural under-resourcing.
+**L3 — Worldview**: L3 — The framing centres 'increasing access to coding education' as a core value, positioning creative coding not as a niche artistic practice but as a democratising educational project. The emphasis on passion, resourcefulness, and proactive learning signals a community that values intrinsic motivation and self-directed growth over credentialism — an ethos inherited from the open-source and creative coding movements.
 
-**L4 — Narrative**: L4 — Processing occupies a foundational mythos in creative coding: the tool that democratised code-as-art. Hiring for stewardship roles enacts the deep story that open-source creative tools are commons that require care, not products that sustain themselves. The program manager is a custodian archetype — tending the garden rather than building the cathedral.
+**L4 — Narrative**: L4 — Processing carries a foundational myth of the artist-programmer: the idea that code is a medium of personal expression and that the tools of computation should belong to everyone, not just engineers. A program manager hire is a quiet ritual of institutional continuity — ensuring the campfire keeps burning after the original builders step back.
 
 ## Original Signal
 
