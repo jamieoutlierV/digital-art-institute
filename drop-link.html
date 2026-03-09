@@ -55,7 +55,6 @@
       font-family:'Syne Mono',monospace;font-size:0.75rem;color:var(--ink);letter-spacing:0.03em;
       outline:none;transition:border-color 0.25s;}
     .url-input:focus{border-color:var(--mint);}
-    .url-input.error{border-color:var(--error);}
     .url-input::placeholder{color:#BBBBBB;}
     .note-input{width:100%;border:1px solid var(--faint);background:white;padding:0.85rem 1rem;
       font-family:'Syne',sans-serif;font-size:0.72rem;color:var(--ink);line-height:1.8;
@@ -67,8 +66,6 @@
     .name-input:focus{border-color:var(--mint);}
     .name-input::placeholder{color:#BBBBBB;}
     .field-hint{font-family:'Syne',sans-serif;font-size:0.58rem;color:#AAAAAA;margin-top:0.35rem;line-height:1.6;}
-    .field-error{font-family:'Syne Mono',monospace;font-size:0.54rem;color:var(--error);margin-top:0.35rem;display:none;}
-    .field-error.visible{display:block;}
 
     /* HONEYPOT — hidden from humans */
     .hp-field{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;}
@@ -77,35 +74,22 @@
     .submit-btn{display:inline-flex;align-items:center;gap:0.6rem;background:var(--ink);color:white;
       border:none;padding:0.85rem 2rem;font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:600;
       letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;
-      transition:background 0.25s,transform 0.2s cubic-bezier(0.16,1,0.3,1);}
+      transition:background 0.25s,transform 0.2s cubic-bezier(0.16,1,0.3,1));}
     .submit-btn:hover{background:#333333;transform:translateY(-1px);}
     .submit-btn:active{transform:translateY(0);}
     .submit-btn:disabled{background:#AAAAAA;cursor:not-allowed;transform:none;}
-    .submit-btn .arrow{color:var(--mint);transition:transform 0.2s;}
-    .submit-btn:hover .arrow{transform:translateX(3px);}
+    .submit-btn .arrow{color:var(--mint);}
 
     /* STATUS */
-    .status-area{margin-top:2rem;min-height:80px;}
+    .status-area{margin-top:2rem;}
     .status-msg{padding:1.2rem 1.4rem;border:1px solid var(--rule);font-family:'Syne',sans-serif;
       font-size:0.72rem;color:var(--muted);line-height:1.8;display:none;
       animation:arrive 0.5s cubic-bezier(0.16,1,0.3,1) forwards;}
     .status-msg.visible{display:block;}
     .status-msg.success{border-left:3px solid var(--mint);}
     .status-msg.error{border-left:3px solid var(--error);}
-    .status-title{font-family:'Instrument Serif',Georgia,serif;font-size:1rem;color:var(--ink);
-      margin-bottom:0.3rem;}
+    .status-title{font-family:'Instrument Serif',Georgia,serif;font-size:1rem;color:var(--ink);margin-bottom:0.3rem;}
     .status-detail{font-family:'Syne Mono',monospace;font-size:0.54rem;color:#AAAAAA;margin-top:0.4rem;}
-
-    /* RATE LIMIT INFO */
-    .rate-info{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);
-      font-family:'Syne Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:#BBBBBB;}
-
-    /* LOADING DOTS */
-    .loading-dots{display:inline-block;}
-    .loading-dots span{display:inline-block;width:4px;height:4px;border-radius:50%;
-      background:var(--mint);margin:0 2px;animation:pulse 1.2s ease-in-out infinite;}
-    .loading-dots span:nth-child(2){animation-delay:0.2s;}
-    .loading-dots span:nth-child(3){animation-delay:0.4s;}
 
     /* FOOTER */
     .footer{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule);
@@ -118,7 +102,6 @@
     .footer-link:hover{color:var(--mint);}
 
     @keyframes arrive{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
     @media(max-width:700px){
       .nav-bar{padding:1.2rem 1.6rem;}
@@ -143,38 +126,34 @@
 <!-- MAIN -->
 <div class="main">
 
-  <!-- HEADER -->
   <div class="page-header">
     <div class="accent-line"></div>
     <h1 class="page-title">Drop a Link</h1>
     <p class="page-sub">Contribute a signal to the A(DAI) intelligence layer. Paste a URL — an article, project, event, tool, anything relevant to the digital arts field. It enters the shared knowledge graph and gets analysed by the pipeline.</p>
   </div>
 
-  <!-- FORM -->
   <div class="form-section">
     <form id="dropForm" autocomplete="off">
 
       <div class="field">
-        <label class="field-label">URL <span class="field-required">*</span></label>
+        <label class="field-label" for="urlInput">URL <span class="field-required">*</span></label>
         <input type="url" class="url-input" id="urlInput" placeholder="https://..." required>
-        <div class="field-error" id="urlError"></div>
       </div>
 
       <div class="field">
-        <label class="field-label">Context / Note</label>
+        <label class="field-label" for="noteInput">Context / Note</label>
         <textarea class="note-input" id="noteInput" placeholder="Why is this interesting? What should we pay attention to?" maxlength="1000"></textarea>
         <div class="field-hint">Optional — helps the analysis pipeline understand your intent.</div>
       </div>
 
       <div class="field">
-        <label class="field-label">Your name</label>
+        <label class="field-label" for="nameInput">Your name</label>
         <input type="text" class="name-input" id="nameInput" placeholder="Anonymous" maxlength="50">
         <div class="field-hint">Optional — credited as contributor.</div>
       </div>
 
       <!-- Honeypot: invisible to humans, bots fill it -->
       <div class="hp-field" aria-hidden="true">
-        <label>Do not fill this</label>
         <input type="text" id="hpInput" name="_hp" tabindex="-1" autocomplete="off">
       </div>
 
@@ -183,16 +162,11 @@
       </button>
     </form>
 
-    <!-- STATUS -->
     <div class="status-area">
       <div class="status-msg" id="statusMsg"></div>
     </div>
-
-    <!-- RATE LIMIT INFO -->
-    <div class="rate-info" id="rateInfo"></div>
   </div>
 
-  <!-- FOOTER -->
   <div class="footer">
     <div class="footer-brand">A<span class="paren">(</span>DAI<span class="paren">)</span></div>
     <a href="/" class="footer-link">Back to main site</a>
@@ -201,191 +175,46 @@
 </div>
 
 <script>
-(function(){
-  // ── Config ──
-  var API_URL = '/api/drop-link/submit';
-  var RATE_LIMIT_HOUR = 5;
-  var RATE_LIMIT_DAY = 15;
-  var STORAGE_KEY = 'adai_drop_link_history';
-
-  // ── DOM ──
   var form = document.getElementById('dropForm');
-  var urlInput = document.getElementById('urlInput');
-  var noteInput = document.getElementById('noteInput');
-  var nameInput = document.getElementById('nameInput');
-  var hpInput = document.getElementById('hpInput');
   var submitBtn = document.getElementById('submitBtn');
   var statusMsg = document.getElementById('statusMsg');
-  var urlError = document.getElementById('urlError');
-  var rateInfo = document.getElementById('rateInfo');
 
-  // ── Rate limiting (client-side, localStorage) ──
-  function getHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    } catch(e) { return []; }
-  }
-
-  function addToHistory() {
-    var hist = getHistory();
-    hist.push(Date.now());
-    // Keep only last 24h
-    var cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    hist = hist.filter(function(t) { return t > cutoff; });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(hist));
-  }
-
-  function getRemaining() {
-    var hist = getHistory();
-    var now = Date.now();
-    var hourAgo = now - 60 * 60 * 1000;
-    var dayAgo = now - 24 * 60 * 60 * 1000;
-    var lastHour = hist.filter(function(t) { return t > hourAgo; }).length;
-    var lastDay = hist.filter(function(t) { return t > dayAgo; }).length;
-    return {
-      hourLeft: Math.max(0, RATE_LIMIT_HOUR - lastHour),
-      dayLeft: Math.max(0, RATE_LIMIT_DAY - lastDay),
-      blocked: lastHour >= RATE_LIMIT_HOUR || lastDay >= RATE_LIMIT_DAY
-    };
-  }
-
-  function updateRateInfo() {
-    var r = getRemaining();
-    if (r.blocked) {
-      rateInfo.textContent = 'Rate limit reached. ' + r.hourLeft + '/' + RATE_LIMIT_HOUR + ' this hour, ' + r.dayLeft + '/' + RATE_LIMIT_DAY + ' today.';
-      submitBtn.disabled = true;
-    } else {
-      rateInfo.textContent = r.hourLeft + '/' + RATE_LIMIT_HOUR + ' submissions remaining this hour \u00B7 ' + r.dayLeft + '/' + RATE_LIMIT_DAY + ' today';
-      submitBtn.disabled = false;
-    }
-  }
-
-  // ── URL validation ──
-  function validateUrl(str) {
-    str = str.trim();
-    if (!str) return { valid: false, msg: 'URL is required' };
-    if (str.length > 2000) return { valid: false, msg: 'URL is too long' };
-    try {
-      var url = new URL(str);
-      if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-        return { valid: false, msg: 'Must be an http:// or https:// URL' };
-      }
-      if (!url.hostname.includes('.')) {
-        return { valid: false, msg: 'Invalid domain' };
-      }
-      return { valid: true };
-    } catch(e) {
-      return { valid: false, msg: 'Invalid URL format' };
-    }
-  }
-
-  // ── Show status ──
-  function showStatus(type, title, detail) {
-    statusMsg.className = 'status-msg visible ' + type;
-    var html = '<div class="status-title">' + title + '</div>';
-    if (detail) html += '<div class="status-detail">' + detail + '</div>';
-    statusMsg.innerHTML = html;
-  }
-
-  function clearStatus() {
-    statusMsg.className = 'status-msg';
-    statusMsg.innerHTML = '';
-  }
-
-  function showError(msg) {
-    urlError.textContent = msg;
-    urlError.className = 'field-error visible';
-    urlInput.classList.add('error');
-  }
-
-  function clearError() {
-    urlError.className = 'field-error';
-    urlInput.classList.remove('error');
-  }
-
-  // ── Submit ──
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    clearStatus();
-    clearError();
-
-    // Validate
-    var v = validateUrl(urlInput.value);
-    if (!v.valid) {
-      showError(v.msg);
-      return;
-    }
-
-    // Rate limit check
-    var r = getRemaining();
-    if (r.blocked) {
-      showStatus('error', 'Rate limit reached', 'You can submit again in about an hour.');
-      return;
-    }
-
-    // Disable button, show loading
     submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Submitting <span class="loading-dots"><span></span><span></span><span></span></span>';
+    submitBtn.textContent = 'Submitting…';
+    statusMsg.className = 'status-msg';
 
-    var payload = {
-      url: urlInput.value.trim(),
-      note: noteInput.value.trim(),
-      submitted_by: nameInput.value.trim() || 'community',
-      _hp: hpInput.value
-    };
-
-    fetch(API_URL, {
+    fetch('/api/drop-link/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        url: document.getElementById('urlInput').value.trim(),
+        note: document.getElementById('noteInput').value.trim(),
+        submitted_by: document.getElementById('nameInput').value.trim() || 'community',
+        _hp: document.getElementById('hpInput').value
+      })
     })
-    .then(function(res) { return res.json().then(function(data) { return { status: res.status, data: data }; }); })
-    .then(function(result) {
-      if (result.data.ok) {
-        addToHistory();
-        showStatus('success',
-          'Signal received',
-          'Added: "' + result.data.title + '" \u2014 it will be analysed by the pipeline and appear in the knowledge graph.'
-        );
-        // Reset form
-        urlInput.value = '';
-        noteInput.value = '';
-        updateRateInfo();
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.ok) {
+        statusMsg.className = 'status-msg visible success';
+        statusMsg.innerHTML = '<div class="status-title">Signal received</div><div class="status-detail">' + (data.title || '') + '</div>';
+        form.reset();
       } else {
-        showStatus('error',
-          'Submission failed',
-          result.data.error || 'Unknown error. Please try again.'
-        );
+        statusMsg.className = 'status-msg visible error';
+        statusMsg.innerHTML = '<div class="status-title">Submission failed</div><div class="status-detail">' + (data.error || 'Please try again.') + '</div>';
       }
     })
-    .catch(function(err) {
-      showStatus('error', 'Connection error', 'Could not reach the server. Please check your connection and try again.');
+    .catch(function() {
+      statusMsg.className = 'status-msg visible error';
+      statusMsg.innerHTML = '<div class="status-title">Connection error</div><div class="status-detail">Could not reach the server. Please try again.</div>';
     })
     .finally(function() {
-      submitBtn.disabled = getRemaining().blocked;
-      submitBtn.innerHTML = 'Drop signal <span class="arrow">\u2192</span>';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Drop signal <span class="arrow">→</span>';
     });
   });
-
-  // ── Live URL validation on blur ──
-  urlInput.addEventListener('blur', function() {
-    if (urlInput.value.trim()) {
-      var v = validateUrl(urlInput.value);
-      if (!v.valid) showError(v.msg);
-      else clearError();
-    } else {
-      clearError();
-    }
-  });
-
-  urlInput.addEventListener('input', function() {
-    clearError();
-    clearStatus();
-  });
-
-  // ── Init ──
-  updateRateInfo();
-})();
 </script>
 </body>
 </html>
