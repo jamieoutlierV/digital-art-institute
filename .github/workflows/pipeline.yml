@@ -1,0 +1,64 @@
+name: A(DAI) Signal Pipeline
+
+on:
+  schedule:
+    # Runs nightly at 02:00 UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions UI
+    inputs:
+      single_signal:
+        description: 'Process a single signal file (path relative to repo root)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  process-signals:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to commit processed signals + dashboard
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Run signal processor
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "${{ inputs.single_signal }}" ]; then
+            python pipeline/signal_processor.py --signal "${{ inputs.single_signal }}" ${{ inputs.dry_run && '--dry-run' || '' }}
+          else
+            python pipeline/signal_processor.py ${{ inputs.dry_run && '--dry-run' || '' }}
+          fi
+
+      - name: Run concept linker
+        run: |
+          python pipeline/concept_linker.py ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Update dashboard
+        run: python pipeline/update_dashboard.py
+
+      - name: Commit changes
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git config user.name "adai-pipeline[bot]"
+          git config user.email "pipeline@digitalartsinstitute.io"
+          git add signals/ graph-data.json dashboard.md inbox/
+          git diff --cached --quiet || git commit -m "pipeline: nightly signal processing $(date -u +%Y-%m-%d)"
+          git push
