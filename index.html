@@ -1,867 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A(DAI) — a digital arts institute</title>
-  <meta name="description" content="Practice-led infrastructure for the art of now.">
+  <meta name="description" content="A(DAI) — a digital arts institute. A shared protocol for the digital arts to tell its own story.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='3' fill='%234169B0'/><text x='12' y='17' font-size='14' font-family='monospace' font-weight='400' fill='%230C0C0E' text-anchor='middle'>()</text></svg>">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.0.5/lib/p5.js"></script>
+  <script src="https://unpkg.com/p5.js-svg@1.3.1"></script>
+  <script src="https://cdn.jsdelivr.net/gh/josephg/noisejs/perlin.js"></script>
+  <script src="https://unpkg.com/d3-path@3.0.0/dist/d3-path.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;600&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Cutive+Mono&family=Anonymous+Pro:wght@400;700&family=Xanh+Mono:ital@0;1&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500;700&family=Inconsolata:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    :root {
-      --bg:#FFFFFF;--ink:#1A1A1A;--mint:#7aff9c;--sage:#c2dbbf;--sky:#85b0e1;
-      --muted:#444444;--faint:#DDDDDD;--rule:rgba(0,0,0,0.06);
+    /* ---- Philosophy modal ---- */
+    .phil-overlay{position:fixed;inset:0;z-index:100;display:flex;
+      align-items:center;justify-content:center;
+      padding:clamp(1rem,5vh,4rem) clamp(1rem,5vw,3rem);
+      background:rgba(8,8,10,0.6);
+      backdrop-filter:blur(7px) saturate(0.85);
+      -webkit-backdrop-filter:blur(7px) saturate(0.85);
+      opacity:0;transition:opacity 0.35s ease;}
+    .phil-overlay.open{opacity:1;}
+    .phil-overlay[hidden]{display:none;}
+
+    .phil-panel{position:relative;display:flex;flex-direction:column;
+      width:min(920px,100%);max-height:86vh;
+      background:rgba(12,12,14,0.97);
+      border:1px solid rgba(255,255,255,0.09);
+      box-shadow:0 30px 90px rgba(0,0,0,0.6);
+      font-family:var(--mono);color:var(--text);
+      transform:translateY(14px) scale(0.99);
+      transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+    .phil-overlay.open .phil-panel{transform:none;}
+
+    .phil-head{padding:clamp(1.6rem,3vw,2.4rem) clamp(1.6rem,3.5vw,2.8rem) 1.25rem;
+      border-bottom:1px solid rgba(255,255,255,0.08);}
+    .phil-label{font-size:0.82rem;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.85rem;}
+    .phil-title{font-family:var(--mono);font-weight:700;
+      font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.15;
+      letter-spacing:-0.01em;color:#FFF;}
+
+    .phil-body{padding:clamp(1.6rem,3.5vw,2.4rem) clamp(1.6rem,3.5vw,2.8rem);
+      overflow-y:auto;font-size:0.98rem;line-height:1.9;
+      text-align:justify;-webkit-hyphens:auto;hyphens:auto;}
+    .phil-body .seg-mark{display:block;font-size:0.72rem;letter-spacing:0.22em;
+      text-transform:uppercase;color:var(--brand-color);margin:2.3rem 0 0.95rem;}
+    .phil-body .seg-mark:first-child{margin-top:0;}
+    .phil-body p{margin-bottom:1.05rem;}
+    .phil-body p:last-child{margin-bottom:0;}
+    .phil-body em{font-style:italic;color:#d2d0ca;}
+    .phil-body strong{font-weight:700;color:#FFF;}
+    .phil-body .dim{color:#8a8a8c;}
+    .phil-body .principles{list-style:none;margin:0.5rem 0 0;padding:0;
+      display:flex;flex-direction:column;gap:0.55rem;text-align:left;}
+    .phil-body .principles li{display:flex;gap:0.85rem;align-items:baseline;}
+    .phil-body .principles .pn{color:var(--brand-color);flex-shrink:0;}
+
+    .phil-foot{display:flex;justify-content:space-between;gap:1rem;
+      padding:1.05rem clamp(1.6rem,3.5vw,2.8rem);
+      border-top:1px solid rgba(255,255,255,0.08);
+      font-size:0.78rem;letter-spacing:0.04em;color:var(--muted);}
+
+    /* thin scrollbar inside the body */
+    .phil-body::-webkit-scrollbar{width:8px;}
+    .phil-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:8px;}
+
+    @media(prefers-reduced-motion:reduce){
+      .phil-overlay,.phil-panel{transition:none;}
     }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    ::selection{background:var(--mint);color:#0C0F0E;}
-    html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;-webkit-font-smoothing:antialiased;}
-    #three-canvas{position:fixed;inset:0;z-index:0;}
-    #three-canvas.no-webgl{background:radial-gradient(ellipse 60% 70% at 28% 50%,rgba(122,255,156,0.07) 0%,rgba(133,176,225,0.04) 45%,transparent 75%);animation:fallback-breathe 8s ease-in-out infinite;}
-    @keyframes fallback-breathe{0%,100%{opacity:0.6;}50%{opacity:1;}}
-    body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity:0.045;}
-    .vr,.hr{position:fixed;z-index:2;pointer-events:none;background:var(--rule);}
-    .vr{top:0;bottom:0;width:1px;}.hr{left:0;right:0;height:1px;}
-    .vr-l{left:33.333%;}.vr-r{left:66.666%;}.hr-m{top:50%;}
-
-    /* NAV SHELL */
-    .nav-shell{position:fixed;top:0;left:0;right:0;z-index:30;padding:2.8rem 3.2rem 0;
-      display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;}
-    .brand{pointer-events:all;cursor:pointer;}
-    .brand-mark{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3.5rem,7vw,6.5rem);
-      font-weight:400;line-height:0.88;letter-spacing:-0.03em;color:var(--ink);
-      transition:font-size 0.7s cubic-bezier(0.16,1,0.3,1);}
-    .brand-mark .paren{color:var(--mint);font-style:italic;}
-    .brand-sub{font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:500;
-      letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-top:0.7rem;
-      transition:opacity 0.4s;}
-    .nav-shell.compact .brand-mark{font-size:clamp(1.4rem,3vw,2rem);}
-    .nav-shell.compact .brand-sub{opacity:0;pointer-events:none;}
-    .nav-shell.compact .breadcrumb{display:flex;}
-    .breadcrumb{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;
-      color:var(--muted);text-transform:uppercase;display:none;align-items:center;gap:0.5rem;margin-top:0.5rem;}
-    .breadcrumb .sep{color:var(--mint);}
-    nav.nav{display:flex;align-items:flex-start;gap:2rem;opacity:0;
-      animation:arrive 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;pointer-events:all;}
-    nav.nav a{font-family:'Syne',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:0.18em;
-      color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.25s;cursor:pointer;}
-    nav.nav a:hover,nav.nav a.active{color:var(--mint);}
-
-    /* VIEW SYSTEM */
-    .view{position:fixed;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity 0.6s ease;overflow-y:auto;}
-    .view.active{opacity:1;pointer-events:all;}
-
-    /* HOME */
-    #view-home{padding:2.8rem 3.2rem;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr auto;}
-    .home-brand-spacer{grid-column:1;grid-row:1;height:clamp(5rem,10vw,9rem);}
-    .center{grid-column:1/4;grid-row:2;display:flex;align-items:flex-end;padding-bottom:0.5rem;}
-    .dispatch-block{max-width:480px;opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;}
-    .dispatch-label{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.22em;
-      color:var(--mint);text-transform:uppercase;margin-bottom:0.85rem;display:flex;align-items:center;gap:0.7rem;}
-    .dispatch-label::before{content:'';display:block;width:24px;height:1px;background:var(--mint);}
-    .dispatch{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1rem,2vw,1.3rem);
-      font-style:italic;color:var(--muted);line-height:1.55;min-height:2.8rem;}
-    .cursor{display:inline-block;width:1.5px;height:1em;background:var(--mint);
-      vertical-align:text-bottom;margin-left:1px;animation:blink 1s step-end infinite;}
-    .bottom-left{grid-column:1;grid-row:3;display:flex;flex-direction:column;
-      justify-content:flex-end;gap:1.4rem;opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;}
-    .description{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.9;max-width:300px;}
-    .tags{display:flex;flex-wrap:wrap;gap:0.45rem;}
-    .tag{font-family:'Syne Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;
-      color:var(--muted);border:1px solid var(--faint);padding:0.28rem 0.55rem;text-transform:uppercase;}
-    .bottom-center{grid-column:2;grid-row:3;display:flex;align-items:flex-end;justify-content:center;
-      opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 1.0s forwards;}
-    .tagline{font-family:'Instrument Serif',Georgia,serif;font-size:0.8rem;font-style:italic;color:#AAAAAA;text-align:center;}
-    .bottom-right{grid-column:3;grid-row:3;display:flex;flex-direction:column;
-      justify-content:flex-end;align-items:flex-end;gap:1rem;
-      opacity:0;animation:arrive 1.2s cubic-bezier(0.16,1,0.3,1) 0.9s forwards;}
-    .status{display:flex;align-items:center;gap:0.55rem;}
-    .status-dot{width:5px;height:5px;border-radius:50%;background:var(--mint);
-      box-shadow:0 0 6px var(--mint);animation:pulse 2.5s ease-in-out infinite;}
-    .status-text{font-family:'Syne Mono',monospace;font-size:0.56rem;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;}
-    .handles{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;}
-    .handles a{font-family:'Syne Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;
-      color:var(--muted);text-decoration:none;transition:color 0.2s;}
-    .handles a:hover{color:var(--mint);}
-
-    /* ENTRY SEQUENCE */
-    .entry-seq{display:flex;flex-direction:column;gap:0.5rem;margin-top:0.3rem;}
-    .entry-seq-line{font-family:'Syne Mono',monospace;font-size:0.54rem;letter-spacing:0.1em;
-      color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;
-      transition:color 0.2s;}
-    .entry-seq-line:hover{color:var(--ink);}
-    .entry-seq-line .arr{color:var(--mint);}
-    .entry-seq-counts{font-size:0.5rem;color:#AAAAAA;margin-left:0.3rem;}
-    .entry-seq-about{font-family:'Syne Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;
-      color:#AAAAAA;text-decoration:none;margin-top:0.8rem;transition:color 0.2s;}
-    .entry-seq-about:hover{color:var(--muted);}
-
-    /* ARTEFACTS */
-    #view-artefacts{padding:9rem 3.2rem 3.2rem;display:flex;flex-direction:column;align-items:center;background:var(--bg);}
-    .artefacts-intro{max-width:520px;margin-bottom:3rem;}
-    .artefacts-intro h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);
-      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.8rem;}
-    .artefacts-intro p{font-family:'Syne',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.9;}
-    .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;max-width:960px;width:100%;}
-    .tool-card{background:var(--bg);padding:2rem;cursor:pointer;transition:background 0.3s,transform 0.35s cubic-bezier(0.16,1,0.3,1),box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);position:relative;overflow:hidden;border:1px solid var(--rule);}
-    .tool-card:hover{background:#FAFAFA;transform:scale(1.03);box-shadow:0 8px 30px rgba(0,0,0,0.06);}
-    .tool-card:hover .tool-arrow{transform:translate(3px,-3px);}
-    .tool-number{font-family:'Syne Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;color:var(--faint);margin-bottom:1.2rem;}
-    .tool-name{font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;
-      color:var(--ink);margin-bottom:0.6rem;letter-spacing:-0.01em;}
-    .tool-desc{font-family:'Syne',sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.8;}
-    .tool-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-size:0.9rem;color:var(--mint);transition:transform 0.2s;}
-    .tool-flow{margin-top:1rem;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;}
-    .tool-flow span{font-family:'Syne Mono',monospace;font-size:0.52rem;letter-spacing:0.08em;color:#AAAAAA;text-transform:uppercase;}
-    .tool-flow .arr{color:var(--mint);}
-
-
-    /* ABOUT / CONTACT */
-    #view-about,#view-contact{padding:7rem 3.2rem 3.2rem;display:flex;flex-direction:column;}
-    .prose-block{max-width:580px;}
-    .prose-block h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4vw,3rem);
-      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:1.5rem;}
-    .prose-block p{font-family:'Syne',sans-serif;font-size:0.72rem;color:var(--muted);line-height:2.0;margin-bottom:1.2rem;}
-    .accent-line{width:32px;height:2px;background:var(--mint);margin-bottom:1.5rem;}
-    .contact-handle{font-family:'Syne Mono',monospace;font-size:0.7rem;color:var(--mint);text-decoration:none;}
-    .contact-handle:hover{text-decoration:underline;}
-    .contact-member{font-family:'Syne Mono',monospace;font-size:0.65rem;color:var(--muted);text-decoration:none;}
-    .contact-member:hover{color:var(--ink);}
-
-    @keyframes arrive{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-
-
-    @media(max-width:700px){
-      .nav-shell{padding:1.6rem;}
-      #view-home{padding:1.6rem;grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;}
-      .center{grid-column:1;grid-row:3;}
-      .bottom-left{grid-column:1;grid-row:4;}
-      .bottom-right,.bottom-center{display:none;}
-      #view-artefacts,#view-about,#view-process,#view-contact{padding:6rem 1.6rem 2rem;}
-      .tool-grid{grid-template-columns:1fr;}
-      #three-canvas.no-webgl{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(122,255,156,0.07) 0%,rgba(133,176,225,0.04) 50%,transparent 80%);}
+    @media(max-width:640px){
+      .phil-body{text-align:left;}
+      .phil-foot{flex-direction:column;gap:0.35rem;}
     }
 
-    /* PROCESS */
-    #view-process{position:fixed;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity 0.6s ease;}
-    #view-process.active{opacity:1;pointer-events:all;}
-    #constellation-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:21;}
-    .stage-node{position:absolute;transform:translate(-50%,-50%);z-index:22;
-      display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
-      transition:opacity 0.3s;}
-    .stage-node-ring{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(26,26,26,0.35);
-      display:flex;align-items:center;justify-content:center;
-      transition:border-color 0.3s,background 0.3s;}
-    .stage-node:hover .stage-node-ring{border-color:rgba(26,26,26,0.9);background:rgba(26,26,26,0.08);}
-    .stage-node.active .stage-node-ring{border-color:rgba(26,26,26,0.35);background:transparent;}
-    .stage-node-dot{width:9px;height:9px;border-radius:50%;background:rgba(26,26,26,0.55);
-      transition:background 0.3s,box-shadow 0.3s;}
-    .stage-node:hover .stage-node-dot{background:rgba(26,26,26,1);}
-    .stage-node.active .stage-node-dot{background:rgba(26,26,26,0.55);}
-    .stage-node-label{font-family:'Syne Mono',monospace;font-size:0.56rem;font-weight:600;letter-spacing:0.18em;
-      text-transform:uppercase;color:rgba(26,26,26,0.75);white-space:nowrap;
-      transition:color 0.3s;}
-    .stage-node:hover .stage-node-label{color:rgba(26,26,26,1);}
-    .stage-node.active .stage-node-label{color:rgba(26,26,26,0.75);}
-    .stage-node-num{font-family:'Syne Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;
-      color:rgba(26,26,26,0.35);transition:color 0.3s;}
-    .stage-node.active .stage-node-num{color:rgba(26,26,26,0.35);}
-    .stage-info{position:fixed;bottom:3.5rem;left:3.2rem;max-width:360px;pointer-events:none;z-index:25;}
-    .stage-info-verb{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,5vw,4rem);
-      font-weight:400;letter-spacing:-0.02em;color:var(--ink);line-height:1;margin-bottom:0.6rem;
-      opacity:0;transform:translateY(8px);transition:opacity 0.5s,transform 0.5s cubic-bezier(0.16,1,0.3,1);}
-    .stage-info-desc{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.9;
-      opacity:0;transform:translateY(6px);transition:opacity 0.4s 0.08s,transform 0.4s 0.08s cubic-bezier(0.16,1,0.3,1);}
-    .stage-info-here{display:flex;align-items:center;gap:0.5rem;margin-top:0.6rem;
-      opacity:0;transition:opacity 0.4s 0.15s;}
-    .stage-info.show .stage-info-verb,.stage-info.show .stage-info-desc{opacity:1;transform:translateY(0);}
-    .stage-info.show .stage-info-here.vis{opacity:1;}
-    .si-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);
-      box-shadow:0 0 8px var(--mint),0 0 16px rgba(122,255,156,0.5);animation:pulse 2.5s ease-in-out infinite;flex-shrink:0;}
-    .si-here{font-family:'Syne Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;
-      color:var(--mint);text-transform:uppercase;}
-    .process-title{position:fixed;top:7rem;right:3.2rem;z-index:25;text-align:right;pointer-events:none;}
-    .process-title h2{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.2rem,2.5vw,2rem);
-      font-weight:400;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.4rem;}
-    .process-title p{font-family:'Syne',sans-serif;font-size:0.62rem;color:var(--muted);line-height:1.9;max-width:260px;margin-left:auto;}
+    /* ---- "coming soon" toast ---- */
+    .soon-toast{position:fixed;z-index:90;bottom:88px;right:32px;
+      font-family:var(--mono);font-size:0.8rem;letter-spacing:0.04em;
+      color:var(--text);background:rgba(12,12,14,0.96);
+      border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+      padding:0.6rem 0.9rem;box-shadow:0 12px 32px rgba(0,0,0,0.5);
+      opacity:0;transform:translateY(8px);
+      transition:opacity 0.3s ease,transform 0.3s ease;
+      pointer-events:none;white-space:nowrap;}
+    .soon-toast.show{opacity:1;transform:none;}
+    .soon-toast[hidden]{display:none;}
+    .soon-toast .st-label{color:var(--brand-color);}
+    @media(max-width:768px){
+      .soon-toast{bottom:64px;right:16px;font-size:0.75rem;}
+    }
+    @media(prefers-reduced-motion:reduce){ .soon-toast{transition:none;} }
+
+    /* ---- Regenerate button ---- */
+    #regenerate{position:fixed;top:24px;right:32px;z-index:11;
+      display:inline-flex;align-items:center;gap:0.5em;
+      font-family:var(--mono);font-size:13px;letter-spacing:0.12em;
+      text-transform:lowercase;color:var(--text);
+      background:rgba(6,6,8,0.22);border:1px solid rgba(255,255,255,0.07);
+      border-radius:999px;padding:8px 16px;cursor:pointer;
+      -webkit-appearance:none;appearance:none;
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      box-shadow:0 8px 22px rgba(0,0,0,0.1);
+      opacity:0.62;transition:opacity 0.35s ease,color 0.35s ease;}
+    #regenerate:hover{opacity:0.95;}
+    #regenerate:focus-visible{opacity:1;outline:1px solid rgba(var(--signal-rgb),0.6);outline-offset:3px;}
+    #regenerate .rg-icon{display:inline-block;font-size:1.05em;line-height:1;}
+    #regenerate.spin .rg-icon{animation:rg-spin 0.6s cubic-bezier(0.16,1,0.3,1);}
+    @keyframes rg-spin{to{transform:rotate(360deg);}}
+    /* drop the coordinate readout below the button so they don't overlap */
+    #coordinates{top:64px;}
+    @media(max-width:768px){
+      #regenerate{top:16px;right:16px;font-size:12px;padding:7px 13px;}
+      #coordinates{display:none;}
+    }
+    @media(prefers-reduced-motion:reduce){ #regenerate.spin .rg-icon{animation:none;} }
   </style>
 </head>
 <body>
-<div id="three-canvas"></div>
+  <div id="mopey"></div>
 
-<!-- NAV SHELL -->
-<div class="nav-shell" id="navShell">
-  <div class="brand" id="brandBtn">
-    <div class="brand-mark">A<span class="paren">(</span>DAI<span class="paren">)</span></div>
-    <div class="brand-sub">a digital arts institute</div>
-    <div class="breadcrumb" id="breadcrumb"></div>
-  </div>
-  <nav class="nav">
-    <a href="graph.html">/graph</a>
-    <a href="field-intelligence.html">/query</a>
-    <a href="contribute.html">/contribute</a>
-  </nav>
-</div>
+  <div id="chrome">
+    <div id="logotype" aria-label="adai">
+      <span id="logotype-text"></span><span class="logotype__cursor" aria-hidden="true"></span>
+    </div>
+    <button id="regenerate" type="button" aria-label="regenerate artwork">
+      <span class="rg-icon" aria-hidden="true">↻</span><span>regenerate</span>
+    </button>
 
-<!-- HOME -->
-<div class="view active" id="view-home">
-  <div class="home-brand-spacer"></div>
-  <div class="center">
-    <div class="dispatch-block">
-      <div class="dispatch-label">Dispatch</div>
-      <div class="dispatch" id="dispatch"><span class="cursor"></span></div>
+    <div id="coordinates">
+      <span id="coord-x">x 0.000</span>
+      <span id="coord-y">y 0.000</span>
     </div>
-  </div>
-  <div class="bottom-left">
-    <p class="description">Every technological era produces the art that comes to define it. We think we’re in one of those moments. A(DAI) is building the open infrastructure for the emergent field to sense itself.</p>
-    <div class="tags">
-      <span class="tag">Sensemaking organism</span>
-      <span class="tag">Open protocol</span>
-      <span class="tag">Commons-first</span>
-      <span class="tag">Forkable</span>
-    </div>
-    <div class="entry-seq">
-      <a class="entry-seq-line" href="graph.html">
-        <span class="arr">→</span>
-        <span>initializing field intelligence<span id="entry-dots">...</span></span>
-        <span class="entry-seq-counts" id="entry-counts"></span>
-      </a>
-      <a class="entry-seq-about" data-view="about" href="#about">↗ about the project</a>
-    </div>
-  </div>
-  <div class="bottom-center"><p class="tagline">The digital arts, finding its shared language.</p></div>
-  <div class="bottom-right">
-    <div class="status"><div class="status-dot"></div><span class="status-text">Building</span></div>
-    <div class="handles">
-      <a href="https://x.com/jamie247" target="_blank">@jamie247</a>
-      <a href="https://x.com/Pixel0Symphony" target="_blank">@Pixel0Symphony</a>
-      <a href="https://aiio.studio" target="_blank">aiio.studio</a>
-      <a href="https://x.com/voidtarget" target="_blank">@gio</a>
-    </div>
-  </div>
-</div>
 
-<!-- ARTEFACTS -->
-<div class="view" id="view-artefacts">
-  <div class="artefacts-intro">
-    <h2>Sense</h2>
-    <p>Tools that feed signal into the A(DAI) intelligence layer. Each artefact is a contribution mechanism — your input becomes part of the commons.</p>
+    <div id="vitals">
+      <div class="vital-row"><span class="vital-label">nodes</span><span class="vital-value" id="v-nodes">774</span></div>
+      <div class="vital-row"><span class="vital-label">edges</span><span class="vital-value" id="v-edges">929</span></div>
+      <div class="vital-row"><span class="vital-label">signal</span><span class="vital-value" id="v-signal">0.00</span></div>
+      <div class="vital-row"><span class="vital-label">mode</span><span class="vital-value" id="v-mode">orbit [m]</span></div>
+    </div>
+
+    <nav id="rooms">
+      <a href="#philosophy" id="open-philosophy" class="room-link active">philosophy</a>
+      <a href="#sense" class="room-link soon" aria-disabled="true">sense</a>
+      <a href="#query" class="room-link soon" aria-disabled="true">query</a>
+      <a href="#contribute" class="room-link soon" aria-disabled="true">contribute</a>
+    </nav>
   </div>
-  <div class="tool-grid">
-    <div class="tool-card" onclick="window.open('/transcriber','_blank')" style="cursor:pointer;">
-      <div class="tool-number">01</div>
-      <div class="tool-name">Drop Audio/Video</div>
-      <div class="tool-desc">Upload an audio or video recording. The system transcribes, identifies speakers, extracts key signals via Claude, and posts a structured entry to the Signal Inbox.</div>
-      <div class="tool-flow">
-        <span>Audio / MP4</span><span class="arr">→</span>
-        <span>AssemblyAI</span><span class="arr">→</span>
-        <span>Claude</span><span class="arr">→</span>
-        <span>Signal Inbox</span>
+
+  <div id="philosophy-overlay" class="phil-overlay" hidden>
+    <div class="phil-panel" role="dialog" aria-modal="true" aria-labelledby="phil-title" tabindex="-1">
+      <header class="phil-head">
+        <div class="phil-label">[philosophy]</div>
+        <h1 id="phil-title" class="phil-title">A protocol, not an institution</h1>
+      </header>
+      <div class="phil-body">
+        <span class="seg-mark">What</span>
+        <p>A shared protocol for the digital arts to tell its own story — across time, mediums and practices.</p>
+        <p>An open, permissionless commons. <span class="dim">Never finished, never flattened.</span></p>
+        <p>A provocation to begin: a seed canon inviting discovery and participation.</p>
+        <p>Re-weightable, forkable — <em>every fork a legitimate centre</em>.</p>
+
+        <span class="seg-mark">Why</span>
+        <p>Digital art is the defining art of our time — testing the line between human and machine.</p>
+        <p>Decades of history still unmetabolised, and a scene exploding at machine-speed.</p>
+        <p>Its story lives between practitioners — scattered across feeds, shows and moments.</p>
+        <p>No single institution holds that tension without flattening it. <span class="dim">The field needs a native one.</span></p>
+
+        <span class="seg-mark">How</span>
+        <p>Speed without intention collapses under its own weight.</p>
+        <p>So we turn the machine on itself — ingesting work, crowdsourcing curation from practitioners.</p>
+        <p>A seed canon and knowledge graph: a commons to surface bias and provoke contribution.</p>
+        <ol class="principles">
+          <li><span class="pn">01</span><span>Plurality as constraint</span></li>
+          <li><span class="pn">02</span><span>Artists as sovereign</span></li>
+          <li><span class="pn">03</span><span>Tensions preserved, not resolved</span></li>
+          <li><span class="pn">04</span><span>Provenance as ethics</span></li>
+          <li><span class="pn">05</span><span>Intention over attention</span></li>
+          <li><span class="pn">06</span><span>Commons without enclosure</span></li>
+          <li><span class="pn">07</span><span>Where language fails</span></li>
+        </ol>
+
+        <span class="seg-mark">Next</span>
+        <p>A select cohort of artists, curators and institutions to seed the canon and shape its governance.</p>
+        <p>Each partner owns their assets; <span class="dim">every contribution stays attributable.</span></p>
       </div>
-      <div class="tool-arrow">↗</div>
-    </div>
-    <div class="tool-card" onclick="event.stopPropagation();window.open('field-intelligence.html','_blank')" style="cursor:pointer;">
-      <div class="tool-number">02</div>
-      <div class="tool-name">Sense</div>
-      <div class="tool-desc">Explore the A(DAI) knowledge graph. Search signals, concepts, practitioners, and threads. Ask questions in natural language — the system finds semantic connections across the field.</div>
-      <div class="tool-flow">
-        <span>Query</span><span class="arr">→</span>
-        <span>Graph</span><span class="arr">→</span>
-        <span>Explore</span>
-      </div>
-      <div class="tool-arrow">↗</div>
-    </div>
-    <div class="tool-card" onclick="event.stopPropagation();window.open('drop-link.html','_blank')" style="cursor:pointer;">
-      <div class="tool-number">03</div>
-      <div class="tool-name">Drop a Link</div>
-      <div class="tool-desc">Paste a URL, article, or observation. The system analyses it against the A(DAI) ontology and adds it to the shared intelligence layer — anyone can contribute signal.</div>
-      <div class="tool-flow"><span>URL / Text</span><span class="arr">→</span><span>Claude</span><span class="arr">→</span><span>Signal Inbox</span></div>
-      <div class="tool-arrow">↗</div>
-    </div>
-    <div class="tool-card" onclick="event.stopPropagation();window.open('field-intelligence.html','_blank')" style="cursor:pointer;">
-      <div class="tool-number">04</div>
-      <div class="tool-name">Query</div>
-      <div class="tool-desc">Ask the field intelligence layer. Search signals, concepts, practitioners, and threads — the system finds semantic connections across the emerging digital arts field.</div>
-      <div class="tool-flow">
-        <span>Question</span><span class="arr">→</span>
-        <span>Graph</span><span class="arr">→</span>
-        <span>Insight</span>
-      </div>
-      <div class="tool-arrow">↗</div>
+      <footer class="phil-foot">
+        <span>esc to close</span>
+        <span>scroll to read · click outside to dismiss</span>
+      </footer>
     </div>
   </div>
-</div>
 
+  <div id="soon-toast" class="soon-toast" role="status" aria-live="polite" hidden></div>
 
-<!-- ABOUT -->
-<div class="view" id="view-about">
-  <div class="prose-block">
-    <div class="accent-line"></div>
-    <h2>The art of now</h2>
-    <p>Every field has a moment where the practice outpaces the language. The emergent digital arts are in that moment. The work is already happening. It’s plural, restless, globally distributed. What’s missing is the infrastructure to make sense of it collectively.</p>
-    <p>A(DAI) starts with a conversation. Deep listening. What practitioners say before it turns into theory or doctrine. From there it senses, finding the patterns that cut across scenes, subcultures, and geographies. It queries. It speculates. It reacts. From that process, a shared language emerges. A collective memory. Something you can build on, fork, query, discover through.</p>
-    <p>It’s a place to find collaborators. To see how your practice connects to others you didn’t know existed. To contribute to a narrative that belongs to the field, not to an institution.</p>
-    <p>A(DAI) is an open protocol. Anyone can build on top of it.</p>
-    <p>Narrative formation led by artists first. Market formation follows.</p>
-  </div>
-</div>
-
-<!-- PROCESS -->
-<div class="view" id="view-process">
-  <canvas id="constellation-canvas"></canvas>
-  <div id="stage-nodes-wrap"></div>
-  <div class="process-title">
-    <h2>Process</h2>
-    <p>An open-source protocol for collective sense-making. Currently: Sense.</p>
-  </div>
-  <div class="stage-info" id="stageInfo">
-    <div class="stage-info-verb" id="stageVerb"></div>
-    <div class="stage-info-desc" id="stageDesc"></div>
-    <div class="stage-info-here" id="stageHere">
-      <div class="si-dot"></div><span class="si-here">We are here</span>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACT -->
-<div class="view" id="view-contact">
-  <div class="prose-block">
-    <div class="accent-line"></div>
-    <h2>Contact</h2>
-    <p>For collaboration, advisory, or to contribute to the field intelligence layer:</p>
-    <p>
-      <a href="https://x.com/Pixel0Symphony" target="_blank" class="contact-member">@Pixel0Symphony</a> &nbsp;·&nbsp;
-      <a href="https://x.com/jamie247" target="_blank" class="contact-member">@jamie247</a> &nbsp;·&nbsp;
-      <a href="https://aiio.studio" target="_blank" class="contact-member">aiio.studio</a> &nbsp;·&nbsp;
-      <a href="https://x.com/voidtarget" target="_blank" class="contact-member">@gio</a>
-    </p>
-  </div>
-</div>
-
-<script>
-// ── THREE.JS SHADER ──────────────────────────────────────────────
-(function(){
-  function webglAvailable(){try{var c=document.createElement('canvas');return!!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')));}catch(e){return false;}}
-  function showFallback(){document.getElementById('three-canvas').classList.add('no-webgl');}
-  if(!webglAvailable()){showFallback();return;}
-  var W=window.innerWidth,H=window.innerHeight;
-  var scene=new THREE.Scene();
-  var camera=new THREE.PerspectiveCamera(28,W/H,0.1,100);
-  camera.position.set(-3.6,0,0);camera.lookAt(0,0,0);
-  var renderer;
-  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});}catch(e){showFallback();return;}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio*1.3,2.6));
-  renderer.setSize(W,H);renderer.setClearColor(0xFFFFFF,1);
-  renderer.domElement.addEventListener('webglcontextlost',function(e){e.preventDefault();showFallback();},false);
-  document.getElementById('three-canvas').appendChild(renderer.domElement);
-
-  var VS=`
-    uniform float uTime,uAmplitude,uFrequency,uStrength,uDensity,uSpeed,uRepel;
-    uniform vec2 uRepelDir,uMouse;
-    varying vec3 vNormal,vPosition;varying float vDisplace;
-    vec3 m3(vec3 x){return x-floor(x*(1./289.))*289.;}
-    vec4 m4(vec4 x){return x-floor(x*(1./289.))*289.;}
-    vec4 perm(vec4 x){return m4(((x*34.)+1.)*x);}
-    vec4 tis(vec4 r){return 1.79284291400159-0.85373472095314*r;}
-    float sn(vec3 v){
-      const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);
-      vec3 i=floor(v+dot(v,C.yyy)),x0=v-i+dot(i,C.xxx);
-      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
-      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
-      vec3 x1=x0-i1+C.xxx,x2=x0-i2+C.yyy,x3=x0-D.yyy;
-      i=m3(i);
-      vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
-      float n_=.142857142857;vec3 ns=n_*D.wyz-D.xzx;
-      vec4 j=p-49.*floor(p*ns.z*ns.z),x_=floor(j*ns.z),y_=floor(j-7.*x_);
-      vec4 xx=x_*ns.x+ns.yyyy,yy=y_*ns.x+ns.yyyy,h=1.-abs(xx)-abs(yy);
-      vec4 b0=vec4(xx.xy,yy.xy),b1=vec4(xx.zw,yy.zw);
-      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.,sh=-step(h,vec4(0.));
-      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
-      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
-      vec4 norm=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-      p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
-      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m*=m;
-      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
-    }
-    void main(){
-      vNormal=normal;vPosition=position;
-      float t=uTime*uSpeed;
-      float d=(sn(normal*uFrequency*uDensity*.25+t*.35+13.3)*.50
-              +sn(normal*uFrequency*uDensity*.5+t*.7)*.28
-              +sn(normal*uFrequency*uDensity+t+3.7)*.14
-              +sn(normal*uFrequency*uDensity*2.+t*1.4+7.1)*.08)*uStrength*.09;
-      float mx=uMouse.x,my=uMouse.y,mag=sqrt(mx*mx+my*my);
-      d+=sn(normal*1.8+vec3(mx*2.2,my*2.2,t*.3))*.38*mag*1.1;
-      d+=dot(normal,normalize(vec3(mx,my,.6)))*mag*.22;
-      vec3 np=position+normal*d*uAmplitude*.13;
-      vec3 rv=vec3(uRepelDir.x,uRepelDir.y,.5);
-      np+=normalize(rv)*uRepel*1.8*max(0.,dot(normal,normalize(rv)));
-      vDisplace=d;
-      gl_Position=projectionMatrix*modelViewMatrix*vec4(np,1.);
-    }`;
-
-  var FS=`
-    uniform float uTime,uBrightness,uRepel;
-    uniform vec3 uColor1,uColor2,uColor3;
-    varying vec3 vNormal,vPosition;varying float vDisplace;
-    float hsh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-    void main(){
-      float w1=smoothstep(-1.,1.,vNormal.y+vDisplace*.4);
-      float w2=smoothstep(-1.,1.,vNormal.x-vDisplace*.3);
-      float w3=clamp(1.-w1*.6-w2*.6,0.,1.);
-      float ws=w1+w2+w3+.001;w1/=ws;w2/=ws;w3/=ws;
-      vec3 col=uColor1*w1+uColor2*w2+uColor3*w3;
-      float d1=max(dot(vNormal,normalize(vec3(1.,2.,1.5))),0.);
-      float d2=max(dot(vNormal,normalize(vec3(-1.,-1.,.5))),0.)*.3;
-      float rim=pow(1.-max(dot(vNormal,vec3(0.,0.,1.)),0.),2.5)*.25;
-      col=col*(.55+vec3(1.)*d1*.5+vec3(.5,.8,1.)*d2+vec3(.6,1.,.7)*rim)*uBrightness;
-      col+=hsh(gl_FragCoord.xy+fract(uTime*.1))*.055-.027;
-      col=mix(vec3(1.),col,clamp(1.-uRepel*.92,0.,1.));
-      gl_FragColor=vec4(clamp(col,0.,1.),0.22);
-    }`;
-
-  var U={
-    uTime:{value:0.},uAmplitude:{value:5.5},uFrequency:{value:4.2},
-    uStrength:{value:8.},uDensity:{value:2.2},uSpeed:{value:0.15},
-    uBrightness:{value:1.2},
-    uColor1:{value:new THREE.Color(0x7aff9c)},
-    uColor2:{value:new THREE.Color(0xc2dbbf)},
-    uColor3:{value:new THREE.Color(0x85b0e1)},
-    uMouse:{value:new THREE.Vector2(0,0)},
-    uRepel:{value:0.},uRepelDir:{value:new THREE.Vector2(0,0)},
-  };
-  var mesh=new THREE.Mesh(new THREE.SphereGeometry(1,128,128),new THREE.ShaderMaterial({vertexShader:VS,fragmentShader:FS,uniforms:U,transparent:true,depthWrite:false}));
-  mesh.position.set(-0.8,0,0);mesh.rotation.z=0.8726646;mesh.rotation.y=0.1745329;
-  scene.add(mesh);
-
-  // ── GRAPH OVERLAY (nodes + edges on sphere surface) ────────────
-  var graphSN=`
-    vec3 m3g(vec3 x){return x-floor(x*(1./289.))*289.;}
-    vec4 m4g(vec4 x){return x-floor(x*(1./289.))*289.;}
-    vec4 permg(vec4 x){return m4g(((x*34.)+1.)*x);}
-    vec4 tisg(vec4 r){return 1.79284291400159-0.85373472095314*r;}
-    float sng(vec3 v){
-      const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);
-      vec3 i=floor(v+dot(v,C.yyy)),x0=v-i+dot(i,C.xxx);
-      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
-      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
-      vec3 x1=x0-i1+C.xxx,x2=x0-i2+C.yyy,x3=x0-D.yyy;
-      i=m3g(i);
-      vec4 p=permg(permg(permg(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
-      float n_=.142857142857;vec3 ns=n_*D.wyz-D.xzx;
-      vec4 j=p-49.*floor(p*ns.z*ns.z),x_=floor(j*ns.z),y_=floor(j-7.*x_);
-      vec4 xx=x_*ns.x+ns.yyyy,yy=y_*ns.x+ns.yyyy,h=1.-abs(xx)-abs(yy);
-      vec4 b0=vec4(xx.xy,yy.xy),b1=vec4(xx.zw,yy.zw);
-      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.,sh=-step(h,vec4(0.));
-      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
-      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
-      vec4 norm=tisg(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-      p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
-      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m*=m;
-      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
-    }
-    vec3 gDisp(vec3 pos,float t,vec2 mouse,float amp,float freq,float dens,float str,float repel,vec2 repDir){
-      vec3 n=normalize(pos);
-      float d=(sng(n*freq*dens*.25+t*.35+13.3)*.50
-              +sng(n*freq*dens*.5+t*.7)*.28
-              +sng(n*freq*dens+t+3.7)*.14
-              +sng(n*freq*dens*2.+t*1.4+7.1)*.08)*str*.09;
-      float mx=mouse.x,my=mouse.y,mag=sqrt(mx*mx+my*my);
-      d+=sng(n*1.8+vec3(mx*2.2,my*2.2,t*.3))*.38*mag*1.1;
-      d+=dot(n,normalize(vec3(mx,my,.6)))*mag*.22;
-      vec3 np=pos+n*(d*amp*.13+0.015);
-      vec3 rv=vec3(repDir.x,repDir.y,.5);
-      np+=normalize(rv)*repel*1.8*max(0.,dot(n,normalize(rv)));
-      return np;
-    }`;
-
-  // Fibonacci sphere: 100 evenly distributed nodes
-  var GN=140;
-  var gPos=new Float32Array(GN*3),gPhase=new Float32Array(GN),gSize=new Float32Array(GN),gColor=new Float32Array(GN*3);
-  var gPal=[[.478,1.,.612],[.522,.690,.882],[.761,.859,.749]];
-  for(var gi=0;gi<GN;gi++){
-    var gy=1-(gi/(GN-1))*2,gr=Math.sqrt(1-gy*gy),gth=gi*2.399963;
-    gPos[gi*3]=Math.cos(gth)*gr;gPos[gi*3+1]=gy;gPos[gi*3+2]=Math.sin(gth)*gr;
-    gPhase[gi]=Math.random()*6.283;gSize[gi]=6+Math.random()*12;
-    var cr=Math.random(),ci=cr<.6?0:cr<.85?1:2;
-    gColor[gi*3]=gPal[ci][0];gColor[gi*3+1]=gPal[ci][1];gColor[gi*3+2]=gPal[ci][2];
-  }
-
-  // K-nearest neighbor edges (k=3)
-  var edgeMap={},ePairs=[];
-  for(var gi=0;gi<GN;gi++){
-    var ds=[];
-    for(var gj=0;gj<GN;gj++){
-      if(gi===gj)continue;
-      var dx=gPos[gi*3]-gPos[gj*3],dy=gPos[gi*3+1]-gPos[gj*3+1],dz=gPos[gi*3+2]-gPos[gj*3+2];
-      ds.push({i:gj,d:dx*dx+dy*dy+dz*dz});
-    }
-    ds.sort(function(a,b){return a.d-b.d;});
-    for(var gk=0;gk<5;gk++){
-      var key=Math.min(gi,ds[gk].i)+'-'+Math.max(gi,ds[gk].i);
-      if(!edgeMap[key]){edgeMap[key]=true;ePairs.push([gi,ds[gk].i]);}
-    }
-  }
-  var eN=ePairs.length,ePos=new Float32Array(eN*6),ePhase=new Float32Array(eN*2);
-  for(var gi=0;gi<eN;gi++){
-    var ea=ePairs[gi][0],eb=ePairs[gi][1];
-    ePos[gi*6]=gPos[ea*3];ePos[gi*6+1]=gPos[ea*3+1];ePos[gi*6+2]=gPos[ea*3+2];
-    ePos[gi*6+3]=gPos[eb*3];ePos[gi*6+4]=gPos[eb*3+1];ePos[gi*6+5]=gPos[eb*3+2];
-    ePhase[gi*2]=gPhase[ea];ePhase[gi*2+1]=gPhase[eb];
-  }
-
-  // Node particles
-  var nodeVS=`
-    uniform float uTime,uAmplitude,uFrequency,uDensity,uStrength,uSpeed,uRepel;
-    uniform vec2 uMouse,uRepelDir;
-    attribute float aPhase,aSize;
-    attribute vec3 aColor;
-    varying vec3 vColor;
-    varying float vAlpha;
-    `+graphSN+`
-    void main(){
-      vColor=aColor;
-      float t=uTime*uSpeed;
-      float da=uTime*0.015*(0.3+aPhase*0.1);
-      float ca=cos(da),sa=sin(da);
-      vec3 drifted=vec3(position.x*ca+position.z*sa,position.y,-position.x*sa+position.z*ca);
-      vec3 np=gDisp(drifted,t,uMouse,uAmplitude,uFrequency,uDensity,uStrength,uRepel,uRepelDir);
-      float breath=1.0+sin(uTime*0.8+aPhase)*0.2+sin(uTime*1.3+aPhase*0.7)*0.1;
-      gl_PointSize=aSize*breath;
-      vAlpha=0.65+sin(uTime*0.5+aPhase*1.3)*0.15;
-      gl_Position=projectionMatrix*modelViewMatrix*vec4(np,1.0);
-    }`;
-  var nodeFS=`
-    precision mediump float;
-    varying vec3 vColor;
-    varying float vAlpha;
-    void main(){
-      float d=length(gl_PointCoord-0.5);
-      float alpha=smoothstep(0.5,0.05,d)*vAlpha;
-      gl_FragColor=vec4(vColor,alpha);
-    }`;
-  var nodeGeom=new THREE.BufferGeometry();
-  nodeGeom.setAttribute('position',new THREE.BufferAttribute(gPos,3));
-  nodeGeom.setAttribute('aPhase',new THREE.BufferAttribute(gPhase,1));
-  nodeGeom.setAttribute('aSize',new THREE.BufferAttribute(gSize,1));
-  nodeGeom.setAttribute('aColor',new THREE.BufferAttribute(gColor,3));
-  var nodePoints=new THREE.Points(nodeGeom,new THREE.ShaderMaterial({
-    vertexShader:nodeVS,fragmentShader:nodeFS,uniforms:U,
-    transparent:true,depthWrite:false
-  }));
-  nodePoints.renderOrder=2;
-  mesh.add(nodePoints);
-
-  // Edge lines
-  var edgeVS=`
-    uniform float uTime,uAmplitude,uFrequency,uDensity,uStrength,uSpeed,uRepel;
-    uniform vec2 uMouse,uRepelDir;
-    attribute float aPhase;
-    `+graphSN+`
-    void main(){
-      float t=uTime*uSpeed;
-      float da=uTime*0.015*(0.3+aPhase*0.1);
-      float ca=cos(da),sa=sin(da);
-      vec3 drifted=vec3(position.x*ca+position.z*sa,position.y,-position.x*sa+position.z*ca);
-      vec3 np=gDisp(drifted,t,uMouse,uAmplitude,uFrequency,uDensity,uStrength,uRepel,uRepelDir);
-      gl_Position=projectionMatrix*modelViewMatrix*vec4(np,1.0);
-    }`;
-  var edgeFS=`
-    precision mediump float;
-    void main(){
-      gl_FragColor=vec4(0.478,1.0,0.612,0.15);
-    }`;
-  var edgeGeom=new THREE.BufferGeometry();
-  edgeGeom.setAttribute('position',new THREE.BufferAttribute(ePos,3));
-  edgeGeom.setAttribute('aPhase',new THREE.BufferAttribute(ePhase,1));
-  var edgeLines=new THREE.LineSegments(edgeGeom,new THREE.ShaderMaterial({
-    vertexShader:edgeVS,fragmentShader:edgeFS,uniforms:U,
-    transparent:true,depthWrite:false
-  }));
-  edgeLines.renderOrder=1;
-  mesh.add(edgeLines);
-  // ── END GRAPH OVERLAY ──────────────────────────────────────────
-
-  window._sphereUniforms = U;
-  window._sphereObj = {mesh:mesh, camera:camera, renderer:renderer, mC:mC};
-
-  var mT={px:-0.8,py:0,sc:2.2,sat:1.},mC={px:-0.8,py:0,sc:2.2,sat:1.};
-  window.setGradientMode=function(m){
-    if(m==='home'){mT.px=-0.8;mT.py=0;mT.sc=2.2;mT.sat=1.;}
-    else if(m==='process'){mT.px=0.0;mT.py=0;mT.sc=2.0;mT.sat=1.;}
-    else{mT.px=1.8;mT.py=1.2;mT.sc=0.42;mT.sat=0.55;}
-  };
-  var rep={tg:0,cur:0,dx:0,dy:0};
-  window.setRepel=function(t,dx,dy){
-    rep.tg=t;if(dx!==undefined){rep.dx=dx;rep.dy=dy;}
-  };
-  var mo={x:0,y:0,tx:0,ty:0,vx:0,vy:0},lt=0;
-  var rip={a:false,t:0,s:0},scM=0;
-  document.addEventListener('mousemove',function(e){
-    mo.tx=(e.clientX/W-.5)*2.6;mo.ty=-(e.clientY/H-.5)*2.6;lt=performance.now();
-  });
-  document.addEventListener('click',function(e){
-    rip.a=true;rip.t=0;rip.s=1.;
-    mo.tx=(e.clientX/W-.5)*2.6;mo.ty=-(e.clientY/H-.5)*2.6;
-  });
-  window.addEventListener('wheel',function(e){scM=Math.max(-1,Math.min(1,scM+e.deltaY*.0008));});
-  function lerp(a,b,t){return a+(b-a)*t;}
-  var clk=new THREE.Clock();
-  (function tick(){
-    requestAnimationFrame(tick);
-    var t=clk.getElapsedTime();
-    mo.vx+=(mo.tx-mo.x)*.08;mo.vy+=(mo.ty-mo.y)*.08;
-    mo.vx*=.72;mo.vy*=.72;mo.x+=mo.vx;mo.y+=mo.vy;
-    if((performance.now()-lt)/1e3>2){mo.tx*=.985;mo.ty*=.985;}
-    if(rip.a){rip.t+=.04;rip.s=Math.max(0,1-rip.t*rip.t);if(!rip.s)rip.a=false;}
-    scM*=.995;
-    var rs=rep.tg>rep.cur?.055:.035;rep.cur+=(rep.tg-rep.cur)*rs;
-    var ls=.04;
-    mC.px=lerp(mC.px,mT.px,ls);mC.py=lerp(mC.py,mT.py,ls);
-    mC.sc=lerp(mC.sc,mT.sc,ls);mC.sat=lerp(mC.sat,mT.sat,ls);
-    var s=mC.sat;
-    U.uColor1.value.setRGB(lerp(.68,.478,s),lerp(.68,1.,s),lerp(.68,.608,s));
-    U.uColor2.value.setRGB(lerp(.72,.761,s),lerp(.72,.859,s),lerp(.72,.749,s));
-    U.uColor3.value.setRGB(lerp(.70,.522,s),lerp(.70,.690,s),lerp(.70,.882,s));
-    U.uTime.value=t;U.uMouse.value.set(mo.x,mo.y);
-    U.uRepel.value=rep.cur;U.uRepelDir.value.set(rep.dx,rep.dy);
-    U.uAmplitude.value=5.5+rip.s*4.;U.uDensity.value=2.2+scM*.8;
-    var onProc=document.getElementById('view-process').classList.contains('active');
-    mesh.rotation.y=0.1745329+t*(onProc?.003:.018)+(onProc?0:mo.x*.55);
-    mesh.rotation.x=onProc?0:mo.y*.42;
-    mesh.rotation.z=0.8726646+Math.sin(t*.09)*.06;
-    mesh.position.x=mC.px+mo.x*(mC.sc*.45);
-    mesh.position.y=mC.py+mo.y*(mC.sc*.35);
-    mesh.scale.setScalar(mC.sc*(1+Math.sin(t*.28)*.03+Math.sin(t*.17)*.015));
-    renderer.render(scene,camera);
-  })();
-  window.addEventListener('resize',function(){W=window.innerWidth;H=window.innerHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);});
-})();
-
-// ── VIEW ROUTER ──────────────────────────────────────────────────
-(function(){
-  var navShell=document.getElementById('navShell');
-  var breadcrumb=document.getElementById('breadcrumb');
-  window.showView=function showView(name){
-    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
-    var el=document.getElementById('view-'+name);
-    if(el) el.classList.add('active');
-    document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('active');});
-    var root=name;
-    var lnk=document.querySelector('.nav a[data-view="'+root+'"]');
-    if(lnk) lnk.classList.add('active');
-    if(name==='home'){
-      navShell.classList.remove('compact');
-      window.setGradientMode&&window.setGradientMode('home');
-    } else {
-      navShell.classList.add('compact');
-      breadcrumb.innerHTML='<span>'+name.charAt(0).toUpperCase()+name.slice(1)+'</span>';
-      window.setGradientMode&&window.setGradientMode(name==='process'?'process':'sub');
-    }
-  }
-  // Nav links are now external hrefs — no click handler needed
-  // Wire "about the project" entry-seq link to internal about view
-  var aboutLink=document.querySelector('.entry-seq-about');
-  if(aboutLink){aboutLink.addEventListener('click',function(e){e.preventDefault();showView('about');});}
-  document.getElementById('brandBtn').addEventListener('click',function(){showView('home');});
-
-  // Load live graph counts for entry sequence
-  (function(){
-    var el=document.getElementById('entry-counts');
-    var dots=document.getElementById('entry-dots');
-    if(!el) return;
-    fetch('graph-data.json').then(function(r){return r.json();}).then(function(d){
-      var m=d.meta||{};
-      if(el) el.textContent=(m.total_signals||'')+'  signals · '+(m.total_nodes||'')+'  nodes';
-      if(dots) dots.textContent='';
-    }).catch(function(){if(dots)dots.textContent='';});
-  })();
-  // Handle hash-based deep linking (e.g. #process)
-  if(window.location.hash){var hv=window.location.hash.slice(1);if(document.getElementById('view-'+hv))showView(hv);}
-  window.addEventListener('hashchange',function(){var hv=window.location.hash.slice(1);if(document.getElementById('view-'+hv))showView(hv);});
-  document.querySelectorAll('.tool-card[data-tool]').forEach(function(c){
-    c.addEventListener('click',function(){showView(c.getAttribute('data-tool'));});
-  });
-  // Repel listeners — runs after short delay so DOM is settled
-  setTimeout(function(){
-    var W=window.innerWidth,H=window.innerHeight;
-    document.querySelectorAll(
-      '.brand,.brand-mark,.nav a,.dispatch-label,.dispatch,'+
-      '.description,.tags,.tag,.tagline,.handles a,.status-text,'+
-      '.bottom-left,.bottom-right,.bottom-center,'+
-      '.artefacts-intro,.tool-card,.tool-header,.prose-block,.protocol-step,'+
-      '.config-label,.config-row label,.drop-text'
-    ).forEach(function(el){
-      el.addEventListener('mouseenter',function(){
-        var r=el.getBoundingClientRect();
-        var cx=(r.left+r.right)*.5,cy=(r.top+r.bottom)*.5;
-        window.setRepel&&window.setRepel(1.,(W*.6-cx)/W*2.,-(H*.5-cy)/H*2.);
+  <script src="adai-system.js"></script>
+  <script src="brand-state.js"></script>
+  <script src="sketch-brand.js"></script>
+  <script src="field.js"></script>
+  <script>
+    // Regenerate: reload the page so the time-based seed re-rolls a brand new
+    // field — the same result as hitting refresh. (rebuild() keeps the same
+    // seed and would re-render an identical composition.)
+    (function(){
+      var btn = document.getElementById('regenerate');
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        btn.classList.add('spin');
+        // Navigate to a fresh, unique URL so the browser actually reloads and
+        // the time-based seed re-rolls. A unique ?r busts any same-URL no-op;
+        // dropping ?seed/#hash keeps the field random and clean.
+        location.href = location.pathname + '?r=' + Date.now();
       });
-      el.addEventListener('mouseleave',function(){window.setRepel&&window.setRepel(0.);});
-    });
-  },300);
-})();
+    })();
 
-
-// -- CONSTELLATION -----------------------------------------------
-(function(){
-  var STAGES=[
-    {label:'Sense',      n:'01',active:true,
-     desc:'Observe and absorb what is emerging across practices, scenes, subcultures. Listen before naming.',
-     c:[0.48,1.0,0.61]},
-    {label:'Query',      n:'02',active:false,
-     desc:'Ask the field collective intelligence — surface connections, patterns, tensions.',
-     c:[0.52,0.69,0.88]},
-    {label:'Speculate',  n:'03',active:false,
-     desc:'Propose frameworks, name movements, imagine futures. Not consensus — navigable plurality.',
-     c:[0.76,0.86,0.75]},
-    {label:'React',      n:'04',active:false,
-     desc:'Respond, critique, debate, disagree. Plurality requires productive friction.',
-     c:[0.90,0.72,0.50]},
-    {label:'Collaborate',n:'05',active:false,
-     desc:'Build with practitioners across scenes. The institute assembles the way the culture assembles.',
-     c:[0.70,0.52,0.90]},
-    {label:'Experiment', n:'06',active:false,
-     desc:'Test through exhibitions, activations, publications, capital. Then sense again.',
-     c:[1.0,0.78,0.47]},
-  ];
-
-  // Fixed positions as % of viewport — arranged in a loose ring around centre
-  // Will be set properly on resize, defined as fractions of W/H
-  var POSITIONS=[
-    {fx:0.42,fy:0.22},  // Sense       top centre-left
-    {fx:0.68,fy:0.30},  // Query       top right
-    {fx:0.72,fy:0.58},  // Speculate   mid right
-    {fx:0.58,fy:0.76},  // React       bottom right
-    {fx:0.28,fy:0.72},  // Collaborate bottom left
-    {fx:0.22,fy:0.42},  // Experiment  mid left
-  ];
-
-  var cnv   = document.getElementById('constellation-canvas');
-  var ctx2  = cnv.getContext('2d');
-  var wrap  = document.getElementById('stage-nodes-wrap');
-  var infoEl= document.getElementById('stageInfo');
-  var verbEl= document.getElementById('stageVerb');
-  var descEl= document.getElementById('stageDesc');
-  var hereEl= document.getElementById('stageHere');
-  var nodeEls=[];
-  var act=0;
-
-  var cT={r1:0.48,g1:1.0,b1:0.61,r2:0.76,g2:0.86,b2:0.75,r3:0.52,g3:0.69,b3:0.88};
-  var cC={r1:0.48,g1:1.0,b1:0.61,r2:0.76,g2:0.86,b2:0.75,r3:0.52,g3:0.69,b3:0.88};
-  var ampT=11.0,ampC=5.5,denT=2.2,denC=2.2;
-
-  function lp(a,b,t){return a+(b-a)*t;}
-
-  // Build DOM nodes
-  STAGES.forEach(function(s,i){
-    var el=document.createElement('div');
-    el.className='stage-node'+(i===0?' active':'');
-    el.innerHTML='<div class="stage-node-num">'+s.n+'</div>'
-      +'<div class="stage-node-ring"><div class="stage-node-dot"></div></div>'
-      +'<div class="stage-node-label">'+s.label+'</div>';
-    el.addEventListener('mouseenter',function(){showInfo(i);});
-    el.addEventListener('mouseleave',function(){showInfo(act);});
-    el.addEventListener('click',function(){
-      if(i===0){window.open('graph.html','_blank');return;}
-      act=i;setActive(i);showInfo(i);
-    });
-    wrap.appendChild(el);
-    nodeEls.push(el);
-  });
-
-  function setActive(i){
-    nodeEls.forEach(function(el,j){
-      el.classList.toggle('active',j===i);
-    });
-  }
-
-  function positionNodes(){
-    var W=window.innerWidth,H=window.innerHeight;
-    POSITIONS.forEach(function(p,i){
-      nodeEls[i].style.left=(p.fx*W)+'px';
-      nodeEls[i].style.top=(p.fy*H)+'px';
-    });
-  }
-
-  function showInfo(i){
-    var s=STAGES[i];
-    verbEl.textContent=s.label; descEl.textContent=s.desc;
-    hereEl.style.opacity=s.active?'1':'0';
-    infoEl.classList.add('show');
-    var c=s.c;
-    cT.r1=c[0];cT.g1=c[1];cT.b1=c[2];
-    cT.r2=lp(c[0],0.76,0.45);cT.g2=lp(c[1],0.86,0.45);cT.b2=lp(c[2],0.75,0.45);
-    cT.r3=lp(0.52,c[0],0.35);cT.g3=lp(0.69,c[1],0.3);cT.b3=lp(0.88,c[2],0.35);
-    ampT=11.0; denT=2.2+(i/5)*3.2;
-  }
-
-  // Draw connecting lines on canvas between node positions
-  function drawLines(){
-    var W=cnv.width,H=cnv.height;
-    ctx2.clearRect(0,0,W,H);
-    var pts=POSITIONS.map(function(p){return {x:p.fx*W,y:p.fy*H};});
-    for(var i=0;i<pts.length;i++){
-      for(var j=i+1;j<pts.length;j++){
-        var a=pts[i],b=pts[j];
-        var dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d>W*0.52)continue;
-        var hi=(i===act||j===act);
-        ctx2.beginPath();ctx2.moveTo(a.x,a.y);ctx2.lineTo(b.x,b.y);
-        ctx2.strokeStyle=hi?'rgba(122,255,156,0.18)':'rgba(160,160,160,0.07)';
-        ctx2.lineWidth=hi?0.9:0.5;ctx2.stroke();
+    // "Coming soon" rooms: clicking pops a small toast instead of navigating.
+    (function(){
+      var toast = document.getElementById('soon-toast');
+      var hideTimer = null, removeTimer = null;
+      function showSoon(name){
+        if (!toast) return;
+        toast.innerHTML = '<span class="st-label">[' + name + ']</span> coming soon';
+        toast.hidden = false;
+        void toast.offsetWidth;
+        if (window.requestAnimationFrame) requestAnimationFrame(function(){ toast.classList.add('show'); });
+        setTimeout(function(){ toast.classList.add('show'); }, 20);
+        clearTimeout(hideTimer); clearTimeout(removeTimer);
+        hideTimer = setTimeout(function(){
+          toast.classList.remove('show');
+          removeTimer = setTimeout(function(){ if (!toast.classList.contains('show')) toast.hidden = true; }, 350);
+        }, 1900);
       }
-    }
-  }
+      document.querySelectorAll('.room-link.soon').forEach(function(link){
+        link.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          showSoon(link.textContent.trim());
+        }, true);
+      });
+    })();
 
-  function tick(){
-    requestAnimationFrame(tick);
-    if(!document.getElementById('view-process').classList.contains('active'))return;
-    var sp=0.04;
-    cC.r1=lp(cC.r1,cT.r1,sp);cC.g1=lp(cC.g1,cT.g1,sp);cC.b1=lp(cC.b1,cT.b1,sp);
-    cC.r2=lp(cC.r2,cT.r2,sp);cC.g2=lp(cC.g2,cT.g2,sp);cC.b2=lp(cC.b2,cT.b2,sp);
-    cC.r3=lp(cC.r3,cT.r3,sp);cC.g3=lp(cC.g3,cT.g3,sp);cC.b3=lp(cC.b3,cT.b3,sp);
-    ampC=lp(ampC,ampT,0.045); denC=lp(denC,denT,0.04);
-    if(window._sphereUniforms){
-      var U=window._sphereUniforms;
-      U.uColor1.value.setRGB(cC.r1,cC.g1,cC.b1);
-      U.uColor2.value.setRGB(cC.r2,cC.g2,cC.b2);
-      U.uColor3.value.setRGB(cC.r3,cC.g3,cC.b3);
-      U.uAmplitude.value=ampC;
-      U.uDensity.value=denC;
-    }
-    drawLines();
-  }
+    // Philosophy modal: opens over the field; esc / click-outside to dismiss.
+    // Driven by the URL hash, so /#philosophy is a shareable deep-link and the
+    // browser back button closes it. Capture-phase click beats field.js.
+    (function(){
+      var HASH = '#philosophy';
+      var overlay = document.getElementById('philosophy-overlay');
+      var trigger = document.getElementById('open-philosophy');
+      if (!overlay || !trigger) return;
+      var panel = overlay.querySelector('.phil-panel');
+      var body  = overlay.querySelector('.phil-body');
+      var lastFocus = null;
+      var isOpen = false;
 
-  function resize(){
-    cnv.width=window.innerWidth;cnv.height=window.innerHeight;
-    positionNodes();
-  }
-  window.addEventListener('resize',resize);
-  resize();
-  showInfo(0);
-  tick();
-})();
+      function openModal(){
+        if (isOpen) return; isOpen = true;
+        lastFocus = document.activeElement;
+        overlay.hidden = false;
+        if (body) body.scrollTop = 0;
+        // Give the browser a frame so the opacity transition runs. Use rAF when
+        // it ticks, plus a timer fallback so the panel never stays invisible.
+        void overlay.offsetWidth;
+        if (window.requestAnimationFrame) requestAnimationFrame(function(){ overlay.classList.add('open'); });
+        setTimeout(function(){ overlay.classList.add('open'); }, 30);
+        if (panel) panel.focus();
+        document.addEventListener('keydown', onKey);
+      }
+      function closeModal(){
+        if (!isOpen) return; isOpen = false;
+        overlay.classList.remove('open');
+        document.removeEventListener('keydown', onKey);
+        setTimeout(function(){ if (!isOpen) overlay.hidden = true; }, 420);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      function onKey(e){ if (e.key === 'Escape' || e.key === 'Esc') requestClose(); }
 
-// ── TYPEWRITER ───────────────────────────────────────────────────
-(function(){
-  var qs=['What is digital art?','What would an institute look like if it worked the way the art itself works?','Can AI enable cultural plurality rather than collapse it?','Who gets to define the art of now?','What if narrative came before market?','Networked does not mean homogeneous.','What would happen if artists were the authority?','What would open-source curation look like?','Can infrastructure be plural?','What does the field already know?'];
-  var el=document.getElementById('dispatch'),qi=0,ci=0,del=false,pau=false;
-  function tick(){
-    var c=qs[qi];
-    if(pau){setTimeout(function(){pau=false;del=true;tick();},4000);return;}
-    if(!del&&ci<c.length){ci++;el.innerHTML=c.slice(0,ci)+'<span class="cursor"></span>';setTimeout(tick,38+Math.random()*30);}
-    else if(!del){pau=true;tick();}
-    else if(del&&ci>0){ci--;el.innerHTML=c.slice(0,ci)+'<span class="cursor"></span>';setTimeout(tick,14);}
-    else{del=false;qi=(qi+1)%qs.length;setTimeout(tick,260);}
-  }
-  setTimeout(tick,1000);
-})();
-</script>
+      // Drive state from the hash so deep-links and back/forward stay in sync.
+      function syncFromHash(){ if (location.hash === HASH) openModal(); else closeModal(); }
+      function requestOpen(){
+        if (location.hash === HASH) openModal();        // already deep-linked
+        else location.hash = 'philosophy';              // -> hashchange -> openModal
+      }
+      function requestClose(){
+        if (location.hash === HASH) {
+          // strip the hash without adding a history entry, then close
+          if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+          else location.hash = '';
+        }
+        closeModal();
+      }
+
+      window.addEventListener('hashchange', syncFromHash);
+      trigger.addEventListener('click', function(e){ e.preventDefault(); e.stopImmediatePropagation(); requestOpen(); }, true);
+      overlay.addEventListener('click', function(e){ if (e.target === overlay) requestClose(); });
+
+      // Deep-link: open immediately if the page loads at /#philosophy.
+      if (location.hash === HASH) openModal();
+    })();
+  </script>
 </body>
 </html>
