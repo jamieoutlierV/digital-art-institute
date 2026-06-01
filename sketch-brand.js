@@ -2437,7 +2437,17 @@ window.addEventListener("load", function () {
     cycleFieldBackground,
     setFieldBackground
   } = window.ADAI_SYSTEM;
-  const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+  // Cap the backing-store resolution so neither canvas dimension exceeds the
+  // ~4096px ceiling mobile Safari/Chrome enforce. The stage is w=1600 wide, so
+  // an uncapped DPR of 3 would request a 4800px-wide canvas — over the limit,
+  // which makes the canvas render blank on phones. Clamp DPR to whatever keeps
+  // the long side <= 4096 (desktop/DPR<=2.5 is unaffected).
+  const MAX_CANVAS_DIM = 4096;
+  const dpr = (() => {
+    const requested = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    const dimCap = MAX_CANVAS_DIM / Math.max(w, h);
+    return Math.max(1, Math.min(requested, dimCap));
+  })();
   let canvas = null;
   let overlayCanvas = null;
   let ctx = null;
