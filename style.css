@@ -337,7 +337,7 @@ html, body {
 }
 .room-link.soon {
   opacity: 0.32;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 .room-link.soon:hover { opacity: 0.42; }
 .room-link.soon::after {
@@ -354,14 +354,30 @@ html, body {
 @media (max-width: 768px) {
   #logotype { font-size: 15px; top: 16px; left: 16px; }
   #coordinates { top: 16px; right: 16px; font-size: 10px; }
-  #vitals { bottom: 16px; left: 16px; font-size: 10px; }
+  /* Vitals are ambient decoration; hide on mobile so they don't collide
+     with the full-width room nav at the bottom. */
+  #vitals { display: none; }
+  /* Stretch the nav full width and let it wrap to two rows so all four
+     links (and their "soon" badges) stay on-screen and centered. */
   #rooms {
+    left: 12px;
+    right: 12px;
     bottom: 16px;
-    right: 16px;
-    gap: 12px;
-    padding: 8px 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 7px 14px;
+    padding: 9px 14px;
     font-size: 12px;
+    letter-spacing: 0.1em;
   }
+  .room-link.soon::after {
+    margin-left: 0.4em;
+    font-size: 0.56em;
+  }
+}
+
+@media (max-width: 400px) {
+  #rooms { gap: 6px 11px; font-size: 11px; letter-spacing: 0.07em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

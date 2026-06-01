@@ -72,9 +72,12 @@
     @media(prefers-reduced-motion:reduce){
       .phil-overlay,.phil-panel{transition:none;}
     }
+    .phil-foot .foot-mobile{display:none;}
     @media(max-width:640px){
       .phil-body{text-align:left;}
       .phil-foot{flex-direction:column;gap:0.35rem;}
+      .phil-foot .foot-desktop{display:none;}
+      .phil-foot .foot-mobile{display:inline;}
     }
 
     /* ---- "coming soon" toast ---- */
@@ -188,8 +191,10 @@
         <p>Each partner owns their assets; <span class="dim">every contribution stays attributable.</span></p>
       </div>
       <footer class="phil-foot">
-        <span>esc to close</span>
-        <span>scroll to read · click outside to dismiss</span>
+        <span class="foot-desktop">esc to close</span>
+        <span class="foot-mobile">tap outside to close</span>
+        <span class="foot-desktop">scroll to read · click outside to dismiss</span>
+        <span class="foot-mobile">scroll to read</span>
       </footer>
     </div>
   </div>
@@ -222,7 +227,7 @@
       var hideTimer = null, removeTimer = null;
       function showSoon(name){
         if (!toast) return;
-        toast.innerHTML = '<span class="st-label">[' + name + ']</span> coming soon';
+        toast.innerHTML = '<span class="st-label">[' + name + ']</span> launching soon';
         toast.hidden = false;
         void toast.offsetWidth;
         if (window.requestAnimationFrame) requestAnimationFrame(function(){ toast.classList.add('show'); });
