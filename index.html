@@ -6,11 +6,14 @@
   <title>A(DAI) — a digital arts institute</title>
   <meta name="description" content="A(DAI) — a digital arts institute. A shared protocol for the digital arts to tell its own story.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='3' fill='%234169B0'/><text x='12' y='17' font-size='14' font-family='monospace' font-weight='400' fill='%230C0C0E' text-anchor='middle'>()</text></svg>">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/p5@2.0.5/lib/p5.js"></script>
-  <script src="https://unpkg.com/p5.js-svg@1.3.1"></script>
-  <script src="https://cdn.jsdelivr.net/gh/josephg/noisejs/perlin.js"></script>
-  <script src="https://unpkg.com/d3-path@3.0.0/dist/d3-path.min.js"></script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/p5@2.0.5/lib/p5.min.js"></script>
+  <script defer src="https://unpkg.com/p5.js-svg@1.3.1/dist/p5.svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/josephg/noisejs/perlin.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/d3-path@3.0.0/dist/d3-path.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Cutive+Mono&family=Anonymous+Pro:wght@400;700&family=Xanh+Mono:ital@0;1&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500;700&family=Inconsolata:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -201,10 +204,10 @@
 
   <div id="soon-toast" class="soon-toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="adai-system.js"></script>
-  <script src="brand-state.js"></script>
-  <script src="sketch-brand.js"></script>
-  <script src="field.js"></script>
+  <script defer src="adai-system.js"></script>
+  <script defer src="brand-state.js"></script>
+  <script defer src="sketch-brand.js"></script>
+  <script defer src="field.js"></script>
   <script>
     // Regenerate: reload the page so the time-based seed re-rolls a brand new
     // field — the same result as hitting refresh. (rebuild() keeps the same
