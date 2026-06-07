@@ -131,6 +131,51 @@
     footer.guide-foot a{color:var(--brand);text-decoration:none;
       text-transform:none;letter-spacing:0.04em;}
 
+    /* title + "How?" button row */
+    .guide-title-row{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;}
+    .guide-title-row .guide-title{flex:1;min-width:min(100%,16ch);}
+    .howbtn{flex-shrink:0;margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.4em;
+      font-family:var(--mono);font-size:0.82rem;letter-spacing:0.04em;
+      color:var(--brand);background:rgba(var(--brand-rgb),0.06);
+      border:1px solid rgba(var(--brand-rgb),0.45);border-radius:999px;
+      padding:0.45rem 0.95rem;cursor:pointer;white-space:nowrap;
+      -webkit-appearance:none;appearance:none;
+      transition:background 0.2s ease,border-color 0.2s ease;}
+    .howbtn:hover{background:rgba(var(--brand-rgb),0.13);border-color:var(--brand);}
+    .howbtn:focus-visible{outline:2px solid rgba(var(--brand-rgb),0.5);outline-offset:2px;}
+
+    /* "How?" explainer overlay */
+    .how-overlay{position:fixed;inset:0;z-index:50;display:flex;
+      align-items:center;justify-content:center;
+      padding:clamp(1rem,5vh,4rem) clamp(1rem,5vw,3rem);
+      background:rgba(20,20,26,0.32);
+      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+      opacity:0;transition:opacity 0.3s ease;}
+    .how-overlay.open{opacity:1;}
+    .how-overlay[hidden]{display:none;}
+    .how-panel{position:relative;display:flex;flex-direction:column;
+      width:min(640px,100%);max-height:86vh;overflow-y:auto;
+      background:#FFFFFF;border:1px solid var(--rule);border-radius:12px;
+      box-shadow:0 30px 80px rgba(20,20,26,0.25);
+      padding:clamp(1.7rem,4vw,2.5rem);
+      transform:translateY(12px) scale(0.99);
+      transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
+    .how-overlay.open .how-panel{transform:none;}
+    .how-panel:focus{outline:none;}
+    .how-close{position:absolute;top:0.7rem;right:0.8rem;
+      width:2rem;height:2rem;display:inline-flex;align-items:center;justify-content:center;
+      font-family:var(--mono);font-size:1.25rem;line-height:1;color:var(--dim);
+      background:none;border:none;cursor:pointer;border-radius:6px;
+      transition:color 0.2s ease,background 0.2s ease;}
+    .how-close:hover{color:var(--ink);background:rgba(20,20,26,0.05);}
+    .how-label{font-size:0.76rem;letter-spacing:0.06em;color:var(--brand);
+      margin:1.9rem 0 0.7rem;}
+    .how-label:first-of-type{margin-top:0.3rem;}
+    .how-panel p{font-size:0.96rem;line-height:1.75;margin:0;}
+    @media(prefers-reduced-motion:reduce){
+      .how-overlay,.how-panel{transition:none;}
+    }
+
     @media(max-width:560px){
       .topbar{margin-bottom:2.25rem;}
       .rules > li,.sendways li,.says li{gap:0.7rem;}
@@ -146,7 +191,10 @@
 
     <header class="guide-head">
       <div class="guide-kicker">Contributor guide · a 2-minute read</div>
-      <h1 class="guide-title">Before you add to the graph.</h1>
+      <div class="guide-title-row">
+        <h1 class="guide-title">Before you add to the commons.</h1>
+        <button type="button" class="howbtn" id="open-how" aria-haspopup="dialog">Commons?</button>
+      </div>
       <p class="guide-sub">A few things worth knowing before you start. None of it is hard — it just helps you contribute well.</p>
     </header>
 
@@ -263,7 +311,46 @@
     </footer>
   </div>
 
+  <div id="how-overlay" class="how-overlay" hidden>
+    <div class="how-panel" role="dialog" aria-modal="true" aria-label="What A(DAI) is, and how it works" tabindex="-1">
+      <button type="button" class="how-close" aria-label="close">×</button>
+      <div class="how-label">[what]</div>
+      <p>It's a substrate artists write into, not a feed that extracts. A shared reference point that doesn't force agreement: where people read the field differently, both readings stay — biases surfaced, tensions kept, the argument itself part of the lineage. The field becomes legible to itself, and the people who make it — artists, curators, gallerists, collectors, institutions — can act on what they see.</p>
+      <div class="how-label">[how]</div>
+      <p>It's a knowledge graph: works, people and ideas as points, with labelled links between them. To see it whole you have to move through it — A(DAI) is a canon, not the canon, and what you see shifts with where you stand. Every link carries its author, so you can always see who connected two things and stand by it — or contest it. Empty edge types are not gaps to fill with scraping. They are the surface where practitioner sovereignty lives. Read together, the field becomes something people can act on.</p>
+    </div>
+  </div>
+
   <script>
+    // "How?" explainer overlay: opens over the guide; esc / click-outside / × to close.
+    (function(){
+      var overlay = document.getElementById('how-overlay');
+      var openBtn = document.getElementById('open-how');
+      if (!overlay || !openBtn) return;
+      var panel = overlay.querySelector('.how-panel');
+      var closeBtn = overlay.querySelector('.how-close');
+      var lastFocus = null, isOpen = false;
+      function open(){
+        if (isOpen) return; isOpen = true;
+        lastFocus = document.activeElement;
+        overlay.hidden = false; void overlay.offsetWidth;
+        overlay.classList.add('open');
+        if (panel) panel.focus();
+        document.addEventListener('keydown', onKey);
+      }
+      function close(){
+        if (!isOpen) return; isOpen = false;
+        overlay.classList.remove('open');
+        document.removeEventListener('keydown', onKey);
+        setTimeout(function(){ if (!isOpen) overlay.hidden = true; }, 320);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+      function onKey(e){ if (e.key === 'Escape' || e.key === 'Esc') close(); }
+      openBtn.addEventListener('click', open);
+      if (closeBtn) closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', function(e){ if (e.target === overlay) close(); });
+    })();
+
     // Click-to-copy prompt boxes: copy the question text, flash "copied".
     (function(){
       function flash(btn){
