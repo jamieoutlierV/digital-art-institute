@@ -63,6 +63,45 @@
     .phil-body .principles li{display:flex;gap:0.85rem;align-items:baseline;}
     .phil-body .principles .pn{color:var(--brand-color);flex-shrink:0;}
 
+    /* numbered steps (contribute) — multi-line variant of .principles */
+    .phil-body .steps{list-style:none;margin:0.5rem 0 0;padding:0;
+      display:flex;flex-direction:column;gap:1.25rem;text-align:left;}
+    .phil-body .steps li{display:flex;gap:0.95rem;align-items:flex-start;}
+    .phil-body .steps .pn{color:var(--brand-color);flex-shrink:0;
+      font-variant-numeric:tabular-nums;}
+    .phil-body .steps .step-body{flex:1;min-width:0;}
+    .phil-body .steps .step-body p{margin:0;}
+    .phil-body .steps .step-body p + p,
+    .phil-body .steps .step-body p + .phil-paste{margin-top:0.55rem;}
+
+    /* the paste-this command block */
+    .phil-body .phil-paste{display:block;padding:0.85rem 1rem;
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+      border-left:2px solid var(--brand-color);
+      font-family:var(--mono);font-size:0.85rem;line-height:1.65;color:#d2d0ca;
+      text-align:left;white-space:pre-wrap;word-break:break-word;
+      -webkit-hyphens:none;hyphens:none;}
+    .phil-body .phil-paste .tok{color:var(--brand-color);}
+
+    /* the assurance tag row */
+    .phil-body .phil-tags{list-style:none;display:flex;flex-wrap:wrap;gap:0.5rem;
+      margin:1.7rem 0 0.4rem;padding:0;text-align:left;}
+    .phil-body .phil-tags li{font-size:0.68rem;letter-spacing:0.16em;
+      text-transform:uppercase;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.12);padding:0.4rem 0.7rem;}
+
+    /* CTA button -> contributor guide */
+    .phil-body .phil-cta{display:inline-flex;align-items:center;gap:0.6em;
+      margin-top:1.6rem;font-family:var(--mono);font-size:0.84rem;
+      letter-spacing:0.04em;color:#FFF;text-decoration:none;
+      background:rgba(var(--brand-color-rgb),0.16);
+      border:1px solid rgba(var(--brand-color-rgb),0.55);
+      padding:0.7rem 1.1rem;
+      transition:background 0.3s ease,border-color 0.3s ease;}
+    .phil-body .phil-cta:hover{background:rgba(var(--brand-color-rgb),0.28);
+      border-color:var(--brand-color);}
+    .phil-body .phil-cta .arr{color:var(--brand-color);}
+
     .phil-foot{display:flex;justify-content:space-between;gap:1rem;
       padding:1.05rem clamp(1.6rem,3.5vw,2.8rem);
       border-top:1px solid rgba(255,255,255,0.08);
@@ -152,7 +191,7 @@
       <a href="#philosophy" id="open-philosophy" class="room-link active">philosophy</a>
       <a href="#sense" class="room-link soon" aria-disabled="true">sense</a>
       <a href="#query" class="room-link soon" aria-disabled="true">query</a>
-      <a href="#contribute" class="room-link soon" aria-disabled="true">contribute</a>
+      <a href="#contribute" id="open-contribute" class="room-link">contribute</a>
     </nav>
   </div>
 
@@ -192,6 +231,54 @@
         <span class="seg-mark">Next</span>
         <p>A select cohort of artists, curators and institutions to seed the canon and shape its governance.</p>
         <p>Each partner owns their assets; <span class="dim">every contribution stays attributable.</span></p>
+      </div>
+      <footer class="phil-foot">
+        <span class="foot-desktop">esc to close</span>
+        <span class="foot-mobile">tap outside to close</span>
+        <span class="foot-desktop">scroll to read · click outside to dismiss</span>
+        <span class="foot-mobile">scroll to read</span>
+      </footer>
+    </div>
+  </div>
+
+  <div id="contribute-overlay" class="phil-overlay" hidden>
+    <div class="phil-panel" role="dialog" aria-modal="true" aria-labelledby="contribute-title" tabindex="-1">
+      <header class="phil-head">
+        <div class="phil-label">[contribute]</div>
+        <h1 id="contribute-title" class="phil-title">An invitation to help write the digital arts' shared record.</h1>
+      </header>
+      <div class="phil-body">
+        <p>Curate A(DAI) in plain language from your own LLM — <em>every edit attributed to you, withdrawable anytime.</em></p>
+
+        <span class="seg-mark">How to contribute — from your own LLM, in minutes</span>
+        <p>You don't need our UI. You curate through Claude Cowork <span class="dim">(or any assistant with a code sandbox)</span>, in plain language.</p>
+
+        <ol class="steps">
+          <li><span class="pn">01</span><div class="step-body">
+            <p>We'll send you a private access token separately — <strong>treat it like a password.</strong></p>
+          </div></li>
+          <li><span class="pn">02</span><div class="step-body">
+            <p>In Claude Cowork <span class="dim">(or other LLM with code sandbox)</span>, paste:</p>
+            <code class="phil-paste">Read https://adai-basel.fly.dev/skill.md and use this token to contribute to A(DAI) on my behalf: <span class="tok">[token]</span></code>
+          </div></li>
+          <li><span class="pn">03</span><div class="step-body">
+            <p>Claude confirms it's you, then just talk: <em>"Add my new work as a piece I made — generative, 2024 — and connect it to the exhibition where it was shown."</em></p>
+          </div></li>
+          <li><span class="pn">04</span><div class="step-body">
+            <p>Every edit lands attributed to you, and you can <strong>withdraw or supersede</strong> any of it, anytime.</p>
+          </div></li>
+        </ol>
+
+        <ul class="phil-tags">
+          <li>No deadlines</li>
+          <li>No lock-in</li>
+          <li>Attributed to you</li>
+          <li>Withdraw anytime</li>
+        </ul>
+
+        <p>Some connections only you can see: between your work and what shaped it, where it showed, who it spoke to. <em>Draw one, and the field is truer for it.</em></p>
+
+        <a href="guide.html" class="phil-cta" target="_blank" rel="noopener">Read the contributor guide <span class="arr">↗</span></a>
       </div>
       <footer class="phil-foot">
         <span class="foot-desktop">esc to close</span>
@@ -250,13 +337,14 @@
       });
     })();
 
-    // Philosophy modal: opens over the field; esc / click-outside to dismiss.
-    // Driven by the URL hash, so /#philosophy is a shareable deep-link and the
-    // browser back button closes it. Capture-phase click beats field.js.
-    (function(){
-      var HASH = '#philosophy';
-      var overlay = document.getElementById('philosophy-overlay');
-      var trigger = document.getElementById('open-philosophy');
+    // Room modals (philosophy, contribute): open over the field; esc /
+    // click-outside to dismiss. Driven by the URL hash, so /#philosophy is a
+    // shareable deep-link and the browser back button closes it. Capture-phase
+    // click beats field.js.
+    function initRoomModal(name, overlayId, triggerId){
+      var HASH = '#' + name;
+      var overlay = document.getElementById(overlayId);
+      var trigger = document.getElementById(triggerId);
       if (!overlay || !trigger) return;
       var panel = overlay.querySelector('.phil-panel');
       var body  = overlay.querySelector('.phil-body');
@@ -289,7 +377,7 @@
       function syncFromHash(){ if (location.hash === HASH) openModal(); else closeModal(); }
       function requestOpen(){
         if (location.hash === HASH) openModal();        // already deep-linked
-        else location.hash = 'philosophy';              // -> hashchange -> openModal
+        else location.hash = name;                      // -> hashchange -> openModal
       }
       function requestClose(){
         if (location.hash === HASH) {
@@ -304,9 +392,11 @@
       trigger.addEventListener('click', function(e){ e.preventDefault(); e.stopImmediatePropagation(); requestOpen(); }, true);
       overlay.addEventListener('click', function(e){ if (e.target === overlay) requestClose(); });
 
-      // Deep-link: open immediately if the page loads at /#philosophy.
+      // Deep-link: open immediately if the page loads at this room's hash.
       if (location.hash === HASH) openModal();
-    })();
+    }
+    initRoomModal('philosophy', 'philosophy-overlay', 'open-philosophy');
+    initRoomModal('contribute', 'contribute-overlay', 'open-contribute');
   </script>
 </body>
 </html>
