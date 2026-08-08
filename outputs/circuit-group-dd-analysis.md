@@ -134,7 +134,38 @@ Dean Wilson is (a) deadmau5's manager, (b) CEO of The Circuit Group, which held/
 
 ---
 
-## 8. Sources
+## 8. Addendum: Deal Economics & Peer Structures
+
+### What has actually been paid (disclosed figures)
+
+| Deal | Date | Value | Structure |
+|---|---|---|---|
+| Circuit founding IP stakes ("with deadmau5 and more") | Oct 2023 | Undisclosed | Up to 50% equity in client IP portfolios in exchange for capital + services |
+| Circuit electronic catalog acquisitions | Sep 2025 | Undisclosed | Direct catalog purchases, pre-Circuit Capital |
+| deadmau5 + mau5trap → Create Music Group | Mar 2025 | ~$55m | Full buyout of masters + publishing (4,000+ tracks) **plus JV for future releases** |
+| !K7 Music → Create Music Group | Apr 2025 | Undisclosed | Whole-company acquisition |
+| Circuit Capital backing (CMG) | Nov 2025 | Access to $500m+ | Backer balance-sheet access, not a closed blind-pool fund |
+| CMG capitalisation | 2024–Mar 2026 | $165m at $1bn; $450m (equity+debt) at $2.2bn | Flexpoint Ford-led |
+
+### Recurring deal-structure templates
+1. **Management + IP equity ("the 50% model")** — Circuit's founding structure; consideration mix undisclosed.
+2. **Buyout + futures JV** — deadmau5/CMG template; mirrors Warner–David Guetta (~$100m catalog + go-forward deal). Dominant structure for still-active electronic artists.
+3. **Futures funding / advances** — Circuit Capital mandate includes advancing capital against managed artists' future royalties (pricing discipline is the diligence question when manager = financier).
+4. **Strategic services swap** — Defected partnership: reciprocal infrastructure, no disclosed cash.
+
+### Peer benchmarks
+- **Pophouse** (Stockholm): Swedish House Mafia (full masters+publishing incl. writer's shares + brand JV, 2022); Avicii (75% stake, 2022); KISS (~$300m incl. name/likeness, 2024); Tina Turner (majority, 2026). Buy IP → build experiences.
+- **BEAT Music Fund** (Armada, backed by Pinnacle Financial Partners, 2023): ~$100m intended deployment; bought KMS/Kevin Saunderson, ARTY, King Street Sounds, Chocolate Puma, Markus Schulz, Robbie Rivera, Tiga, Jax Jones. **Closest structural comp to Circuit Capital** — genre fund attached to a label machine.
+- **Vine Alternative Investments**: Calvin Harris publishing (~$90–110m, 2020) — financial buyer, publishing only.
+- **HYBE–Ithaca Holdings** ($1.05bn, 2021): the manager-equity holdco exit precedent; ~$161m in shares distributed to 39 insiders including ~$11m each to Bieber and Grande.
+- **Hipgnosis → Blackstone**: the cautionary blind-pool comp; price-setter of the low-rate era, since repriced.
+
+### Market pricing context
+Shot Tower Capital: publishing deals >$20m EV averaged **16.1× NPS in 2024** (16.7× 2023); "iconic" deals >$200m ~14.2× NLS. Multiples moderated from the 2021 peak. Electronic catalogs generally clear below blended averages; strategic synergy buyers (CMG, BEAT), not yield funds, set the marginal price. The $55m deadmau5 deal has no published revenue base, so no implied multiple can be computed.
+
+---
+
+## 9. Sources
 
 - Music Business Worldwide — Circuit Capital launch; Circuit Group founding; Kobalt partnership; Label Services/CSO; Beat Switch; ALT:Vision JV; deadmau5 catalog sale ($55m); CMG $450m raise at $2.2bn
 - Billboard Pro — Circuit Capital; founding (Seven20 × AYITA); Circuit Group IP-development profile; CMG YouTube royalty investigation (2022); APG lawsuit
